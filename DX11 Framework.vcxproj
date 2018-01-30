@@ -371,43 +371,43 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\applicationclass.cpp" />
-    <ClCompile Include="Source\cameraclass.cpp" />
-    <ClCompile Include="Source\colorshaderclass.cpp" />
-    <ClCompile Include="Source\d3dclass.cpp" />
-    <ClCompile Include="Source\fontclass.cpp" />
-    <ClCompile Include="Source\fontshaderclass.cpp" />
-    <ClCompile Include="Source\fpsclass.cpp" />
-    <ClCompile Include="Source\inputclass.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\ColourShader.cpp" />
+    <ClCompile Include="Source\DX11Instance.cpp" />
+    <ClCompile Include="Source\Font.cpp" />
+    <ClCompile Include="Source\FontShader.cpp" />
+    <ClCompile Include="Source\FrameCounter.cpp" />
+    <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\positionclass.cpp" />
-    <ClCompile Include="Source\shadermanagerclass.cpp" />
-    <ClCompile Include="Source\systemclass.cpp" />
-    <ClCompile Include="Source\terrainclass.cpp" />
-    <ClCompile Include="Source\textclass.cpp" />
-    <ClCompile Include="Source\textureclass.cpp" />
-    <ClCompile Include="Source\timerclass.cpp" />
-    <ClCompile Include="Source\userinterfaceclass.cpp" />
-    <ClCompile Include="Source\zoneclass.cpp" />
+    <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\ShaderManager.cpp" />
+    <ClCompile Include="Source\Window.cpp" />
+    <ClCompile Include="Source\Terrain.cpp" />
+    <ClCompile Include="Source\Text.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\UserInterface.cpp" />
+    <ClCompile Include="Source\TerrainZone.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\applicationclass.h" />
-    <ClInclude Include="Source\cameraclass.h" />
-    <ClInclude Include="Source\colorshaderclass.h" />
-    <ClInclude Include="Source\d3dclass.h" />
-    <ClInclude Include="Source\fontclass.h" />
-    <ClInclude Include="Source\fontshaderclass.h" />
-    <ClInclude Include="Source\fpsclass.h" />
-    <ClInclude Include="Source\inputclass.h" />
-    <ClInclude Include="Source\positionclass.h" />
-    <ClInclude Include="Source\shadermanagerclass.h" />
-    <ClInclude Include="Source\systemclass.h" />
-    <ClInclude Include="Source\terrainclass.h" />
-    <ClInclude Include="Source\textclass.h" />
-    <ClInclude Include="Source\textureclass.h" />
-    <ClInclude Include="Source\timerclass.h" />
-    <ClInclude Include="Source\userinterfaceclass.h" />
-    <ClInclude Include="Source\zoneclass.h" />
+    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\ColourShader.h" />
+    <ClInclude Include="Source\DX11Instance.h" />
+    <ClInclude Include="Source\Font.h" />
+    <ClInclude Include="Source\FontShader.h" />
+    <ClInclude Include="Source\FrameCounter.h" />
+    <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\Transform.h" />
+    <ClInclude Include="Source\ShaderManager.h" />
+    <ClInclude Include="Source\Window.h" />
+    <ClInclude Include="Source\Terrain.h" />
+    <ClInclude Include="Source\Text.h" />
+    <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\UserInterface.h" />
+    <ClInclude Include="Source\TerrainZone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\color.ps" />

@@ -1,48 +1,146 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns:atg="http://atg.xbox.com" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\applicationclass.cpp" />
-    <ClCompile Include="Source\cameraclass.cpp" />
-    <ClCompile Include="Source\colorshaderclass.cpp" />
-    <ClCompile Include="Source\d3dclass.cpp" />
-    <ClCompile Include="Source\fontclass.cpp" />
-    <ClCompile Include="Source\fontshaderclass.cpp" />
-    <ClCompile Include="Source\fpsclass.cpp" />
-    <ClCompile Include="Source\inputclass.cpp" />
-    <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\positionclass.cpp" />
-    <ClCompile Include="Source\shadermanagerclass.cpp" />
-    <ClCompile Include="Source\systemclass.cpp" />
-    <ClCompile Include="Source\terrainclass.cpp" />
-    <ClCompile Include="Source\textclass.cpp" />
-    <ClCompile Include="Source\textureclass.cpp" />
-    <ClCompile Include="Source\timerclass.cpp" />
-    <ClCompile Include="Source\userinterfaceclass.cpp" />
-    <ClCompile Include="Source\zoneclass.cpp" />
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameCounter.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DX11Instance.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShaderManager.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColourShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FontShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Font.cpp">
+      <Filter>DX11\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Text.cpp">
+      <Filter>DX11\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UserInterface.cpp">
+      <Filter>DX11\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TerrainZone.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Terrain.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\applicationclass.h" />
-    <ClInclude Include="Source\cameraclass.h" />
-    <ClInclude Include="Source\colorshaderclass.h" />
-    <ClInclude Include="Source\d3dclass.h" />
-    <ClInclude Include="Source\fontclass.h" />
-    <ClInclude Include="Source\fontshaderclass.h" />
-    <ClInclude Include="Source\fpsclass.h" />
-    <ClInclude Include="Source\inputclass.h" />
-    <ClInclude Include="Source\positionclass.h" />
-    <ClInclude Include="Source\shadermanagerclass.h" />
-    <ClInclude Include="Source\systemclass.h" />
-    <ClInclude Include="Source\terrainclass.h" />
-    <ClInclude Include="Source\textclass.h" />
-    <ClInclude Include="Source\textureclass.h" />
-    <ClInclude Include="Source\timerclass.h" />
-    <ClInclude Include="Source\userinterfaceclass.h" />
-    <ClInclude Include="Source\zoneclass.h" />
+    <ClInclude Include="Source\Window.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameCounter.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DX11Instance.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShaderManager.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ColourShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FontShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Font.h">
+      <Filter>DX11\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Text.h">
+      <Filter>DX11\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UserInterface.h">
+      <Filter>DX11\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrainZone.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Terrain.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transform.h">
+      <Filter>Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\color.ps" />
-    <None Include="Source\color.vs" />
-    <None Include="Source\font.ps" />
-    <None Include="Source\font.vs" />
+    <None Include="Source\color.ps">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Source\color.vs">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Source\font.ps">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Source\font.vs">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{3c76394f-cb8e-4b6b-a260-e0057bc5737c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11">
+      <UniqueIdentifier>{6c2c9c3e-7d1c-4d60-9850-44b34b186da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{f862e74c-4449-46f6-877f-ee33151d5bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Shaders">
+      <UniqueIdentifier>{857a22aa-d2e3-4285-bd0f-7d83fd35c6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\UI">
+      <UniqueIdentifier>{c653ee01-8e5a-40f1-ad2d-48dfa6a02e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{fb501156-6d86-4309-b503-74ebfb89d385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

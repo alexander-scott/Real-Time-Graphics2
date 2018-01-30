@@ -1,17 +1,12 @@
-////////////////////////////////////////////////////////////////////////////////
-// Filename: main.cpp
-////////////////////////////////////////////////////////////////////////////////
-#include "systemclass.h"
-
+#include "Window.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
-	SystemClass* System;
+	Window* System;
 	bool result;
 	
-	
 	// Create the system object.
-	System = new SystemClass;
+	System = new Window;
 	if(!System)
 	{
 		return 0;
@@ -27,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	// Shutdown and release the system object.
 	System->Shutdown();
 	delete System;
-	System = 0;
+	System = nullptr;
 
 	return 0;
 }

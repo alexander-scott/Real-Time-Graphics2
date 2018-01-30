@@ -1,49 +1,19 @@
-﻿  applicationclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\applicationclass.cpp(18): warning C4100: 'other': unreferenced formal parameter
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\applicationclass.cpp(49): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
-  cameraclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\cameraclass.cpp(19): warning C4100: 'other': unreferenced formal parameter
-  colorshaderclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\colorshaderclass.cpp(16): warning C4100: 'other': unreferenced formal parameter
-  d3dclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\d3dclass.cpp(26): warning C4100: 'other': unreferenced formal parameter
-  fontclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\fontclass.cpp(14): warning C4100: 'other': unreferenced formal parameter
-  fontshaderclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\fontshaderclass.cpp(18): warning C4100: 'other': unreferenced formal parameter
-  fpsclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\fpsclass.cpp(12): warning C4100: 'other': unreferenced formal parameter
-  inputclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\inputclass.cpp(15): warning C4100: 'other': unreferenced formal parameter
+﻿  Application.cpp
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\application.cpp(13): warning C4100: 'other': unreferenced formal parameter
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\application.cpp(41): warning C4316: 'DX11Instance': object allocated on the heap may not be aligned 16
   main.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(7): warning C4100: 'iCmdshow': unreferenced formal parameter
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(7): warning C4100: 'pScmdline': unreferenced formal parameter
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(7): warning C4100: 'hPrevInstance': unreferenced formal parameter
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(7): warning C4100: 'hInstance': unreferenced formal parameter
-  positionclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\positionclass.cpp(30): warning C4100: 'other': unreferenced formal parameter
-  shadermanagerclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\shadermanagerclass.cpp(14): warning C4100: 'other': unreferenced formal parameter
-  systemclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\systemclass.cpp(13): warning C4100: 'other': unreferenced formal parameter
-  terrainclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\terrainclass.cpp(14): warning C4100: 'other': unreferenced formal parameter
-  textclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\textclass.cpp(16): warning C4100: 'other': unreferenced formal parameter
-  textureclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\textureclass.cpp(15): warning C4100: 'other': unreferenced formal parameter
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\textureclass.cpp(72): warning C4245: '=': conversion from 'int' to 'UINT', signed/unsigned mismatch
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\textureclass.cpp(171): warning C4389: '!=': signed/unsigned mismatch
-  timerclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\timerclass.cpp(12): warning C4100: 'other': unreferenced formal parameter
-  userinterfaceclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\userinterfaceclass.cpp(16): warning C4100: 'other': unreferenced formal parameter
-  zoneclass.cpp
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\zoneclass.cpp(16): warning C4100: 'other': unreferenced formal parameter
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\zoneclass.cpp(47): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\zoneclass.cpp(26): warning C4100: 'screenDepth': unreferenced formal parameter
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(3): warning C4100: 'iCmdshow': unreferenced formal parameter
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(3): warning C4100: 'pScmdline': unreferenced formal parameter
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(3): warning C4100: 'hPrevInstance': unreferenced formal parameter
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\main.cpp(3): warning C4100: 'hInstance': unreferenced formal parameter
+  Transform.cpp
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\transform.cpp(25): warning C4100: 'other': unreferenced formal parameter
+  Window.cpp
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\window.cpp(8): warning C4100: 'other': unreferenced formal parameter
+  TerrainZone.cpp
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\terrainzone.cpp(11): warning C4100: 'other': unreferenced formal parameter
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\terrainzone.cpp(39): warning C4316: 'Camera': object allocated on the heap may not be aligned 16
+c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\terrainzone.cpp(19): warning C4100: 'screenDepth': unreferenced formal parameter
   Generating Code...
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\d3dclass.cpp(168): warning C4701: potentially uninitialized local variable 'numerator' used
-c:\users\s005973c\dropbox\unversity year 4\real-time graphics for games\semester 2\real-time-graphics2\source\d3dclass.cpp(169): warning C4701: potentially uninitialized local variable 'denominator' used
-applicationclass.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+Application.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   DX11 Framework.vcxproj -> C:\Users\s005973c\Dropbox\Unversity Year 4\REAL-TIME GRAPHICS FOR GAMES\Semester 2\Real-Time-Graphics2\Debug\DX11 Framework.exe
