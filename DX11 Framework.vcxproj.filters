@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns:atg="http://atg.xbox.com" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\applicationclass.cpp" />
+    <ClCompile Include="Source\cameraclass.cpp" />
+    <ClCompile Include="Source\colorshaderclass.cpp" />
+    <ClCompile Include="Source\d3dclass.cpp" />
+    <ClCompile Include="Source\fontclass.cpp" />
+    <ClCompile Include="Source\fontshaderclass.cpp" />
+    <ClCompile Include="Source\fpsclass.cpp" />
+    <ClCompile Include="Source\inputclass.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\positionclass.cpp" />
+    <ClCompile Include="Source\shadermanagerclass.cpp" />
+    <ClCompile Include="Source\systemclass.cpp" />
+    <ClCompile Include="Source\terrainclass.cpp" />
+    <ClCompile Include="Source\textclass.cpp" />
+    <ClCompile Include="Source\textureclass.cpp" />
+    <ClCompile Include="Source\timerclass.cpp" />
+    <ClCompile Include="Source\userinterfaceclass.cpp" />
+    <ClCompile Include="Source\zoneclass.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\applicationclass.h" />
+    <ClInclude Include="Source\cameraclass.h" />
+    <ClInclude Include="Source\colorshaderclass.h" />
+    <ClInclude Include="Source\d3dclass.h" />
+    <ClInclude Include="Source\fontclass.h" />
+    <ClInclude Include="Source\fontshaderclass.h" />
+    <ClInclude Include="Source\fpsclass.h" />
+    <ClInclude Include="Source\inputclass.h" />
+    <ClInclude Include="Source\positionclass.h" />
+    <ClInclude Include="Source\shadermanagerclass.h" />
+    <ClInclude Include="Source\systemclass.h" />
+    <ClInclude Include="Source\terrainclass.h" />
+    <ClInclude Include="Source\textclass.h" />
+    <ClInclude Include="Source\textureclass.h" />
+    <ClInclude Include="Source\timerclass.h" />
+    <ClInclude Include="Source\userinterfaceclass.h" />
+    <ClInclude Include="Source\zoneclass.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\color.ps" />
+    <None Include="Source\color.vs" />
+    <None Include="Source\font.ps" />
+    <None Include="Source\font.vs" />
+  </ItemGroup>
+</Project>
