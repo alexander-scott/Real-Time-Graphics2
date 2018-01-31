@@ -43,9 +43,6 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TerrainZone.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Terrain.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -53,6 +50,9 @@
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
       <Filter>Application</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,9 +96,6 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TerrainZone.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Terrain.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -106,6 +103,9 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\Transform.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
       <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>

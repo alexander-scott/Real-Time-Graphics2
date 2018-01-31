@@ -20,7 +20,7 @@ void FrameCounter::Initialize()
 	return;
 }
 
-void FrameCounter::Frame()
+void FrameCounter::Update()
 {
 	m_count++;
 

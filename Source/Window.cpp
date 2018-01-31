@@ -18,7 +18,6 @@ bool Window::Initialize()
 	int screenWidth, screenHeight;
 	bool result;
 
-
 	// Initialize the width and height of the screen to zero before sending the variables into the function.
 	screenWidth = 0;
 	screenHeight = 0;
@@ -64,7 +63,6 @@ void Window::Run()
 	MSG msg;
 	bool done, result;
 
-
 	// Initialize the message structure.
 	ZeroMemory(&msg, sizeof(MSG));
 	
@@ -87,7 +85,7 @@ void Window::Run()
 		else
 		{
 			// Otherwise do the frame processing.
-			result = Frame();
+			result = Update();
 			if(!result)
 			{
 				done = true;
@@ -99,13 +97,12 @@ void Window::Run()
 	return;
 }
 
-bool Window::Frame()
+bool Window::Update()
 {
 	bool result;
 
-
 	// Do the frame processing for the application object.
-	result = m_Application->Frame();
+	result = m_Application->Update();
 	if (!result)
 	{
 		return false;

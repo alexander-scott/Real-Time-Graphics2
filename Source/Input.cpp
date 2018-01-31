@@ -124,7 +124,7 @@ void Input::Shutdown()
 	return;
 }
 
-bool Input::Frame()
+bool Input::Update()
 {
 	bool result;
 

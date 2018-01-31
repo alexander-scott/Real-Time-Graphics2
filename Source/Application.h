@@ -1,7 +1,7 @@
 #ifndef _APPLICATIONCLASS_H_
 #define _APPLICATIONCLASS_H_
 
-const bool FULL_SCREEN = true;
+const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.1f;
@@ -11,7 +11,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "ShaderManager.h"
 #include "Timer.h"
 #include "FrameCounter.h"
-#include "TerrainZone.h"
+#include "Scene.h"
 
 class Application
 {
@@ -22,7 +22,7 @@ public:
 
 	bool Initialize(HINSTANCE, HWND, int, int);
 	void Shutdown();
-	bool Frame();
+	bool Update();
 
 private:
 	Input* m_Input;
@@ -30,7 +30,7 @@ private:
 	ShaderManager* m_ShaderManager;
 	Timer* m_Timer;
 	FrameCounter* m_Fps;
-	TerrainZone* m_Zone;
+	Scene* m_Zone;
 };
 
 #endif

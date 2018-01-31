@@ -2,27 +2,27 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
-	Window* System;
+	Window* window;
 	bool result;
 	
 	// Create the system object.
-	System = new Window;
-	if(!System)
+	window = new Window;
+	if(!window)
 	{
 		return 0;
 	}
 
 	// Initialize and run the system object.
-	result = System->Initialize();
+	result = window->Initialize();
 	if(result)
 	{
-		System->Run();
+		window->Run();
 	}
 
 	// Shutdown and release the system object.
-	System->Shutdown();
-	delete System;
-	System = nullptr;
+	window->Shutdown();
+	delete window;
+	window = nullptr;
 
 	return 0;
 }

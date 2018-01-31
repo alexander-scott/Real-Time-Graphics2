@@ -13,7 +13,7 @@ public:
 	bool Initialize(DX11Instance*, int, int);
 	void Shutdown();
 
-	bool Frame(ID3D11DeviceContext*, int, float, float, float, float, float, float);
+	bool Update(ID3D11DeviceContext*, int, float, float, float, float, float, float);
 	bool Render(DX11Instance*, ShaderManager*, XMMATRIX, XMMATRIX, XMMATRIX);
 
 private:

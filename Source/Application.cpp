@@ -93,7 +93,7 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 	m_Fps->Initialize();
 
 	// Create the zone object.
-	m_Zone = new TerrainZone;
+	m_Zone = new Scene;
 	if(!m_Zone)
 	{
 		return false;
@@ -161,16 +161,16 @@ void Application::Shutdown()
 	return;
 }
 
-bool Application::Frame()
+bool Application::Update()
 {
 	bool result;
 
 	// Update the system stats.
-	m_Fps->Frame();
-	m_Timer->Frame();
+	m_Fps->Update();
+	m_Timer->Update();
 
 	// Do the input frame processing.
-	result = m_Input->Frame();
+	result = m_Input->Update();
 	if(!result)
 	{
 		return false;
@@ -183,7 +183,7 @@ bool Application::Frame()
 	}
 
 	// Do the zone frame processing.
-	result = m_Zone->Frame(m_Direct3D, m_Input, m_ShaderManager, m_Timer->GetTime(), m_Fps->GetFps());
+	result = m_Zone->Update(m_Direct3D, m_Input, m_ShaderManager, m_Timer->GetTime(), m_Fps->GetFps());
 	if (!result)
 	{
 		return false;

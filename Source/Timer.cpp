@@ -32,7 +32,7 @@ bool Timer::Initialize()
 	return true;
 }
 
-void Timer::Frame()
+void Timer::Update()
 {
 	INT64 currentTime;
 	INT64 elapsedTicks;

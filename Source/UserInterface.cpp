@@ -197,7 +197,7 @@ void UserInterface::Shutdown()
 	return;
 }
 
-bool UserInterface::Frame(ID3D11DeviceContext* deviceContext, int fps, float posX, float posY, float posZ, 
+bool UserInterface::Update(ID3D11DeviceContext* deviceContext, int fps, float posX, float posY, float posZ, 
 							   float rotX, float rotY, float rotZ)
 {
 	bool result;

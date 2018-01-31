@@ -11,7 +11,7 @@ public:
 	~Timer();
 
 	bool Initialize();
-	void Frame();
+	void Update();
 
 	float GetTime();
 
