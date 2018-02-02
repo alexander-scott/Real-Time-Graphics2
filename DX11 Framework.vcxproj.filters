@@ -13,9 +13,6 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FrameCounter.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DX11Instance.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
@@ -24,18 +21,6 @@
     </ClCompile>
     <ClCompile Include="Source\ColourShader.cpp">
       <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FontShader.cpp">
-      <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Font.cpp">
-      <Filter>DX11\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Text.cpp">
-      <Filter>DX11\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UserInterface.cpp">
-      <Filter>DX11\UI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Texture.cpp">
       <Filter>DX11</Filter>
@@ -66,9 +51,6 @@
     <ClInclude Include="Source\Timer.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FrameCounter.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DX11Instance.h">
       <Filter>DX11</Filter>
     </ClInclude>
@@ -77,18 +59,6 @@
     </ClInclude>
     <ClInclude Include="Source\ColourShader.h">
       <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FontShader.h">
-      <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Font.h">
-      <Filter>DX11\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Text.h">
-      <Filter>DX11\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UserInterface.h">
-      <Filter>DX11\UI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Texture.h">
       <Filter>DX11</Filter>
@@ -135,9 +105,6 @@
     </Filter>
     <Filter Include="DX11\Shaders">
       <UniqueIdentifier>{857a22aa-d2e3-4285-bd0f-7d83fd35c6c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11\UI">
-      <UniqueIdentifier>{c653ee01-8e5a-40f1-ad2d-48dfa6a02e26}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application">
       <UniqueIdentifier>{fb501156-6d86-4309-b503-74ebfb89d385}</UniqueIdentifier>

@@ -3,7 +3,6 @@
 ShaderManager::ShaderManager()
 {
 	m_ColorShader = 0;
-	m_FontShader = 0;
 }
 
 ShaderManager::ShaderManager(const ShaderManager& other)
@@ -32,37 +31,15 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
-	// Create the font shader object.
-	m_FontShader = new FontShader;
-	if(!m_FontShader)
-	{
-		return false;
-	}
-
-	// Initialize the font shader object.
-	result = m_FontShader->Initialize(device, hwnd);
-	if(!result)
-	{
-		return false;
-	}
-
 	return true;
 }
 
-void ShaderManager::Shutdown()
+void ShaderManager::Destroy()
 {
-	// Release the font shader object.
-	if(m_FontShader)
-	{
-		m_FontShader->Shutdown();
-		delete m_FontShader;
-		m_FontShader = 0;
-	}
-
 	// Release the color shader object.
 	if(m_ColorShader)
 	{
-		m_ColorShader->Shutdown();
+		m_ColorShader->Destroy();
 		delete m_ColorShader;
 		m_ColorShader = 0;
 	}
@@ -74,10 +51,4 @@ bool ShaderManager::RenderColorShader(ID3D11DeviceContext* deviceContext, int in
 										   XMMATRIX projectionMatrix)
 {
 	return m_ColorShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix);
-}
-
-bool ShaderManager::RenderFontShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, 
-										  XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT4 color)
-{
-	return m_FontShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, color);
 }

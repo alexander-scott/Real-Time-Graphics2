@@ -2,13 +2,10 @@
 
 Camera::Camera()
 {
-	m_positionX = 0.0f;
-	m_positionY = 0.0f;
-	m_positionZ = 0.0f;
+	m_Transform = new Transform;
 
-	m_rotationX = 0.0f;
-	m_rotationY = 0.0f;
-	m_rotationZ = 0.0f;
+	m_Transform->SetPosition(0, 0, 0);
+	m_Transform->SetRotation(0, 0, 0);
 }
 
 Camera::Camera(const Camera& other)
@@ -17,32 +14,7 @@ Camera::Camera(const Camera& other)
 
 Camera::~Camera()
 {
-}
-
-void Camera::SetPosition(float x, float y, float z)
-{
-	m_positionX = x;
-	m_positionY = y;
-	m_positionZ = z;
-	return;
-}
-
-void Camera::SetRotation(float x, float y, float z)
-{
-	m_rotationX = x;
-	m_rotationY = y;
-	m_rotationZ = z;
-	return;
-}
-
-XMFLOAT3 Camera::GetPosition()
-{
-	return XMFLOAT3(m_positionX, m_positionY, m_positionZ);
-}
-
-XMFLOAT3 Camera::GetRotation()
-{
-	return XMFLOAT3(m_rotationX, m_rotationY, m_rotationZ);
+	delete m_Transform;
 }
 
 void Camera::Render()
@@ -61,9 +33,7 @@ void Camera::Render()
 	upVector = XMLoadFloat3(&up);
 
 	// Setup the position of the camera in the world.
-	position.x = m_positionX;
-	position.y = m_positionY;
-	position.z = m_positionZ;
+	m_Transform->GetPosition(position.x, position.y, position.z);
 
 	// Load it into a XMVECTOR structure.
 	positionVector = XMLoadFloat3(&position);
@@ -75,6 +45,9 @@ void Camera::Render()
 
 	// Load it into a XMVECTOR structure.
 	lookAtVector = XMLoadFloat3(&lookAt);
+
+	float m_rotationX, m_rotationY, m_rotationZ = 0;
+	m_Transform->GetRotation(m_rotationX, m_rotationY, m_rotationZ);
 
 	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.
 	pitch = m_rotationX * 0.0174532925f;
@@ -119,9 +92,7 @@ void Camera::RenderBaseViewMatrix()
 	upVector = XMLoadFloat3(&up);
 
 	// Setup the position of the camera in the world.
-	position.x = m_positionX;
-	position.y = m_positionY;
-	position.z = m_positionZ;
+	m_Transform->GetPosition(position.x, position.y, position.z);
 
 	// Load it into a XMVECTOR structure.
 	positionVector = XMLoadFloat3(&position);
@@ -133,6 +104,9 @@ void Camera::RenderBaseViewMatrix()
 
 	// Load it into a XMVECTOR structure.
 	lookAtVector = XMLoadFloat3(&lookAt);
+
+	float m_rotationX, m_rotationY, m_rotationZ = 0;
+	m_Transform->GetRotation(m_rotationX, m_rotationY, m_rotationZ);
 
 	// Set the yaw (Y axis), pitch (X axis), and roll (Z axis) rotations in radians.
 	pitch = m_rotationX * 0.0174532925f;

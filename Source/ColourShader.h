@@ -25,7 +25,7 @@ public:
 	~ColourShader();
 
 	bool Initialize(ID3D11Device*, HWND);
-	void Shutdown();
+	void Destroy();
 	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX);
 
 private:

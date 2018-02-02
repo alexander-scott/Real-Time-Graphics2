@@ -16,7 +16,7 @@ public:
 	~Input();
 
 	bool Initialize(HINSTANCE, HWND, int, int);
-	void Shutdown();
+	void Destroy();
 	bool Update();
 
 	bool IsEscapePressed();

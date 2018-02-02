@@ -375,19 +375,14 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\ColourShader.cpp" />
     <ClCompile Include="Source\DX11Instance.cpp" />
-    <ClCompile Include="Source\Font.cpp" />
-    <ClCompile Include="Source\FontShader.cpp" />
-    <ClCompile Include="Source\FrameCounter.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\ShaderManager.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Terrain.cpp" />
-    <ClCompile Include="Source\Text.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\UserInterface.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -395,18 +390,13 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\ColourShader.h" />
     <ClInclude Include="Source\DX11Instance.h" />
-    <ClInclude Include="Source\Font.h" />
-    <ClInclude Include="Source\FontShader.h" />
-    <ClInclude Include="Source\FrameCounter.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\ShaderManager.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Terrain.h" />
-    <ClInclude Include="Source\Text.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Timer.h" />
-    <ClInclude Include="Source\UserInterface.h" />
     <ClInclude Include="Source\Scene.h" />
   </ItemGroup>
   <ItemGroup>
