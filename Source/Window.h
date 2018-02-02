@@ -15,7 +15,7 @@ public:
 	~Window();
 
 	bool Initialize();
-	void Shutdown();
+	void Destroy();
 	void Run();
 
 	LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
@@ -23,13 +23,13 @@ public:
 private:
 	bool Update();
 	void InitializeWindows(int&, int&);
-	void ShutdownWindows();
+	void DestroyWindows();
 
 private:
-	LPCWSTR m_applicationName;
-	HINSTANCE m_hinstance;
-	HWND m_hwnd;
-	Application* m_Application;
+	LPCWSTR			_applicationName;
+	HINSTANCE		_hinstance;
+	HWND			_hwnd;
+	Application*	_application;
 };
 
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

@@ -30,9 +30,9 @@ bool ColourShader::Initialize(ID3D11Device* device, HWND hwnd)
 	return true;
 }
 
-void ColourShader::Shutdown()
+void ColourShader::Destroy()
 {
-	// Shutdown the vertex and pixel shaders as well as the related objects.
+	// Destroy the vertex and pixel shaders as well as the related objects.
 	ShutdownShader();
 
 	return;

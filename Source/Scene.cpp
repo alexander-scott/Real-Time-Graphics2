@@ -2,7 +2,6 @@
 
 Scene::Scene()
 {
-	m_UserInterface = 0;
 	m_Camera = 0;
 	m_Transform = 0;
 	m_Terrain = 0;
@@ -19,21 +18,6 @@ Scene::~Scene()
 bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
-
-	// Create the user interface object.
-	m_UserInterface = new UserInterface;
-	if(!m_UserInterface)
-	{
-		return false;
-	}
-
-	// Initialize the user interface object.
-	result = m_UserInterface->Initialize(Direct3D, screenHeight, screenWidth);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the user interface object.", L"Error", MB_OK);
-		return false;
-	}
 
 	// Create the camera object.
 	m_Camera = new Camera;
@@ -73,21 +57,18 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 		return false;
 	}
 	
-	// Set the UI to display by default.
-	m_displayUI = true;
-
 	// Set wire frame rendering initially to enabled.
 	m_wireFrame = true;
 
 	return true;
 }
 
-void Scene::Shutdown()
+void Scene::Destroy()
 {
 	// Release the terrain object.
 	if(m_Terrain)
 	{
-		m_Terrain->Shutdown();
+		m_Terrain->Destroy();
 		delete m_Terrain;
 		m_Terrain = 0;
 	}
@@ -106,18 +87,10 @@ void Scene::Shutdown()
 		m_Camera = 0;
 	}
 
-	// Release the user interface object.
-	if(m_UserInterface)
-	{
-		m_UserInterface->Shutdown();
-		delete m_UserInterface;
-		m_UserInterface = 0;
-	}
-
 	return;
 }
 
-bool Scene::Update(DX11Instance* Direct3D, Input* Input, ShaderManager* ShaderManager, float frameTime, int fps)
+bool Scene::Update(DX11Instance* Direct3D, Input* Input, ShaderManager* ShaderManager, float frameTime)
 {
 	bool result;
 	float posX, posY, posZ, rotX, rotY, rotZ;
@@ -128,13 +101,6 @@ bool Scene::Update(DX11Instance* Direct3D, Input* Input, ShaderManager* ShaderMa
 	// Get the view point position/rotation.
 	m_Transform->GetPosition(posX, posY, posZ);
 	m_Transform->GetRotation(rotX, rotY, rotZ);
-
-	// Do the frame processing for the user interface.
-	result = m_UserInterface->Update(Direct3D->GetDeviceContext(), fps, posX, posY, posZ, rotX, rotY, rotZ);
-	if(!result)
-	{
-		return false;
-	}
 
 	// Render the graphics.
 	result = Render(Direct3D, ShaderManager);
@@ -187,10 +153,9 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	m_Camera->SetPosition(posX, posY, posZ);
 	m_Camera->SetRotation(rotX, rotY, rotZ);
 
-	// Determine if the user interface should be displayed or not.
 	if(Input->IsF1Toggled())
 	{
-		m_displayUI = !m_displayUI;
+		// No action to map to yet
 	}
 
 	// Determine if the terrain should be rendered in wireframe or not.
@@ -239,16 +204,6 @@ bool Scene::Render(DX11Instance* Direct3D, ShaderManager* ShaderManager)
 	if (m_wireFrame)
 	{
 		Direct3D->DisableWireframe();
-	}
-
-	// Render the user interface.
-	if(m_displayUI)
-	{
-		result = m_UserInterface->Render(Direct3D, ShaderManager, worldMatrix, baseViewMatrix, orthoMatrix);
-		if(!result)
-		{
-			return false;
-		}
 	}
 
 	// Present the rendered scene to the screen.

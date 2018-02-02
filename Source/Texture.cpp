@@ -80,7 +80,7 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	return true;
 }
 
-void Texture::Shutdown()
+void Texture::Destroy()
 {
 	// Release the texture view resource.
 	if(m_textureView)

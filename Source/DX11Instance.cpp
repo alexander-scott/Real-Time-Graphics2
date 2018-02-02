@@ -454,7 +454,7 @@ bool DX11Instance::Initialize(int screenWidth, int screenHeight, bool vsync, HWN
     return true;
 }
 
-void DX11Instance::Shutdown()
+void DX11Instance::Destroy()
 {
 	// Before shutting down set to windowed mode or when you release the swap chain it will throw an exception.
 	if(m_swapChain)

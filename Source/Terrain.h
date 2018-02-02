@@ -34,7 +34,7 @@ public:
 	~Terrain();
 
 	bool Initialize(ID3D11Device*, char*);
-	void Shutdown();
+	void Destroy();
 	bool Render(ID3D11DeviceContext*);
 
 	int GetIndexCount();

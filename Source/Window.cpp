@@ -2,7 +2,7 @@
 
 Window::Window()
 {
-	m_Application = 0;
+	_application = 0;
 }
 
 Window::Window(const Window& other)
@@ -26,14 +26,14 @@ bool Window::Initialize()
 	InitializeWindows(screenWidth, screenHeight);
 
 	// Create the application wrapper object.
-	m_Application = new Application;
-	if (!m_Application)
+	_application = new Application;
+	if (!_application)
 	{
 		return false;
 	}
 
 	// Initialize the application wrapper object.
-	result = m_Application->Initialize(m_hinstance, m_hwnd, screenWidth, screenHeight);
+	result = _application->Initialize(_hinstance, _hwnd, screenWidth, screenHeight);
 	if (!result)
 	{
 		return false;
@@ -42,18 +42,18 @@ bool Window::Initialize()
 	return true;
 }
 
-void Window::Shutdown()
+void Window::Destroy()
 {
 	// Release the application wrapper object.
-	if (m_Application)
+	if (_application)
 	{
-		m_Application->Shutdown();
-		delete m_Application;
-		m_Application = 0;
+		_application->Destroy();
+		delete _application;
+		_application = 0;
 	}
 
-	// Shutdown the window.
-	ShutdownWindows();
+	// Destroy the window.
+	DestroyWindows();
 	
 	return;
 }
@@ -102,7 +102,7 @@ bool Window::Update()
 	bool result;
 
 	// Do the frame processing for the application object.
-	result = m_Application->Update();
+	result = _application->Update();
 	if (!result)
 	{
 		return false;
@@ -126,23 +126,23 @@ void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 	ApplicationHandle = this;
 
 	// Get the instance of this application.
-	m_hinstance = GetModuleHandle(NULL);
+	_hinstance = GetModuleHandle(NULL);
 
 	// Give the application a name.
-	m_applicationName = L"Engine";
+	_applicationName = L"Engine";
 
 	// Setup the windows class with default settings.
 	wc.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	wc.lpfnWndProc   = WndProc;
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
-	wc.hInstance     = m_hinstance;
+	wc.hInstance     = _hinstance;
 	wc.hIcon		 = LoadIcon(NULL, IDI_WINLOGO);
 	wc.hIconSm       = wc.hIcon;
 	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wc.lpszMenuName  = NULL;
-	wc.lpszClassName = m_applicationName;
+	wc.lpszClassName = _applicationName;
 	wc.cbSize        = sizeof(WNDCLASSEX);
 	
 	// Register the window class.
@@ -181,13 +181,13 @@ void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 	}
 
 	// Create the window with the screen settings and get the handle to it.
-	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
-						    posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, NULL);
+	_hwnd = CreateWindowEx(WS_EX_APPWINDOW, _applicationName, _applicationName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+						    posX, posY, screenWidth, screenHeight, NULL, NULL, _hinstance, NULL);
 
 	// Bring the window up on the screen and set it as main focus.
-	ShowWindow(m_hwnd, SW_SHOW);
-	SetForegroundWindow(m_hwnd);
-	SetFocus(m_hwnd);
+	ShowWindow(_hwnd, SW_SHOW);
+	SetForegroundWindow(_hwnd);
+	SetFocus(_hwnd);
 
 	// Hide the mouse cursor.
 	ShowCursor(false);
@@ -195,7 +195,7 @@ void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 	return;
 }
 
-void Window::ShutdownWindows()
+void Window::DestroyWindows()
 {
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -207,12 +207,12 @@ void Window::ShutdownWindows()
 	}
 
 	// Remove the window.
-	DestroyWindow(m_hwnd);
-	m_hwnd = NULL;
+	DestroyWindow(_hwnd);
+	_hwnd = NULL;
 
 	// Remove the application instance.
-	UnregisterClass(m_applicationName, m_hinstance);
-	m_hinstance = NULL;
+	UnregisterClass(_applicationName, _hinstance);
+	_hinstance = NULL;
 
 	// Release the pointer to this class.
 	ApplicationHandle = NULL;

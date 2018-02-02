@@ -22,7 +22,7 @@ public:
 	~Texture();
 
 	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*);
-	void Shutdown();
+	void Destroy();
 
 	ID3D11ShaderResourceView* GetTexture();
 

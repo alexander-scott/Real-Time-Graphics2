@@ -61,7 +61,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	return true;
 }
 
-void Terrain::Shutdown()
+void Terrain::Destroy()
 {
 	// Release the rendering buffers.
 	ShutdownBuffers();
@@ -330,8 +330,8 @@ bool Terrain::BuildTerrainModel()
 			index3 = (m_terrainWidth * (j + 1)) + i;      // Bottom left.
 			index4 = (m_terrainWidth * (j + 1)) + (i + 1);  // Bottom right.
 
-															// Now create two triangles for that quad.
-															// Triangle 1 - Upper left.
+			// Now create two triangles for that quad.
+			// Triangle 1 - Upper left.
 			m_terrainModel[index].x = m_heightMap[index1].x;
 			m_terrainModel[index].y = m_heightMap[index1].y;
 			m_terrainModel[index].z = m_heightMap[index1].z;

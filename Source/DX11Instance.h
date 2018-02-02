@@ -18,7 +18,7 @@ public:
 	~DX11Instance();
 
 	bool Initialize(int, int, bool, HWND, bool, float, float);
-	void Shutdown();
+	void Destroy();
 	
 	void BeginScene(float, float, float, float);
 	void EndScene();
