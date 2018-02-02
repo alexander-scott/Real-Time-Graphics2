@@ -55,7 +55,7 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	}
 
 	// Set the initial position and rotation.
-	m_Transform->SetPosition(128.0f, 5.0f, -10.0f);
+	m_Transform->SetPosition(128.0f, 10.0f, -10.0f);
 	m_Transform->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the terrain object.
@@ -66,7 +66,7 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	}
 
 	// Initialize the terrain object.
-	result = m_Terrain->Initialize(Direct3D->GetDevice());
+	result = m_Terrain->Initialize(Direct3D->GetDevice(), "Source/setup.txt");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
@@ -75,6 +75,9 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	
 	// Set the UI to display by default.
 	m_displayUI = true;
+
+	// Set wire frame rendering initially to enabled.
+	m_wireFrame = true;
 
 	return true;
 }
@@ -190,6 +193,12 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 		m_displayUI = !m_displayUI;
 	}
 
+	// Determine if the terrain should be rendered in wireframe or not.
+	if (Input->IsF2Toggled())
+	{
+		m_wireFrame = !m_wireFrame;
+	}
+
 	return;
 }
 
@@ -211,6 +220,12 @@ bool Scene::Render(DX11Instance* Direct3D, ShaderManager* ShaderManager)
 	// Clear the buffers to begin the scene.
 	Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
+	// Turn on wire frame rendering of the terrain if needed.
+	if (m_wireFrame)
+	{
+		Direct3D->EnableWireframe();
+	}
+
 	// Render the terrain grid using the color shader.
 	m_Terrain->Render(Direct3D->GetDeviceContext());
 	result = ShaderManager->RenderColorShader(Direct3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix, 
@@ -218,6 +233,12 @@ bool Scene::Render(DX11Instance* Direct3D, ShaderManager* ShaderManager)
 	if(!result)
 	{
 		return false;
+	}
+
+	// Turn off wire frame rendering of the terrain if it was on.
+	if (m_wireFrame)
+	{
+		Direct3D->DisableWireframe();
 	}
 
 	// Render the user interface.

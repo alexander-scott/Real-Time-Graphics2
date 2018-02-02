@@ -30,7 +30,7 @@ private:
 	Camera* m_Camera;
 	Transform* m_Transform;
 	Terrain* m_Terrain;
-	bool m_displayUI;
+	bool m_displayUI, m_wireFrame;
 };
 
 #endif
