@@ -6,7 +6,6 @@
 #include "ShaderManager.h"
 #include "Timer.h"
 #include "Camera.h"
-#include "Transform.h"
 #include "Terrain.h"
 
 class Scene
@@ -26,7 +25,6 @@ private:
 
 private:
 	Camera* m_Camera;
-	Transform* m_Transform;
 	Terrain* m_Terrain;
 	bool m_wireFrame;
 };

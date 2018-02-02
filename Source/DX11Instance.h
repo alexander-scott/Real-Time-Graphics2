@@ -30,8 +30,6 @@ public:
 	void GetWorldMatrix(XMMATRIX&);
 	void GetOrthoMatrix(XMMATRIX&);
 
-	void GetVideoCardInfo(char*, int&);
-
 	void TurnZBufferOn();
 	void TurnZBufferOff();
 

@@ -3,6 +3,8 @@
 
 #include <directxmath.h>
 
+#include "Transform.h"
+
 using namespace DirectX;
 
 class Camera
@@ -12,11 +14,7 @@ public:
 	Camera(const Camera&);
 	~Camera();
 
-	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
-
-	XMFLOAT3 GetPosition();
-	XMFLOAT3 GetRotation();
+	Transform* GetTransform() { return m_Transform; }
 
 	void Render();
 	void GetViewMatrix(XMMATRIX&);
@@ -25,9 +23,9 @@ public:
 	void GetBaseViewMatrix(XMMATRIX&);
 
 private:
-	float m_positionX, m_positionY, m_positionZ;
-	float m_rotationX, m_rotationY, m_rotationZ;
 	XMMATRIX m_viewMatrix, m_baseViewMatrix;
+
+	Transform* m_Transform;
 };
 
 #endif

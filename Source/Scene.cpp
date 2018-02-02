@@ -3,7 +3,6 @@
 Scene::Scene()
 {
 	m_Camera = 0;
-	m_Transform = 0;
 	m_Terrain = 0;
 }
 
@@ -27,20 +26,12 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	}
 
 	// Set the initial position of the camera and build the matrices needed for rendering.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 	m_Camera->Render();
 	m_Camera->RenderBaseViewMatrix();
 
-	// Create the position object.
-	m_Transform = new Transform;
-	if(!m_Transform)
-	{
-		return false;
-	}
-
 	// Set the initial position and rotation.
-	m_Transform->SetPosition(128.0f, 10.0f, -10.0f);
-	m_Transform->SetRotation(0.0f, 0.0f, 0.0f);
+	m_Camera->GetTransform()->SetPosition(128.0f, 10.0f, -10.0f);
+	m_Camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the terrain object.
 	m_Terrain = new Terrain;
@@ -73,13 +64,6 @@ void Scene::Destroy()
 		m_Terrain = 0;
 	}
 
-	// Release the position object.
-	if(m_Transform)
-	{
-		delete m_Transform;
-		m_Transform = 0;
-	}
-
 	// Release the camera object.
 	if(m_Camera)
 	{
@@ -99,8 +83,8 @@ bool Scene::Update(DX11Instance* Direct3D, Input* Input, ShaderManager* ShaderMa
 	HandleMovementInput(Input, frameTime);
 
 	// Get the view point position/rotation.
-	m_Transform->GetPosition(posX, posY, posZ);
-	m_Transform->GetRotation(rotX, rotY, rotZ);
+	m_Camera->GetTransform()->GetPosition(posX, posY, posZ);
+	m_Camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
 
 	// Render the graphics.
 	result = Render(Direct3D, ShaderManager);
@@ -118,40 +102,40 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	float posX, posY, posZ, rotX, rotY, rotZ;
 
 	// Set the frame time for calculating the updated position.
-	m_Transform->SetFrameTime(frameTime);
+	m_Camera->GetTransform()->SetFrameTime(frameTime);
 
 	// Handle the input.
 	keyDown = Input->IsLeftPressed();
-	m_Transform->TurnLeft(keyDown);
+	m_Camera->GetTransform()->TurnLeft(keyDown);
 
 	keyDown = Input->IsRightPressed();
-	m_Transform->TurnRight(keyDown);
+	m_Camera->GetTransform()->TurnRight(keyDown);
 
 	keyDown = Input->IsUpPressed();
-	m_Transform->MoveForward(keyDown);
+	m_Camera->GetTransform()->MoveForward(keyDown);
 
 	keyDown = Input->IsDownPressed();
-	m_Transform->MoveBackward(keyDown);
+	m_Camera->GetTransform()->MoveBackward(keyDown);
 
 	keyDown = Input->IsAPressed();
-	m_Transform->MoveUpward(keyDown);
+	m_Camera->GetTransform()->MoveUpward(keyDown);
 
 	keyDown = Input->IsZPressed();
-	m_Transform->MoveDownward(keyDown);
+	m_Camera->GetTransform()->MoveDownward(keyDown);
 
 	keyDown = Input->IsPgUpPressed();
-	m_Transform->LookUpward(keyDown);
+	m_Camera->GetTransform()->LookUpward(keyDown);
 
 	keyDown = Input->IsPgDownPressed();
-	m_Transform->LookDownward(keyDown);
+	m_Camera->GetTransform()->LookDownward(keyDown);
 
 	// Get the view point position/rotation.
-	m_Transform->GetPosition(posX, posY, posZ);
-	m_Transform->GetRotation(rotX, rotY, rotZ);
+	m_Camera->GetTransform()->GetPosition(posX, posY, posZ);
+	m_Camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
 
 	// Set the position of the camera.
-	m_Camera->SetPosition(posX, posY, posZ);
-	m_Camera->SetRotation(rotX, rotY, rotZ);
+	m_Camera->GetTransform()->SetPosition(posX, posY, posZ);
+	m_Camera->GetTransform()->SetRotation(rotX, rotY, rotZ);
 
 	if(Input->IsF1Toggled())
 	{

@@ -614,13 +614,6 @@ void DX11Instance::GetOrthoMatrix(XMMATRIX& orthoMatrix)
 	return;
 }
 
-void DX11Instance::GetVideoCardInfo(char* cardName, int& memory)
-{
-	strcpy_s(cardName, 128, m_videoCardDescription);
-	memory = m_videoCardMemory;
-	return;
-}
-
 void DX11Instance::TurnZBufferOn()
 {
 	m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
