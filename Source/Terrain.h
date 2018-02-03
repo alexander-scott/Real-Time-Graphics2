@@ -16,17 +16,25 @@ private:
 	{
 		XMFLOAT3 Position;
 		XMFLOAT2 Texture;
+		XMFLOAT3 Normal;
 	};
 
 	struct HeightMapType
 	{
 		float X, Y, Z;
+		float NX, NY, NZ;
 	};
 
 	struct ModelType
 	{
 		float X, Y, Z;
 		float Tu, Tv;
+		float NX, NY, NZ;
+	};
+
+	struct VectorType
+	{
+		float X, Y, Z;
 	};
 
 public:
@@ -45,6 +53,7 @@ private:
 	bool LoadBitmapHeightMap();
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
+	bool CalculateNormals();
 	bool BuildTerrainModel();
 	void DestroyTerrainModel();
 
