@@ -46,6 +46,13 @@
     <ClCompile Include="Source\TextureShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LightShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\IShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -90,6 +97,15 @@
     <ClInclude Include="Source\TextureShader.h">
       <Filter>DX11\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Source\LightShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\color.ps">
@@ -98,10 +114,16 @@
     <None Include="Source\color.vs">
       <Filter>Resources</Filter>
     </None>
-    <None Include="Source\font.ps">
+    <None Include="Source\Shaders\light.ps">
       <Filter>Resources</Filter>
     </None>
-    <None Include="Source\font.vs">
+    <None Include="Source\Shaders\light.vs">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Source\Shaders\texture.ps">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="Source\Shaders\texture.vs">
       <Filter>Resources</Filter>
     </None>
   </ItemGroup>

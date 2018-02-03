@@ -4,6 +4,7 @@ ShaderManager::ShaderManager()
 {
 	_colourShader = nullptr;
 	_textureShader = nullptr;
+	_lightShader = nullptr;
 }
 
 ShaderManager::ShaderManager(const ShaderManager& other)
@@ -26,7 +27,7 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the color shader object.
-	result = _colourShader->Initialize(device, hwnd);
+	result = _colourShader->Initialize(device, hwnd, L"Source/Shaders/color.ps", L"Source/Shaders/color.vs");
 	if(!result)
 	{
 		return false;
@@ -40,7 +41,21 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the Texture shader object.
-	result = _textureShader->Initialize(device, hwnd);
+	result = _textureShader->Initialize(device, hwnd, L"Source/Shaders/texture.ps", L"Source/Shaders/texture.vs");
+	if (!result)
+	{
+		return false;
+	}
+
+	// Create the light shader object.
+	_lightShader = new LightShader;
+	if (!_lightShader)
+	{
+		return false;
+	}
+
+	// Initialize the light shader object.
+	result = _lightShader->Initialize(device, hwnd, L"Source/Shaders/light.ps", L"Source/Shaders/light.vs");
 	if (!result)
 	{
 		return false;
@@ -67,6 +82,14 @@ void ShaderManager::Destroy()
 		_textureShader = 0;
 	}
 
+	// Release the light shader object.
+	if (_lightShader)
+	{
+		_lightShader->Destroy();
+		delete _lightShader;
+		_lightShader = 0;
+	}
+
 	return;
 }
 
@@ -80,4 +103,11 @@ bool ShaderManager::RenderTextureShader(ID3D11DeviceContext* deviceContext, int 
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
 	return _textureShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture);
+}
+
+bool ShaderManager::RenderLightShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection,
+	XMFLOAT4 diffuseColor)
+{
+	return _lightShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, diffuseColor);
 }

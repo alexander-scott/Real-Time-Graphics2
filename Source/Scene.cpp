@@ -4,6 +4,7 @@ Scene::Scene()
 {
 	_camera = nullptr;
 	_terrain = nullptr;
+	_light = nullptr;
 }
 
 Scene::Scene(const Scene& other)
@@ -32,6 +33,17 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	// Set the initial Position and rotation.
 	_camera->GetTransform()->SetPosition(128.0f, 10.0f, -10.0f);
 	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
+
+	// Create the light object.
+	_light = new Light;
+	if (!_light)
+	{
+		return false;
+	}
+
+	// Initialize the light object.
+	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	_light->SetDirection(-0.5f, -1.0f, -0.5f);
 
 	// Create the terrain object.
 	_terrain = new Terrain;
@@ -62,6 +74,13 @@ void Scene::Destroy()
 		_terrain->Destroy();
 		delete _terrain;
 		_terrain = 0;
+	}
+
+	// Release the light object.
+	if (_light)
+	{
+		delete _light;
+		_light = 0;
 	}
 
 	// Release the camera object.
@@ -175,9 +194,13 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 		direct3D->EnableWireframe();
 	}
 
-	// Render the terrain grid using the color shader.
+	// Render the terrain grid using the light shader.
 	_terrain->Render(direct3D->GetDeviceContext());
-	result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
+
+	//result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
+	result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, textureManager->GetTexture(1), _light->GetDirection(), _light->GetDiffuseColor());
+	
 	if(!result)
 	{
 		return false;
