@@ -63,6 +63,9 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	// We can now release the height map since it is no longer needed in memory once the 3D terrain model has been built.
 	DestroyHeightMap();
 
+	// Calculate the tangent and binormal for the terrain model.
+	CalculateTerrainVectors();
+
 	// Load the rendering buffers with the terrain data.
 	result = InitializeBuffers(device);
 	if (!result)
@@ -450,9 +453,9 @@ bool Terrain::CalculateNormals()
 			index = (j * _terrainWidth) + i;
 
 			// Normalize the final shared normal for this vertex and store it in the height map array.
-			_heightMap[index].NX = (sum[0] / length);
-			_heightMap[index].NY = (sum[1] / length);
-			_heightMap[index].NZ = (sum[2] / length);
+			_heightMap[index].Nx = (sum[0] / length);
+			_heightMap[index].Ny = (sum[1] / length);
+			_heightMap[index].Nz = (sum[2] / length);
 		}
 	}
 
@@ -596,9 +599,9 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].Z = _heightMap[index1].Z;
 			_terrainModel[index].Tu = 0.0f;
 			_terrainModel[index].Tv = 0.0f;
-			_terrainModel[index].NX = _heightMap[index1].NX;
-			_terrainModel[index].NY = _heightMap[index1].NY;
-			_terrainModel[index].NZ = _heightMap[index1].NZ;
+			_terrainModel[index].Nx = _heightMap[index1].Nx;
+			_terrainModel[index].Ny = _heightMap[index1].Ny;
+			_terrainModel[index].Nz = _heightMap[index1].Nz;
 			_terrainModel[index].R = _heightMap[index1].R;
 			_terrainModel[index].G = _heightMap[index1].G;
 			_terrainModel[index].B = _heightMap[index1].B;
@@ -610,9 +613,9 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].Z = _heightMap[index2].Z;
 			_terrainModel[index].Tu = 1.0f;
 			_terrainModel[index].Tv = 0.0f;
-			_terrainModel[index].NX = _heightMap[index2].NX;
-			_terrainModel[index].NY = _heightMap[index2].NY;
-			_terrainModel[index].NZ = _heightMap[index2].NZ;
+			_terrainModel[index].Nx = _heightMap[index2].Nx;
+			_terrainModel[index].Ny = _heightMap[index2].Ny;
+			_terrainModel[index].Nz = _heightMap[index2].Nz;
 			_terrainModel[index].R = _heightMap[index2].R;
 			_terrainModel[index].G = _heightMap[index2].G;
 			_terrainModel[index].B = _heightMap[index2].B;
@@ -624,9 +627,9 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].Z = _heightMap[index3].Z;
 			_terrainModel[index].Tu = 0.0f;
 			_terrainModel[index].Tv = 1.0f;
-			_terrainModel[index].NX = _heightMap[index3].NX;
-			_terrainModel[index].NY = _heightMap[index3].NY;
-			_terrainModel[index].NZ = _heightMap[index3].NZ;
+			_terrainModel[index].Nx = _heightMap[index3].Nx;
+			_terrainModel[index].Ny = _heightMap[index3].Ny;
+			_terrainModel[index].Nz = _heightMap[index3].Nz;
 			_terrainModel[index].R = _heightMap[index3].R;
 			_terrainModel[index].G = _heightMap[index3].G;
 			_terrainModel[index].B = _heightMap[index3].B;
@@ -638,9 +641,9 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].Z = _heightMap[index3].Z;
 			_terrainModel[index].Tu = 0.0f;
 			_terrainModel[index].Tv = 1.0f;
-			_terrainModel[index].NX = _heightMap[index3].NX;
-			_terrainModel[index].NY = _heightMap[index3].NY;
-			_terrainModel[index].NZ = _heightMap[index3].NZ;
+			_terrainModel[index].Nx = _heightMap[index3].Nx;
+			_terrainModel[index].Ny = _heightMap[index3].Ny;
+			_terrainModel[index].Nz = _heightMap[index3].Nz;
 			_terrainModel[index].R = _heightMap[index3].R;
 			_terrainModel[index].G = _heightMap[index3].G;
 			_terrainModel[index].B = _heightMap[index3].B;
@@ -652,9 +655,9 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].Z = _heightMap[index2].Z;
 			_terrainModel[index].Tu = 1.0f;
 			_terrainModel[index].Tv = 0.0f;
-			_terrainModel[index].NX = _heightMap[index2].NX;
-			_terrainModel[index].NY = _heightMap[index2].NY;
-			_terrainModel[index].NZ = _heightMap[index2].NZ;
+			_terrainModel[index].Nx = _heightMap[index2].Nx;
+			_terrainModel[index].Ny = _heightMap[index2].Ny;
+			_terrainModel[index].Nz = _heightMap[index2].Nz;
 			_terrainModel[index].R = _heightMap[index2].R;
 			_terrainModel[index].G = _heightMap[index2].G;
 			_terrainModel[index].B = _heightMap[index2].B;
@@ -666,9 +669,9 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].Z = _heightMap[index4].Z;
 			_terrainModel[index].Tu = 1.0f;
 			_terrainModel[index].Tv = 1.0f;
-			_terrainModel[index].NX = _heightMap[index4].NX;
-			_terrainModel[index].NY = _heightMap[index4].NY;
-			_terrainModel[index].NZ = _heightMap[index4].NZ;
+			_terrainModel[index].Nx = _heightMap[index4].Nx;
+			_terrainModel[index].Ny = _heightMap[index4].Ny;
+			_terrainModel[index].Nz = _heightMap[index4].Nz;
 			_terrainModel[index].R = _heightMap[index4].R;
 			_terrainModel[index].G = _heightMap[index4].G;
 			_terrainModel[index].B = _heightMap[index4].B;
@@ -687,6 +690,136 @@ void Terrain::DestroyTerrainModel()
 		delete[] _terrainModel;
 		_terrainModel = 0;
 	}
+
+	return;
+}
+
+void Terrain::CalculateTerrainVectors()
+{
+	int faceCount, i, index;
+	TempVertexType vertex1, vertex2, vertex3;
+	VectorType tangent, binormal;
+
+
+	// Calculate the number of faces in the terrain model.
+	faceCount = +_vertexCount / 3;
+
+	// Initialize the index to the model data.
+	index = 0;
+
+	// Go through all the faces and calculate the the tangent, binormal, and normal vectors.
+	for (i = 0; i<faceCount; i++)
+	{
+		// Get the three vertices for this face from the terrain model.
+		vertex1.X = _terrainModel[index].X;
+		vertex1.Y = _terrainModel[index].Y;
+		vertex1.Z = _terrainModel[index].Z;
+		vertex1.Tu = _terrainModel[index].Tu;
+		vertex1.Tv = _terrainModel[index].Tv;
+		vertex1.Nx = _terrainModel[index].Nx;
+		vertex1.Ny = _terrainModel[index].Ny;
+		vertex1.Nz = _terrainModel[index].Nz;
+		index++;
+
+		vertex2.X = _terrainModel[index].X;
+		vertex2.Y = _terrainModel[index].Y;
+		vertex2.Z = _terrainModel[index].Z;
+		vertex2.Tu = _terrainModel[index].Tu;
+		vertex2.Tv = _terrainModel[index].Tv;
+		vertex2.Nx = _terrainModel[index].Nx;
+		vertex2.Ny = _terrainModel[index].Ny;
+		vertex2.Nz = _terrainModel[index].Nz;
+		index++;
+
+		vertex3.X = _terrainModel[index].X;
+		vertex3.Y = _terrainModel[index].Y;
+		vertex3.Z = _terrainModel[index].Z;
+		vertex3.Tu = _terrainModel[index].Tu;
+		vertex3.Tv = _terrainModel[index].Tv;
+		vertex3.Nx = _terrainModel[index].Nx;
+		vertex3.Ny = _terrainModel[index].Ny;
+		vertex3.Nz = _terrainModel[index].Nz;
+		index++;
+
+		// Calculate the tangent and binormal of that face.
+		CalculateTangentBinormal(vertex1, vertex2, vertex3, tangent, binormal);
+
+		// Store the tangent and binormal for this face back in the model structure.
+		_terrainModel[index - 1].Tx = tangent.X;
+		_terrainModel[index - 1].Ty = tangent.Y;
+		_terrainModel[index - 1].Tz = tangent.Z;
+		_terrainModel[index - 1].Bx = binormal.X;
+		_terrainModel[index - 1].By = binormal.Y;
+		_terrainModel[index - 1].Bz = binormal.Z;
+
+		_terrainModel[index - 2].Tx = tangent.X;
+		_terrainModel[index - 2].Ty = tangent.Y;
+		_terrainModel[index - 2].Tz = tangent.Z;
+		_terrainModel[index - 2].Bx = binormal.X;
+		_terrainModel[index - 2].By = binormal.Y;
+		_terrainModel[index - 2].Bz = binormal.Z;
+
+		_terrainModel[index - 3].Tx = tangent.X;
+		_terrainModel[index - 3].Ty = tangent.Y;
+		_terrainModel[index - 3].Tz = tangent.Z;
+		_terrainModel[index - 3].Bx = binormal.X;
+		_terrainModel[index - 3].By = binormal.Y;
+		_terrainModel[index - 3].Bz = binormal.Z;
+	}
+
+	return;
+}
+
+void Terrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType vertex2, TempVertexType vertex3, VectorType& tangent, VectorType& binormal)
+{
+	float vector1[3], vector2[3];
+	float tuVector[2], tvVector[2];
+	float den;
+	float length;
+
+	// Calculate the two vectors for this face.
+	vector1[0] = vertex2.X - vertex1.X;
+	vector1[1] = vertex2.Y - vertex1.Y;
+	vector1[2] = vertex2.Z - vertex1.Z;
+
+	vector2[0] = vertex3.X - vertex1.X;
+	vector2[1] = vertex3.Y - vertex1.Y;
+	vector2[2] = vertex3.Z - vertex1.Z;
+
+	// Calculate the tu and tv texture space vectors.
+	tuVector[0] = vertex2.Tu - vertex1.Tu;
+	tvVector[0] = vertex2.Tv - vertex1.Tv;
+
+	tuVector[1] = vertex3.Tu - vertex1.Tu;
+	tvVector[1] = vertex3.Tv - vertex1.Tv;
+
+	// Calculate the denominator of the tangent/binormal equation.
+	den = 1.0f / (tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0]);
+
+	// Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
+	tangent.X = (tvVector[1] * vector1[0] - tvVector[0] * vector2[0]) * den;
+	tangent.Y = (tvVector[1] * vector1[1] - tvVector[0] * vector2[1]) * den;
+	tangent.Z = (tvVector[1] * vector1[2] - tvVector[0] * vector2[2]) * den;
+
+	binormal.X = (tuVector[0] * vector2[0] - tuVector[1] * vector1[0]) * den;
+	binormal.Y = (tuVector[0] * vector2[1] - tuVector[1] * vector1[1]) * den;
+	binormal.Z = (tuVector[0] * vector2[2] - tuVector[1] * vector1[2]) * den;
+
+	// Calculate the length of the tangent.
+	length = (float)sqrt((tangent.X * tangent.X) + (tangent.Y * tangent.Y) + (tangent.Z * tangent.Z));
+
+	// Normalize the tangent and then store it.
+	tangent.X = tangent.X / length;
+	tangent.Y = tangent.Y / length;
+	tangent.Z = tangent.Z / length;
+
+	// Calculate the length of the binormal.
+	length = (float)sqrt((binormal.X * binormal.X) + (binormal.Y * binormal.Y) + (binormal.Z * binormal.Z));
+
+	// Normalize the binormal and then store it.
+	binormal.X = binormal.X / length;
+	binormal.Y = binormal.Y / length;
+	binormal.Z = binormal.Z / length;
 
 	return;
 }
@@ -734,7 +867,9 @@ bool Terrain::InitializeBuffers(ID3D11Device* device)
 	{
 		vertices[i].Position = XMFLOAT3(_terrainModel[i].X, _terrainModel[i].Y, _terrainModel[i].Z);
 		vertices[i].Texture = XMFLOAT2(_terrainModel[i].Tu, _terrainModel[i].Tv);
-		vertices[i].Normal = XMFLOAT3(_terrainModel[i].NX, _terrainModel[i].NY, _terrainModel[i].NZ);
+		vertices[i].Normal = XMFLOAT3(_terrainModel[i].Nx, _terrainModel[i].Ny, _terrainModel[i].Nz);
+		vertices[i].Tangent = XMFLOAT3(_terrainModel[i].Tx, _terrainModel[i].Ty, _terrainModel[i].Tz);
+		vertices[i].Binormal = XMFLOAT3(_terrainModel[i].Bx, _terrainModel[i].By, _terrainModel[i].Bz);
 		vertices[i].Colour = XMFLOAT3(_terrainModel[i].R, _terrainModel[i].G, _terrainModel[i].B);
 		indices[i] = i;
 	}
