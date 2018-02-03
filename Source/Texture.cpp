@@ -2,9 +2,9 @@
 
 Texture::Texture()
 {
-	m_targaData = 0;
-	m_texture = 0;
-	m_textureView = 0;
+	_targaData = nullptr;
+	_texture = nullptr;
+	_textureView = nullptr;
 }
 
 Texture::Texture(const Texture& other)
@@ -31,7 +31,7 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 		return false;
 	}
 
-	// Setup the description of the texture.
+	// Setup the description of the Texture.
 	textureDesc.Height = height;
 	textureDesc.Width = width;
 	textureDesc.MipLevels = 0;
@@ -44,8 +44,8 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-	// Create the empty texture.
-	hResult = device->CreateTexture2D(&textureDesc, NULL, &m_texture);
+	// Create the empty Texture.
+	hResult = device->CreateTexture2D(&textureDesc, NULL, &_texture);
 	if(FAILED(hResult))
 	{
 		return false;
@@ -54,53 +54,53 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	// Set the row pitch of the targa image data.
 	rowPitch = (width * 4) * sizeof(unsigned char);
 
-	// Copy the targa image data into the texture.
-	deviceContext->UpdateSubresource(m_texture, 0, NULL, m_targaData, rowPitch, 0);
+	// Copy the targa image data into the Texture.
+	deviceContext->UpdateSubresource(_texture, 0, NULL, _targaData, rowPitch, 0);
 
-	// Setup the shader resource view description.
+	// Setup the shader resource View description.
 	srvDesc.Format = textureDesc.Format;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = -1;
 
-	// Create the shader resource view for the texture.
-	hResult = device->CreateShaderResourceView(m_texture, &srvDesc, &m_textureView);
+	// Create the shader resource View for the Texture.
+	hResult = device->CreateShaderResourceView(_texture, &srvDesc, &_textureView);
 	if(FAILED(hResult))
 	{
 		return false;
 	}
 
-	// Generate mipmaps for this texture.
-	deviceContext->GenerateMips(m_textureView);
+	// Generate mipmaps for this Texture.
+	deviceContext->GenerateMips(_textureView);
 	
-	// Release the targa image data now that the image data has been loaded into the texture.
-	delete [] m_targaData;
-	m_targaData = 0;
+	// Release the targa image data now that the image data has been loaded into the Texture.
+	delete [] _targaData;
+	_targaData = 0;
 
 	return true;
 }
 
 void Texture::Destroy()
 {
-	// Release the texture view resource.
-	if(m_textureView)
+	// Release the Texture View resource.
+	if(_textureView)
 	{
-		m_textureView->Release();
-		m_textureView = 0;
+		_textureView->Release();
+		_textureView = 0;
 	}
 
-	// Release the texture.
-	if(m_texture)
+	// Release the Texture.
+	if(_texture)
 	{
-		m_texture->Release();
-		m_texture = 0;
+		_texture->Release();
+		_texture = 0;
 	}
 
 	// Release the targa data.
-	if(m_targaData)
+	if(_targaData)
 	{
-		delete [] m_targaData;
-		m_targaData = 0;
+		delete [] _targaData;
+		_targaData = 0;
 	}
 
 	return;
@@ -108,7 +108,7 @@ void Texture::Destroy()
 
 ID3D11ShaderResourceView* Texture::GetTexture()
 {
-	return m_textureView;
+	return _textureView;
 }
 
 bool Texture::LoadTarga(char* filename, int& height, int& width)
@@ -118,7 +118,6 @@ bool Texture::LoadTarga(char* filename, int& height, int& width)
 	unsigned int count;
 	TargaHeader targaFileHeader;
 	unsigned char* targaImage;
-
 
 	// Open the targa file for reading in binary.
 	error = fopen_s(&filePtr, filename, "rb");
@@ -170,8 +169,8 @@ bool Texture::LoadTarga(char* filename, int& height, int& width)
 	}
 
 	// Allocate memory for the targa destination data.
-	m_targaData = new unsigned char[imageSize];
-	if(!m_targaData)
+	_targaData = new unsigned char[imageSize];
+	if(!_targaData)
 	{
 		return false;
 	}
@@ -187,10 +186,10 @@ bool Texture::LoadTarga(char* filename, int& height, int& width)
 	{
 		for(i=0; i<width; i++)
 		{
-			m_targaData[index + 0] = targaImage[k + 2];  // Red.
-			m_targaData[index + 1] = targaImage[k + 1];  // Green.
-			m_targaData[index + 2] = targaImage[k + 0];  // Blue
-			m_targaData[index + 3] = targaImage[k + 3];  // Alpha
+			_targaData[index + 0] = targaImage[k + 2];  // Red.
+			_targaData[index + 1] = targaImage[k + 1];  // Green.
+			_targaData[index + 2] = targaImage[k + 0];  // Blue
+			_targaData[index + 3] = targaImage[k + 3];  // Alpha
 
 			// Increment the indexes into the targa data.
 			k += 4;

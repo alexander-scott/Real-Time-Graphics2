@@ -4,6 +4,7 @@
 #include "DX11Instance.h"
 #include "Input.h"
 #include "ShaderManager.h"
+#include "TextureManager.h"
 #include "Timer.h"
 #include "Camera.h"
 #include "Terrain.h"
@@ -17,16 +18,16 @@ public:
 
 	bool Initialize(DX11Instance*, HWND, int, int, float);
 	void Destroy();
-	bool Update(DX11Instance*, Input*, ShaderManager*, float);
+	bool Update(DX11Instance*, Input*,ShaderManager*, TextureManager*, float);
 
 private:
 	void HandleMovementInput(Input*, float);
-	bool Render(DX11Instance*, ShaderManager*);
+	bool Render(DX11Instance*, ShaderManager*, TextureManager*);
 
 private:
-	Camera* m_Camera;
-	Terrain* m_Terrain;
-	bool m_wireFrame;
+	Camera*			_camera;
+	Terrain*		_terrain;
+	bool			_wireFrame;
 };
 
 #endif

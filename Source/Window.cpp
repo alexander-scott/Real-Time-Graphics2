@@ -166,7 +166,7 @@ void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 		// Change the display settings to full screen.
 		ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN);
 
-		// Set the position of the window to the top left corner.
+		// Set the Position of the window to the top left corner.
 		posX = posY = 0;
 	}
 	else

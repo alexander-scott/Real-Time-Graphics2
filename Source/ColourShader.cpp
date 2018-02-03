@@ -2,10 +2,10 @@
 
 ColourShader::ColourShader()
 {
-	m_vertexShader = 0;
-	m_pixelShader = 0;
-	m_layout = 0;
-	m_matrixBuffer = 0;
+	_vertexShader = nullptr;
+	_pixelShader = nullptr;
+	_layout = nullptr;
+	_matrixBuffer = nullptr;
 }
 
 ColourShader::ColourShader(const ColourShader& other)
@@ -33,7 +33,7 @@ bool ColourShader::Initialize(ID3D11Device* device, HWND hwnd)
 void ColourShader::Destroy()
 {
 	// Destroy the vertex and pixel shaders as well as the related objects.
-	ShutdownShader();
+	DestroyShader();
 
 	return;
 }
@@ -110,14 +110,14 @@ bool ColourShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 	}
 
     // Create the vertex shader from the buffer.
-    result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
+    result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &_vertexShader);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
     // Create the pixel shader from the buffer.
-    result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
+    result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &_pixelShader);
 	if(FAILED(result))
 	{
 		return false;
@@ -145,7 +145,7 @@ bool ColourShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 
 	// Create the vertex input layout.
 	result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), 
-									   vertexShaderBuffer->GetBufferSize(), &m_layout);
+									   vertexShaderBuffer->GetBufferSize(), &_layout);
 	if(FAILED(result))
 	{
 		return false;
@@ -167,7 +167,7 @@ bool ColourShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 	matrixBufferDesc.StructureByteStride = 0;
 
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
+	result = device->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer);
 	if(FAILED(result))
 	{
 		return false;
@@ -176,34 +176,34 @@ bool ColourShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 	return true;
 }
 
-void ColourShader::ShutdownShader()
+void ColourShader::DestroyShader()
 {
 	// Release the matrix constant buffer.
-	if(m_matrixBuffer)
+	if(_matrixBuffer)
 	{
-		m_matrixBuffer->Release();
-		m_matrixBuffer = 0;
+		_matrixBuffer->Release();
+		_matrixBuffer = 0;
 	}
 
 	// Release the layout.
-	if(m_layout)
+	if(_layout)
 	{
-		m_layout->Release();
-		m_layout = 0;
+		_layout->Release();
+		_layout = 0;
 	}
 
 	// Release the pixel shader.
-	if(m_pixelShader)
+	if(_pixelShader)
 	{
-		m_pixelShader->Release();
-		m_pixelShader = 0;
+		_pixelShader->Release();
+		_pixelShader = 0;
 	}
 
 	// Release the vertex shader.
-	if(m_vertexShader)
+	if(_vertexShader)
 	{
-		m_vertexShader->Release();
-		m_vertexShader = 0;
+		_vertexShader->Release();
+		_vertexShader = 0;
 	}
 
 	return;
@@ -257,7 +257,7 @@ bool ColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMAT
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
 	// Lock the matrix constant buffer so it can be written to.
-	result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if(FAILED(result))
 	{
 		return false;
@@ -267,18 +267,18 @@ bool ColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMAT
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
 
 	// Copy the matrices into the matrix constant buffer.
-	dataPtr->world = worldMatrix;
-	dataPtr->view = viewMatrix;
-	dataPtr->projection = projectionMatrix;
+	dataPtr->World = worldMatrix;
+	dataPtr->View = viewMatrix;
+	dataPtr->Projection = projectionMatrix;
 
 	// Unlock the matrix constant buffer.
-    deviceContext->Unmap(m_matrixBuffer, 0);
+    deviceContext->Unmap(_matrixBuffer, 0);
 
-	// Set the position of the matrix constant buffer in the vertex shader.
+	// Set the Position of the matrix constant buffer in the vertex shader.
 	bufferNumber = 0;
 
 	// Finanly set the matrix constant buffer in the vertex shader with the updated values.
-    deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
+    deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
 	return true;
 }
@@ -286,11 +286,11 @@ bool ColourShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMAT
 void ColourShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
 	// Set the vertex input layout.
-	deviceContext->IASetInputLayout(m_layout);
+	deviceContext->IASetInputLayout(_layout);
 
     // Set the vertex and pixel shaders that will be used to do the rendering.
-    deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-    deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+    deviceContext->VSSetShader(_vertexShader, NULL, 0);
+    deviceContext->PSSetShader(_pixelShader, NULL, 0);
 
 	// Render the data.
 	deviceContext->DrawIndexed(indexCount, 0, 0);

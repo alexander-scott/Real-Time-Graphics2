@@ -28,15 +28,15 @@ public:
 	void LookDownward(bool);
 
 private:
-	float m_positionX, m_positionY, m_positionZ;
-	float m_rotationX, m_rotationY, m_rotationZ;
+	float _positionX, _positionY, _positionZ;
+	float _rotationX, _rotationY, _rotationZ;
 
-	float m_frameTime;
+	float _frameTime;
 
-	float m_forwardSpeed, m_backwardSpeed;
-	float m_upwardSpeed, m_downwardSpeed;
-	float m_leftTurnSpeed, m_rightTurnSpeed;
-	float m_lookUpSpeed, m_lookDownSpeed;
+	float _forwardSpeed, _backwardSpeed;
+	float _upwardSpeed, _downwardSpeed;
+	float _leftTurnSpeed, _rightTurnSpeed;
+	float _lookUpSpeed, _lookDownSpeed;
 };
 
 #endif

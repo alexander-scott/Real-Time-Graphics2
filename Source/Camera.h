@@ -14,7 +14,7 @@ public:
 	Camera(const Camera&);
 	~Camera();
 
-	Transform* GetTransform() { return m_Transform; }
+	Transform* GetTransform() { return _transform; }
 
 	void Render();
 	void GetViewMatrix(XMMATRIX&);
@@ -23,9 +23,9 @@ public:
 	void GetBaseViewMatrix(XMMATRIX&);
 
 private:
-	XMMATRIX m_viewMatrix, m_baseViewMatrix;
+	XMMATRIX		_viewMatrix, _baseViewMatrix;
 
-	Transform* m_Transform;
+	Transform*		_transform;
 };
 
 #endif

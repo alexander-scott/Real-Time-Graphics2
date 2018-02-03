@@ -2,7 +2,8 @@
 
 ShaderManager::ShaderManager()
 {
-	m_ColorShader = 0;
+	_colourShader = nullptr;
+	_textureShader = nullptr;
 }
 
 ShaderManager::ShaderManager(const ShaderManager& other)
@@ -18,15 +19,29 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	bool result;
 
 	// Create the color shader object.
-	m_ColorShader = new ColourShader;
-	if(!m_ColorShader)
+	_colourShader = new ColourShader;
+	if(!_colourShader)
 	{
 		return false;
 	}
 
 	// Initialize the color shader object.
-	result = m_ColorShader->Initialize(device, hwnd);
+	result = _colourShader->Initialize(device, hwnd);
 	if(!result)
+	{
+		return false;
+	}
+
+	// Create the Texture shader object.
+	_textureShader = new TextureShader;
+	if (!_textureShader)
+	{
+		return false;
+	}
+
+	// Initialize the Texture shader object.
+	result = _textureShader->Initialize(device, hwnd);
+	if (!result)
 	{
 		return false;
 	}
@@ -37,18 +52,32 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 void ShaderManager::Destroy()
 {
 	// Release the color shader object.
-	if(m_ColorShader)
+	if(_colourShader)
 	{
-		m_ColorShader->Destroy();
-		delete m_ColorShader;
-		m_ColorShader = 0;
+		_colourShader->Destroy();
+		delete _colourShader;
+		_colourShader = 0;
+	}
+
+	// Release the Texture shader object.
+	if (_textureShader)
+	{
+		_textureShader->Destroy();
+		delete _textureShader;
+		_textureShader = 0;
 	}
 
 	return;
 }
 
-bool ShaderManager::RenderColorShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, 
+bool ShaderManager::RenderColourShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, 
 										   XMMATRIX projectionMatrix)
 {
-	return m_ColorShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix);
+	return _colourShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix);
+}
+
+bool ShaderManager::RenderTextureShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
+{
+	return _textureShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture);
 }

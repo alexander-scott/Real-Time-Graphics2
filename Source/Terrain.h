@@ -14,18 +14,19 @@ class Terrain
 private:
 	struct VertexType
 	{
-		XMFLOAT3 position;
-		XMFLOAT4 color;
+		XMFLOAT3 Position;
+		XMFLOAT2 Texture;
 	};
 
 	struct HeightMapType
 	{
-		float x, y, z;
+		float X, Y, Z;
 	};
 
 	struct ModelType
 	{
-		float x, y, z;
+		float X, Y, Z;
+		float Tu, Tv;
 	};
 
 public:
@@ -42,24 +43,24 @@ public:
 private:
 	bool LoadSetupFile(char*);
 	bool LoadBitmapHeightMap();
-	void ShutdownHeightMap();
+	void DestroyHeightMap();
 	void SetTerrainCoordinates();
 	bool BuildTerrainModel();
-	void ShutdownTerrainModel();
+	void DestroyTerrainModel();
 
 	bool InitializeBuffers(ID3D11Device*);
-	void ShutdownBuffers();
+	void DestroyBuffers();
 	void RenderBuffers(ID3D11DeviceContext*);
 
 private:
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
-	int m_vertexCount, m_indexCount;
+	ID3D11Buffer		*_vertexBuffer, *_indexBuffer;
+	int					_vertexCount, _indexCount;
 
-	int m_terrainHeight, m_terrainWidth;
-	float m_heightScale;
-	char* m_terrainFilename;
-	HeightMapType* m_heightMap;
-	ModelType* m_terrainModel;
+	int					_terrainHeight, _terrainWidth;
+	float				_heightScale;
+	char*				_terrainFilename;
+	HeightMapType*		_heightMap;
+	ModelType*			_terrainModel;
 };
 
 #endif

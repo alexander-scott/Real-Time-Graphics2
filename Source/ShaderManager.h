@@ -3,6 +3,7 @@
 
 #include "DX11Instance.h"
 #include "ColourShader.h"
+#include "TextureShader.h"
 
 class ShaderManager
 {
@@ -14,10 +15,12 @@ public:
 	bool Initialize(ID3D11Device*, HWND);
 	void Destroy();
 
-	bool RenderColorShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX);
+	bool RenderColourShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX);
+	bool RenderTextureShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
 
 private:
-	ColourShader* m_ColorShader;
+	ColourShader*		_colourShader;
+	TextureShader*		_textureShader;
 };
 
 #endif
