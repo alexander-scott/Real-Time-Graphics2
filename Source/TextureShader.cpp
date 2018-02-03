@@ -1,11 +1,7 @@
 #include "TextureShader.h"
 
-TextureShader::TextureShader()
+TextureShader::TextureShader() : IShader()
 {
-	_vertexShader = nullptr;
-	_pixelShader = nullptr;
-	_layout = nullptr;
-	_matrixBuffer = nullptr;
 	_sampleState = nullptr;
 }
 
@@ -15,26 +11,6 @@ TextureShader::TextureShader(const TextureShader &)
 
 TextureShader::~TextureShader()
 {
-}
-
-bool TextureShader::Initialize(ID3D11Device * device, HWND hwnd)
-{
-	bool result;
-
-	// Initialize the vertex and pixel shaders.
-	result = InitializeShader(device, hwnd, L"Source/Shaders/texture.vs", L"Source/Shaders/texture.ps");
-	if (!result)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-void TextureShader::Destroy()
-{
-	// Shutdown the vertex and pixel shaders as well as the related objects.
-	DestroyShader();
 }
 
 bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
@@ -239,40 +215,6 @@ void TextureShader::DestroyShader()
 	return;
 }
 
-void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
-{
-	char* compileErrors;
-	unsigned long long bufferSize, i;
-	ofstream fout;
-
-	// Get a pointer to the error message text buffer.
-	compileErrors = (char*)(errorMessage->GetBufferPointer());
-
-	// Get the length of the message.
-	bufferSize = errorMessage->GetBufferSize();
-
-	// Open a file to write the error message to.
-	fout.open("shader-error.txt");
-
-	// Write out the error message.
-	for (i = 0; i<bufferSize; i++)
-	{
-		fout << compileErrors[i];
-	}
-
-	// Close the file.
-	fout.close();
-
-	// Release the error message.
-	errorMessage->Release();
-	errorMessage = 0;
-
-	// Pop a message up on the screen to notify the user to check the text file for compile errors.
-	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderFilename, MB_OK);
-
-	return;
-}
-
 bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
@@ -298,9 +240,9 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
 
 	// Copy the matrices into the constant buffer.
-	dataPtr->world = worldMatrix;
-	dataPtr->view = viewMatrix;
-	dataPtr->projection = projectionMatrix;
+	dataPtr->World = worldMatrix;
+	dataPtr->View = viewMatrix;
+	dataPtr->Projection = projectionMatrix;
 
 	// Unlock the constant buffer.
 	deviceContext->Unmap(_matrixBuffer, 0);

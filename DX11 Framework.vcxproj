@@ -376,6 +376,7 @@
     <ClCompile Include="Source\ColourShader.cpp" />
     <ClCompile Include="Source\DX11Instance.cpp" />
     <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\IShader.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\LightShader.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -395,6 +396,7 @@
     <ClInclude Include="Source\ColourShader.h" />
     <ClInclude Include="Source\DX11Instance.h" />
     <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\IShader.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LightShader.h" />
     <ClInclude Include="Source\TextureManager.h" />
@@ -410,8 +412,10 @@
   <ItemGroup>
     <None Include="Source\color.ps" />
     <None Include="Source\color.vs" />
-    <None Include="Source\font.ps" />
-    <None Include="Source\font.vs" />
+    <None Include="Source\Shaders\light.ps" />
+    <None Include="Source\Shaders\light.vs" />
+    <None Include="Source\Shaders\texture.ps" />
+    <None Include="Source\Shaders\texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
