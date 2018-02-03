@@ -17,13 +17,15 @@ private:
 		XMFLOAT3 Position;
 		XMFLOAT2 Texture;
 		XMFLOAT3 Normal;
+		XMFLOAT3 Tangent;
+		XMFLOAT3 Binormal;
 		XMFLOAT3 Colour;
 	};
 
 	struct HeightMapType
 	{
 		float X, Y, Z;
-		float NX, NY, NZ;
+		float Nx, Ny, Nz;
 		float R, G, B;
 	};
 
@@ -31,13 +33,22 @@ private:
 	{
 		float X, Y, Z;
 		float Tu, Tv;
-		float NX, NY, NZ;
+		float Nx, Ny, Nz;
+		float Tx, Ty, Tz;
+		float Bx, By, Bz;
 		float R, G, B;
 	};
 
 	struct VectorType
 	{
 		float X, Y, Z;
+	};
+
+	struct TempVertexType
+	{
+		float X, Y, Z;
+		float Tu, Tv;
+		float Nx, Ny, Nz;
 	};
 
 public:
@@ -60,6 +71,9 @@ private:
 	bool LoadColourMap();
 	bool BuildTerrainModel();
 	void DestroyTerrainModel();
+
+	void CalculateTerrainVectors();
+	void CalculateTangentBinormal(TempVertexType, TempVertexType, TempVertexType, VectorType&, VectorType&);
 
 	bool InitializeBuffers(ID3D11Device*);
 	void DestroyBuffers();
