@@ -65,6 +65,7 @@ public:
 private:
 	bool LoadSetupFile(char*);
 	bool LoadBitmapHeightMap();
+	bool LoadRawHeightMap();
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
 	bool CalculateNormals();

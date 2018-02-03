@@ -1,5 +1,5 @@
-Terrain Filename: Source/Terrain/heightmap.bmp
-Terrain Height: 257
-Terrain Width: 257
-Terrain Scaling: 5.0
+Terrain Filename: Source/Terrain/heightmap.r16
+Terrain Height: 1025
+Terrain Width: 1025
+Terrain Scaling: 300.0
 Color Map Filename: Source/Terrain/colormap.bmp

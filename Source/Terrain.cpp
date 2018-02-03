@@ -30,7 +30,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	}
 
 	// Initialize the terrain height map with the data from the bitmap file.
-	result = LoadBitmapHeightMap();
+	result = LoadRawHeightMap();
 	if (!result)
 	{
 		return false;
@@ -291,6 +291,74 @@ bool Terrain::LoadBitmapHeightMap()
 	bitmapImage = 0;
 
 	// Release the terrain filename now that is has been read in.
+	delete[] _terrainFilename;
+	_terrainFilename = 0;
+
+	return true;
+}
+
+bool Terrain::LoadRawHeightMap()
+{
+	int error, i, j, index;
+	FILE* filePtr;
+	unsigned long long imageSize, count;
+	unsigned short* rawImage;
+
+	// Create the float array to hold the height map data.
+	_heightMap = new HeightMapType[_terrainWidth * _terrainHeight];
+	if (!_heightMap)
+	{
+		return false;
+	}
+
+	// Open the 16 bit raw height map file for reading in binary.
+	error = fopen_s(&filePtr, _terrainFilename, "rb");
+	if (error != 0)
+	{
+		return false;
+	}
+
+	// Calculate the size of the raw image data.
+	imageSize = _terrainHeight * _terrainWidth;
+
+	// Allocate memory for the raw image data.
+	rawImage = new unsigned short[imageSize];
+	if (!rawImage)
+	{
+		return false;
+	}
+
+	// Read in the raw image data.
+	count = fread(rawImage, sizeof(unsigned short), imageSize, filePtr);
+	if (count != imageSize)
+	{
+		return false;
+	}
+
+	// Close the file.
+	error = fclose(filePtr);
+	if (error != 0)
+	{
+		return false;
+	}
+
+	// Copy the image data into the height map array.
+	for (j = 0; j<_terrainHeight; j++)
+	{
+		for (i = 0; i<_terrainWidth; i++)
+		{
+			index = (_terrainWidth * j) + i;
+
+			// Store the height at this point in the height map array.
+			_heightMap[index].Y = (float)rawImage[index];
+		}
+	}
+
+	// Release the bitmap image data.
+	delete[] rawImage;
+	rawImage = 0;
+
+	// Release the terrain filename now that it has been read in.
 	delete[] _terrainFilename;
 	_terrainFilename = 0;
 
