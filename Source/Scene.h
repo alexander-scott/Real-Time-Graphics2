@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "Camera.h"
 #include "Light.h"
+#include "SkyDome.h"
 #include "Terrain.h"
 
 class Scene
@@ -28,6 +29,7 @@ private:
 private:
 	Camera*			_camera;
 	Light*			_light;
+	SkyDome*		_skyDome;
 	Terrain*		_terrain;
 	bool			_wireFrame;
 };

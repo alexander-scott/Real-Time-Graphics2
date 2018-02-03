@@ -5,6 +5,7 @@ ShaderManager::ShaderManager()
 	_colourShader = nullptr;
 	_textureShader = nullptr;
 	_lightShader = nullptr;
+	_skydomeShader = nullptr;
 	_terrainShader = nullptr;
 }
 
@@ -62,6 +63,20 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
+	// Create the sky dome shader object.
+	_skydomeShader = new SkyDomeShader;
+	if (!_skydomeShader)
+	{
+		return false;
+	}
+
+	// Initialize the sky dome shader object.
+	result = _skydomeShader->Initialize(device, hwnd, L"Source/Shaders/SkydomePixelShader.hlsl", L"Source/Shaders/SkydomeVertexShader.hlsl");
+	if (!result)
+	{
+		return false;
+	}
+
 	// Create the terrain shader object.
 	_terrainShader = new TerrainShader;
 	if (!_terrainShader)
@@ -87,6 +102,14 @@ void ShaderManager::Destroy()
 		_terrainShader->Destroy();
 		delete _terrainShader;
 		_terrainShader = 0;
+	}
+
+	// Release the sky dome shader object.
+	if (_skydomeShader)
+	{
+		_skydomeShader->Destroy();
+		delete _skydomeShader;
+		_skydomeShader = 0;
 	}
 
 	// Release the color shader object.
@@ -133,6 +156,12 @@ bool ShaderManager::RenderLightShader(ID3D11DeviceContext* deviceContext, int in
 	XMFLOAT4 diffuseColor)
 {
 	return _lightShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, diffuseColor);
+}
+
+bool ShaderManager::RenderSkyDomeShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+	XMMATRIX projectionMatrix, XMFLOAT4 apexColor, XMFLOAT4 centerColor)
+{
+	return _skydomeShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, apexColor, centerColor);
 }
 
 bool ShaderManager::RenderTerrainShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
