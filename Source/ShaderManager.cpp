@@ -27,7 +27,7 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the color shader object.
-	result = _colourShader->Initialize(device, hwnd, L"Source/Shaders/color.ps", L"Source/Shaders/color.vs");
+	result = _colourShader->Initialize(device, hwnd, L"Source/Shaders/ColourPixelShader.hlsl", L"Source/Shaders/ColourVertexShader.hlsl");
 	if(!result)
 	{
 		return false;
@@ -41,7 +41,7 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the Texture shader object.
-	result = _textureShader->Initialize(device, hwnd, L"Source/Shaders/texture.ps", L"Source/Shaders/texture.vs");
+	result = _textureShader->Initialize(device, hwnd, L"Source/Shaders/TexturePixelShader.hlsl", L"Source/Shaders/TextureVertexShader.hlsl");
 	if (!result)
 	{
 		return false;
@@ -55,7 +55,7 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the light shader object.
-	result = _lightShader->Initialize(device, hwnd, L"Source/Shaders/light.ps", L"Source/Shaders/light.vs");
+	result = _lightShader->Initialize(device, hwnd, L"Source/Shaders/LightPixelShader.hlsl", L"Source/Shaders/LightVertexShader.hlsl");
 	if (!result)
 	{
 		return false;

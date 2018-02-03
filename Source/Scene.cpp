@@ -53,7 +53,7 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	}
 
 	// Initialize the terrain object.
-	result = _terrain->Initialize(Direct3D->GetDevice(), "Source/setup.txt");
+	result = _terrain->Initialize(Direct3D->GetDevice(), "setup.txt");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);

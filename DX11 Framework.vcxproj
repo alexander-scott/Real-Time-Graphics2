@@ -409,14 +409,6 @@
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Scene.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\color.ps" />
-    <None Include="Source\color.vs" />
-    <None Include="Source\Shaders\light.ps" />
-    <None Include="Source\Shaders\light.vs" />
-    <None Include="Source\Shaders\texture.ps" />
-    <None Include="Source\Shaders\texture.vs" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

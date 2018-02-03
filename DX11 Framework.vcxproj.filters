@@ -52,7 +52,9 @@
     <ClCompile Include="Source\Light.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
-    <ClCompile Include="Source\IShader.cpp" />
+    <ClCompile Include="Source\IShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -108,34 +110,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\color.ps">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Source\color.vs">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Source\Shaders\light.ps">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Source\Shaders\light.vs">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Source\Shaders\texture.ps">
-      <Filter>Resources</Filter>
-    </None>
-    <None Include="Source\Shaders\texture.vs">
-      <Filter>Resources</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Core">
       <UniqueIdentifier>{3c76394f-cb8e-4b6b-a260-e0057bc5737c}</UniqueIdentifier>
     </Filter>
     <Filter Include="DX11">
       <UniqueIdentifier>{6c2c9c3e-7d1c-4d60-9850-44b34b186da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{f862e74c-4449-46f6-877f-ee33151d5bbf}</UniqueIdentifier>
     </Filter>
     <Filter Include="DX11\Shaders">
       <UniqueIdentifier>{857a22aa-d2e3-4285-bd0f-7d83fd35c6c4}</UniqueIdentifier>
