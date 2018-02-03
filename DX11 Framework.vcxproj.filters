@@ -40,6 +40,12 @@
     <ClCompile Include="Source\Scene.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TextureManager.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -77,6 +83,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scene.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureManager.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureShader.h">
+      <Filter>DX11\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

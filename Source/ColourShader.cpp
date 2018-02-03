@@ -33,7 +33,7 @@ bool ColourShader::Initialize(ID3D11Device* device, HWND hwnd)
 void ColourShader::Destroy()
 {
 	// Destroy the vertex and pixel shaders as well as the related objects.
-	ShutdownShader();
+	DestroyShader();
 
 	return;
 }
@@ -176,7 +176,7 @@ bool ColourShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFi
 	return true;
 }
 
-void ColourShader::ShutdownShader()
+void ColourShader::DestroyShader()
 {
 	// Release the matrix constant buffer.
 	if(m_matrixBuffer)

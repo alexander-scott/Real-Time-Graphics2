@@ -74,20 +74,20 @@ void Scene::Destroy()
 	return;
 }
 
-bool Scene::Update(DX11Instance* Direct3D, Input* Input, ShaderManager* ShaderManager, float frameTime)
+bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, TextureManager* textureManager, float frameTime)
 {
 	bool result;
 	float posX, posY, posZ, rotX, rotY, rotZ;
 
 	// Do the frame input processing.
-	HandleMovementInput(Input, frameTime);
+	HandleMovementInput(input, frameTime);
 
 	// Get the view point position/rotation.
 	m_Camera->GetTransform()->GetPosition(posX, posY, posZ);
 	m_Camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
 
 	// Render the graphics.
-	result = Render(Direct3D, ShaderManager);
+	result = Render(direct3D, shaderManager, textureManager);
 	if(!result)
 	{
 		return false;
@@ -151,7 +151,7 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	return;
 }
 
-bool Scene::Render(DX11Instance* Direct3D, ShaderManager* ShaderManager)
+bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -160,25 +160,24 @@ bool Scene::Render(DX11Instance* Direct3D, ShaderManager* ShaderManager)
 	m_Camera->Render();
 
 	// Get the world, view, and projection matrices from the camera and d3d objects.
-	Direct3D->GetWorldMatrix(worldMatrix);
+	direct3D->GetWorldMatrix(worldMatrix);
 	m_Camera->GetViewMatrix(viewMatrix);
-	Direct3D->GetProjectionMatrix(projectionMatrix);
+	direct3D->GetProjectionMatrix(projectionMatrix);
 	m_Camera->GetBaseViewMatrix(baseViewMatrix);
-	Direct3D->GetOrthoMatrix(orthoMatrix);
+	direct3D->GetOrthoMatrix(orthoMatrix);
 	
 	// Clear the buffers to begin the scene.
-	Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Turn on wire frame rendering of the terrain if needed.
 	if (m_wireFrame)
 	{
-		Direct3D->EnableWireframe();
+		direct3D->EnableWireframe();
 	}
 
 	// Render the terrain grid using the color shader.
-	m_Terrain->Render(Direct3D->GetDeviceContext());
-	result = ShaderManager->RenderColorShader(Direct3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix, 
-											  projectionMatrix);
+	m_Terrain->Render(direct3D->GetDeviceContext());
+	result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
 	if(!result)
 	{
 		return false;
@@ -187,11 +186,11 @@ bool Scene::Render(DX11Instance* Direct3D, ShaderManager* ShaderManager)
 	// Turn off wire frame rendering of the terrain if it was on.
 	if (m_wireFrame)
 	{
-		Direct3D->DisableWireframe();
+		direct3D->DisableWireframe();
 	}
 
 	// Present the rendered scene to the screen.
-	Direct3D->EndScene();
+	direct3D->EndScene();
 
 	return true;
 }

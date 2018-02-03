@@ -2,11 +2,12 @@
 
 Application::Application()
 {
-	_input = 0;
-	_dx11Instance = 0;
-	_timer = 0;
-	_shaderManager = 0;
-	_scene = 0;
+	_input = nullptr;
+	_dx11Instance = nullptr;
+	_timer = nullptr;
+	_shaderManager = nullptr;
+	_textureManager = nullptr;
+	_scene = nullptr;
 }
 
 Application::Application(const Application& other)
@@ -81,6 +82,34 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
+	// Create the texture manager object.
+	_textureManager = new TextureManager;
+	if (!_textureManager)
+	{
+		return false;
+	}
+
+	// Initialize the texture manager object.
+	result = _textureManager->Initialize(10);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture manager object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Load textures into the texture manager.
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/test.tga", 0);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/dirt01d.tga", 1);
+	if (!result)
+	{
+		return false;
+	}
+
 	// Create the scene object.
 	_scene = new Scene;
 	if(!_scene)
@@ -124,6 +153,14 @@ void Application::Destroy()
 		_shaderManager = 0;
 	}
 
+	// Release the texture manager object.
+	if (_textureManager)
+	{
+		_textureManager->Destroy();
+		delete _textureManager;
+		_textureManager = 0;
+	}
+
 	// Release the dx11 object.
 	if(_dx11Instance)
 	{
@@ -164,7 +201,7 @@ bool Application::Update()
 	}
 
 	// Do the scene frame processing.
-	result = _scene->Update(_dx11Instance, _input, _shaderManager, _timer->GetTime());
+	result = _scene->Update(_dx11Instance, _input, _shaderManager, _textureManager, _timer->GetTime());
 	if (!result)
 	{
 		return false;
