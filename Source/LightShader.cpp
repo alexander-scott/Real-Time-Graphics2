@@ -279,7 +279,7 @@ bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 	// Unlock the constant buffer.
 	deviceContext->Unmap(_matrixBuffer, 0);
 
-	// Set the position of the constant buffer in the vertex shader.
+	// Set the Position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
 	// Finanly set the constant buffer in the vertex shader with the updated values.
@@ -306,7 +306,7 @@ bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 	// Unlock the light constant buffer.
 	deviceContext->Unmap(_lightBuffer, 0);
 
-	// Set the position of the light constant buffer in the pixel shader.
+	// Set the Position of the light constant buffer in the pixel shader.
 	bufferNumber = 0;
 
 	// Finally set the light constant buffer in the pixel shader with the updated values.

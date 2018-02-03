@@ -2,13 +2,8 @@
 
 Transform::Transform()
 {
-	_positionX = 0.0f;
-	_positionY = 0.0f;
-	_positionZ = 0.0f;
-	
-	_rotationX = 0.0f;
-	_rotationY = 0.0f;
-	_rotationZ = 0.0f;
+	_position = XMFLOAT3();
+	_rotation = XMFLOAT3();
 
 	_frameTime = 0.0f;
 
@@ -32,33 +27,53 @@ Transform::~Transform()
 
 void Transform::SetPosition(float x, float y, float z)
 {
-	_positionX = x;
-	_positionY = y;
-	_positionZ = z;
+	_position = XMFLOAT3(x, y, z);
 	return;
 }
 
 void Transform::SetRotation(float x, float y, float z)
 {
-	_rotationX = x;
-	_rotationY = y;
-	_rotationZ = z;
+	_rotation = XMFLOAT3(x, y, z);
+	return;
+}
+
+void Transform::SetPosition(XMFLOAT3 pos)
+{
+	_position = pos;
+	return;
+}
+
+void Transform::SetRotation(XMFLOAT3 rot)
+{
+	_rotation = rot;
 	return;
 }
 
 void Transform::GetPosition(float& x, float& y, float& z)
 {
-	x = _positionX;
-	y = _positionY;
-	z = _positionZ;
+	x = _position.x;
+	y = _position.y;
+	z = _position.z;
 	return;
 }
 
 void Transform::GetRotation(float& x, float& y, float& z)
 {
-	x = _rotationX;
-	y = _rotationY;
-	z = _rotationZ;
+	x = _rotation.x;
+	y = _rotation.y;
+	z = _rotation.z;
+	return;
+}
+
+void Transform::GetPosition(XMFLOAT3 & pos)
+{
+	pos = _position;
+	return;
+}
+
+void Transform::GetRotation(XMFLOAT3 & rot)
+{
+	rot = _rotation;
 	return;
 }
 
@@ -92,11 +107,11 @@ void Transform::MoveForward(bool keydown)
 	}
 
 	// Convert degrees to radians.
-	radians = _rotationY * 0.0174532925f;
+	radians = _rotation.y * 0.0174532925f;
 
 	// Update the Position.
-	_positionX += sinf(radians) * _forwardSpeed;
-	_positionZ += cosf(radians) * _forwardSpeed;
+	_position.x += sinf(radians) * _forwardSpeed;
+	_position.z += cosf(radians) * _forwardSpeed;
 
 	return;
 }
@@ -126,11 +141,11 @@ void Transform::MoveBackward(bool keydown)
 	}
 
 	// Convert degrees to radians.
-	radians = _rotationY * 0.0174532925f;
+	radians = _rotation.y * 0.0174532925f;
 
 	// Update the Position.
-	_positionX -= sinf(radians) * _backwardSpeed;
-	_positionZ -= cosf(radians) * _backwardSpeed;
+	_position.x -= sinf(radians) * _backwardSpeed;
+	_position.z -= cosf(radians) * _backwardSpeed;
 
 	return;
 }
@@ -158,7 +173,7 @@ void Transform::MoveUpward(bool keydown)
 	}
 
 	// Update the height Position.
-	_positionY += _upwardSpeed;
+	_position.y += _upwardSpeed;
 
 	return;
 }
@@ -186,7 +201,7 @@ void Transform::MoveDownward(bool keydown)
 	}
 
 	// Update the height Position.
-	_positionY -= _downwardSpeed;
+	_position.y -= _downwardSpeed;
 
 	return;
 }
@@ -214,12 +229,12 @@ void Transform::TurnLeft(bool keydown)
 	}
 
 	// Update the rotation.
-	_rotationY -= _leftTurnSpeed;
+	_rotation.y -= _leftTurnSpeed;
 
 	// Keep the rotation in the 0 to 360 range.
-	if(_rotationY < 0.0f)
+	if(_rotation.y < 0.0f)
 	{
-		_rotationY += 360.0f;
+		_rotation.y += 360.0f;
 	}
 
 	return;
@@ -248,12 +263,12 @@ void Transform::TurnRight(bool keydown)
 	}
 
 	// Update the rotation.
-	_rotationY += _rightTurnSpeed;
+	_rotation.y += _rightTurnSpeed;
 
 	// Keep the rotation in the 0 to 360 range.
-	if(_rotationY > 360.0f)
+	if(_rotation.y > 360.0f)
 	{
-		_rotationY -= 360.0f;
+		_rotation.y -= 360.0f;
 	}
 
 	return;
@@ -282,12 +297,12 @@ void Transform::LookUpward(bool keydown)
 	}
 
 	// Update the rotation.
-	_rotationX -= _lookUpSpeed;
+	_rotation.x -= _lookUpSpeed;
 
 	// Keep the rotation maximum 90 degrees.
-	if(_rotationX > 90.0f)
+	if(_rotation.x > 90.0f)
 	{
-		_rotationX = 90.0f;
+		_rotation.x = 90.0f;
 	}
 
 	return;
@@ -316,12 +331,12 @@ void Transform::LookDownward(bool keydown)
 	}
 
 	// Update the rotation.
-	_rotationX += _lookDownSpeed;
+	_rotation.x += _lookDownSpeed;
 
 	// Keep the rotation maximum 90 degrees.
-	if(_rotationX < -90.0f)
+	if(_rotation.x < -90.0f)
 	{
-		_rotationX = -90.0f;
+		_rotation.x = -90.0f;
 	}
 
 	return;

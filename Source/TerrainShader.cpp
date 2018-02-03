@@ -323,7 +323,7 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	// Unlock the constant buffer.
 	deviceContext->Unmap(_matrixBuffer, 0);
 
-	// Set the position of the constant buffer in the vertex shader.
+	// Set the Position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
 	// Finanly set the constant buffer in the vertex shader with the updated values.
@@ -344,14 +344,14 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	dataPtr2 = (LightBufferType*)mappedResource.pData;
 
 	// Copy the lighting variables into the constant buffer.
-	dataPtr2->DiffuseColor = diffuseColor;
+	dataPtr2->DiffuseColour = diffuseColor;
 	dataPtr2->LightDirection = lightDirection;
 	dataPtr2->Padding = 0.0f;
 
 	// Unlock the light constant buffer.
 	deviceContext->Unmap(_lightBuffer, 0);
 
-	// Set the position of the light constant buffer in the pixel shader.
+	// Set the Position of the light constant buffer in the pixel shader.
 	bufferNumber = 0;
 
 	// Finally set the light constant buffer in the pixel shader with the updated values.

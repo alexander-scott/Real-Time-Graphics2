@@ -2,6 +2,9 @@
 #define _POSITIONCLASS_H_
 
 #include <math.h>
+#include <directxmath.h>
+
+using namespace DirectX;
 
 class Transform
 {
@@ -13,8 +16,14 @@ public:
 	void SetPosition(float, float, float);
 	void SetRotation(float, float, float);
 
+	void SetPosition(XMFLOAT3);
+	void SetRotation(XMFLOAT3);
+
 	void GetPosition(float&, float&, float&);
 	void GetRotation(float&, float&, float&);
+
+	void GetPosition(XMFLOAT3&);
+	void GetRotation(XMFLOAT3&);
 
 	void SetFrameTime(float);
 
@@ -28,8 +37,8 @@ public:
 	void LookDownward(bool);
 
 private:
-	float _positionX, _positionY, _positionZ;
-	float _rotationX, _rotationY, _rotationZ;
+	XMFLOAT3 _position;
+	XMFLOAT3 _rotation;
 
 	float _frameTime;
 

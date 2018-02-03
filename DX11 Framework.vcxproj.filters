@@ -28,15 +28,6 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Terrain.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Transform.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -57,6 +48,21 @@
     </ClCompile>
     <ClCompile Include="Source\TerrainShader.cpp">
       <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Terrain.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Application\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SkydomeShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SkyDome.cpp">
+      <Filter>Application\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,15 +90,6 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Terrain.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Transform.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -114,6 +111,21 @@
     <ClInclude Include="Source\TerrainShader.h">
       <Filter>DX11\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Terrain.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transform.h">
+      <Filter>Application\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SkydomeShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SkyDome.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -127,6 +139,12 @@
     </Filter>
     <Filter Include="Application">
       <UniqueIdentifier>{fb501156-6d86-4309-b503-74ebfb89d385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameObjects">
+      <UniqueIdentifier>{48bfe082-6e30-4de5-b0d0-ea33d7f59c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Components">
+      <UniqueIdentifier>{3923f8e0-c2cc-421c-bba3-b5c0ce1d7c4d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
