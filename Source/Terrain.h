@@ -17,12 +17,14 @@ private:
 		XMFLOAT3 Position;
 		XMFLOAT2 Texture;
 		XMFLOAT3 Normal;
+		XMFLOAT3 Colour;
 	};
 
 	struct HeightMapType
 	{
 		float X, Y, Z;
 		float NX, NY, NZ;
+		float R, G, B;
 	};
 
 	struct ModelType
@@ -30,6 +32,7 @@ private:
 		float X, Y, Z;
 		float Tu, Tv;
 		float NX, NY, NZ;
+		float R, G, B;
 	};
 
 	struct VectorType
@@ -54,6 +57,7 @@ private:
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
 	bool CalculateNormals();
+	bool LoadColourMap();
 	bool BuildTerrainModel();
 	void DestroyTerrainModel();
 
@@ -67,7 +71,7 @@ private:
 
 	int					_terrainHeight, _terrainWidth;
 	float				_heightScale;
-	char*				_terrainFilename;
+	char*				_terrainFilename, *_colourMapFilename;
 	HeightMapType*		_heightMap;
 	ModelType*			_terrainModel;
 };

@@ -5,6 +5,7 @@ ShaderManager::ShaderManager()
 	_colourShader = nullptr;
 	_textureShader = nullptr;
 	_lightShader = nullptr;
+	_terrainShader = nullptr;
 }
 
 ShaderManager::ShaderManager(const ShaderManager& other)
@@ -61,11 +62,33 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
+	// Create the terrain shader object.
+	_terrainShader = new TerrainShader;
+	if (!_terrainShader)
+	{
+		return false;
+	}
+
+	// Initialize the terrain shader object.
+	result = _terrainShader->Initialize(device, hwnd, L"Source/Shaders/TerrainPixelShader.hlsl", L"Source/Shaders/TerrainVertexShader.hlsl");
+	if (!result)
+	{
+		return false;
+	}
+
 	return true;
 }
 
 void ShaderManager::Destroy()
 {
+	// Release the terrain shader object.
+	if (_terrainShader)
+	{
+		_terrainShader->Destroy();
+		delete _terrainShader;
+		_terrainShader = 0;
+	}
+
 	// Release the color shader object.
 	if(_colourShader)
 	{
@@ -110,4 +133,11 @@ bool ShaderManager::RenderLightShader(ID3D11DeviceContext* deviceContext, int in
 	XMFLOAT4 diffuseColor)
 {
 	return _lightShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, diffuseColor);
+}
+
+bool ShaderManager::RenderTerrainShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection,
+	XMFLOAT4 diffuseColor)
+{
+	return _terrainShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, lightDirection, diffuseColor);
 }

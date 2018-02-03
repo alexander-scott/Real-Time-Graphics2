@@ -380,6 +380,7 @@
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\LightShader.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\TerrainShader.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\TextureShader.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
@@ -399,6 +400,7 @@
     <ClInclude Include="Source\IShader.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LightShader.h" />
+    <ClInclude Include="Source\TerrainShader.h" />
     <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\TextureShader.h" />
     <ClInclude Include="Source\Transform.h" />

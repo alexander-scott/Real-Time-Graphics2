@@ -198,8 +198,10 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 	_terrain->Render(direct3D->GetDeviceContext());
 
 	//result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
-	result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, textureManager->GetTexture(1), _light->GetDirection(), _light->GetDiffuseColor());
+	/*result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, textureManager->GetTexture(1), _light->GetDirection(), _light->GetDiffuseColor());*/
+	result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, textureManager->GetTexture(0), _light->GetDirection(), _light->GetDiffuseColor());
 	
 	if(!result)
 	{

@@ -55,6 +55,9 @@
     <ClCompile Include="Source\IShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TerrainShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -106,6 +109,9 @@
       <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\IShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrainShader.h">
       <Filter>DX11\Shaders</Filter>
     </ClInclude>
   </ItemGroup>

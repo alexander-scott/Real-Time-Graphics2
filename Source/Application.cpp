@@ -97,14 +97,7 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	// Load textures into the Texture manager.
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/test.tga", 0);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/dirt01d.tga", 1);
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/dirt01d.tga", 0);
 	if (!result)
 	{
 		return false;
