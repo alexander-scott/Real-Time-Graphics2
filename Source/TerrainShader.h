@@ -10,7 +10,7 @@ class TerrainShader : public IShader
 public:
 	struct LightBufferType
 	{
-		XMFLOAT4	DiffuseColor;
+		XMFLOAT4	DiffuseColour;
 		XMFLOAT3	LightDirection;
 		float		Padding;
 	};

@@ -15,8 +15,8 @@ class SkyDomeShader : public IShader
 private:
 	struct ColorBufferType
 	{
-		XMFLOAT4 apexColor;
-		XMFLOAT4 centerColor;
+		XMFLOAT4 ApexColour;
+		XMFLOAT4 CentreColour;
 	};
 
 public:
@@ -34,5 +34,5 @@ protected:
 private:
 	bool SetShaderParameters(ID3D11DeviceContext*, XMMATRIX, XMMATRIX, XMMATRIX, XMFLOAT4, XMFLOAT4);
 
-	ID3D11Buffer* m_colorBuffer;
+	ID3D11Buffer*	_colourBuffer;
 };

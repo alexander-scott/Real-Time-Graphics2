@@ -2,9 +2,9 @@
 
 SkyDome::SkyDome()
 {
-	m_model = nullptr;
-	m_vertexBuffer = nullptr;
-	m_indexBuffer = nullptr;
+	_model = nullptr;
+	_vertexBuffer = nullptr;
+	_indexBuffer = nullptr;
 }
 
 SkyDome::SkyDome(const SkyDome &)
@@ -34,10 +34,10 @@ bool SkyDome::Initialize(ID3D11Device * device)
 	}
 
 	// Set the color at the top of the sky dome.
-	m_apexColor = XMFLOAT4(0.0f, 0.05f, 0.6f, 1.0f);
+	_apexColour = XMFLOAT4(0.0f, 0.05f, 0.6f, 1.0f);
 
 	// Set the color at the center of the sky dome.
-	m_centerColor = XMFLOAT4(0.0f, 0.5f, 0.8f, 1.0f);
+	_centerColour = XMFLOAT4(0.0f, 0.5f, 0.8f, 1.0f);
 
 	return true;
 }
@@ -63,17 +63,17 @@ void SkyDome::Draw(ID3D11DeviceContext * deviceContext)
 
 int SkyDome::GetIndexCount()
 {
-	return m_indexCount;
+	return _indexCount;
 }
 
 XMFLOAT4 SkyDome::GetApexColor()
 {
-	return m_apexColor;
+	return _apexColour;
 }
 
 XMFLOAT4 SkyDome::GetCenterColor()
 {
-	return m_centerColor;
+	return _centerColour;
 }
 
 bool SkyDome::LoadSkyDomeModel(char * filename)
@@ -99,14 +99,14 @@ bool SkyDome::LoadSkyDomeModel(char * filename)
 	}
 
 	// Read in the vertex count.
-	fin >> m_vertexCount;
+	fin >> _vertexCount;
 
 	// Set the number of indices to be the same as the vertex count.
-	m_indexCount = m_vertexCount;
+	_indexCount = _vertexCount;
 
 	// Create the model using the vertex count that was read in.
-	m_model = new ModelType[m_vertexCount];
-	if (!m_model)
+	_model = new ModelType[_vertexCount];
+	if (!_model)
 	{
 		return false;
 	}
@@ -121,11 +121,11 @@ bool SkyDome::LoadSkyDomeModel(char * filename)
 	fin.get(input);
 
 	// Read in the vertex data.
-	for (i = 0; i<m_vertexCount; i++)
+	for (i = 0; i<_vertexCount; i++)
 	{
-		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
-		fin >> m_model[i].tu >> m_model[i].tv;
-		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
+		fin >> _model[i].X >> _model[i].Y >> _model[i].Z;
+		fin >> _model[i].Tu >> _model[i].Tv;
+		fin >> _model[i].Nx >> _model[i].Ny >> _model[i].Nz;
 	}
 
 	// Close the model file.
@@ -136,10 +136,10 @@ bool SkyDome::LoadSkyDomeModel(char * filename)
 
 void SkyDome::ReleaseSkyDomeModel()
 {
-	if (m_model)
+	if (_model)
 	{
-		delete[] m_model;
-		m_model = 0;
+		delete[] _model;
+		_model = 0;
 	}
 
 	return;
@@ -155,29 +155,29 @@ bool SkyDome::InitializeBuffers(ID3D11Device * device)
 	int i;
 
 	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
+	vertices = new VertexType[_vertexCount];
 	if (!vertices)
 	{
 		return false;
 	}
 
 	// Create the index array.
-	indices = new unsigned long[m_indexCount];
+	indices = new unsigned long[_indexCount];
 	if (!indices)
 	{
 		return false;
 	}
 
 	// Load the vertex array and index array with data.
-	for (i = 0; i<m_vertexCount; i++)
+	for (i = 0; i<_vertexCount; i++)
 	{
-		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
+		vertices[i].Position = XMFLOAT3(_model[i].X, _model[i].Y, _model[i].Z);
 		indices[i] = i;
 	}
 
 	// Set up the description of the vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * _vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -189,7 +189,7 @@ bool SkyDome::InitializeBuffers(ID3D11Device * device)
 	vertexData.SysMemSlicePitch = 0;
 
 	// Now finally create the vertex buffer.
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -197,7 +197,7 @@ bool SkyDome::InitializeBuffers(ID3D11Device * device)
 
 	// Set up the description of the index buffer.
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * _indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -209,7 +209,7 @@ bool SkyDome::InitializeBuffers(ID3D11Device * device)
 	indexData.SysMemSlicePitch = 0;
 
 	// Create the index buffer.
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -228,17 +228,17 @@ bool SkyDome::InitializeBuffers(ID3D11Device * device)
 void SkyDome::ReleaseBuffers()
 {
 	// Release the index buffer.
-	if (m_indexBuffer)
+	if (_indexBuffer)
 	{
-		m_indexBuffer->Release();
-		m_indexBuffer = 0;
+		_indexBuffer->Release();
+		_indexBuffer = 0;
 	}
 
 	// Release the vertex buffer.
-	if (m_vertexBuffer)
+	if (_vertexBuffer)
 	{
-		m_vertexBuffer->Release();
-		m_vertexBuffer = 0;
+		_vertexBuffer->Release();
+		_vertexBuffer = 0;
 	}
 
 	return;
@@ -255,10 +255,10 @@ void SkyDome::RenderBuffers(ID3D11DeviceContext * deviceContext)
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
 
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

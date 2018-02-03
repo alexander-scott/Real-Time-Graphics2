@@ -11,14 +11,14 @@ class SkyDome
 private:
 	struct ModelType
 	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
+		float X, Y, Z;
+		float Tu, Tv;
+		float Nx, Ny, Nz;
 	};
 
 	struct VertexType
 	{
-		XMFLOAT3 position;
+		XMFLOAT3 Position;
 	};
 
 public:
@@ -43,8 +43,8 @@ private:
 	void RenderBuffers(ID3D11DeviceContext*);
 
 private:
-	ModelType * m_model;
-	int m_vertexCount, m_indexCount;
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
-	XMFLOAT4 m_apexColor, m_centerColor;
+	ModelType *			_model;
+	int					_vertexCount, _indexCount;
+	ID3D11Buffer*		_vertexBuffer, *_indexBuffer;
+	XMFLOAT4			_apexColour, _centerColour;
 };

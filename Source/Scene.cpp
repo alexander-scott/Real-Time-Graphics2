@@ -210,7 +210,7 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 	_camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
 
-	// Get the position of the camera.
+	// Get the Position of the camera.
 	_camera->GetTransform()->GetPosition(cameraPosition);
 	
 	// Clear the buffers to begin the scene.
@@ -220,7 +220,7 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 	direct3D->TurnOffCulling();
 	direct3D->TurnZBufferOff();
 
-	// Translate the sky dome to be centered around the camera position.
+	// Translate the sky dome to be centered around the camera Position.
 	worldMatrix = XMMatrixTranslation(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 	// Render the sky dome using the sky dome shader.

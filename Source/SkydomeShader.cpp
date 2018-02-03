@@ -2,7 +2,7 @@
 
 SkyDomeShader::SkyDomeShader() : IShader()
 {
-	m_colorBuffer = nullptr;
+	_colourBuffer = nullptr;
 }
 
 SkyDomeShader::SkyDomeShader(const SkyDomeShader &)
@@ -151,7 +151,7 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	colorBufferDesc.StructureByteStride = 0;
 
 	// Create the pixel constant buffer pointer so we can access the pixel shader constant buffer from within this class.
-	result = device->CreateBuffer(&colorBufferDesc, NULL, &m_colorBuffer);
+	result = device->CreateBuffer(&colorBufferDesc, NULL, &_colourBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -163,10 +163,10 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 void SkyDomeShader::DestroyShader()
 {
 	// Release the pixel constant buffer.
-	if (m_colorBuffer)
+	if (_colourBuffer)
 	{
-		m_colorBuffer->Release();
-		m_colorBuffer = 0;
+		_colourBuffer->Release();
+		_colourBuffer = 0;
 	}
 
 	// Release the matrix constant buffer.
@@ -248,14 +248,14 @@ bool SkyDomeShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	// Unlock the matrix constant buffer.
 	deviceContext->Unmap(_matrixBuffer, 0);
 
-	// Set the position of the constant buffer in the vertex shader.
+	// Set the Position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
 	// Now set the matrix constant buffer in the vertex shader with the updated values.
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
 	// Lock the color constant buffer so it can be written to.
-	result = deviceContext->Map(m_colorBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	result = deviceContext->Map(_colourBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
 		return false;
@@ -265,17 +265,17 @@ bool SkyDomeShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	dataPtr2 = (ColorBufferType*)mappedResource.pData;
 
 	// Copy the color data into the color constant buffer.
-	dataPtr2->apexColor = apexColor;
-	dataPtr2->centerColor = centerColor;
+	dataPtr2->ApexColour = apexColor;
+	dataPtr2->CentreColour = centerColor;
 
 	// Unlock the color constant buffer.
-	deviceContext->Unmap(m_colorBuffer, 0);
+	deviceContext->Unmap(_colourBuffer, 0);
 
-	// Set the position of the color constant buffer in the pixel shader.
+	// Set the Position of the color constant buffer in the pixel shader.
 	bufferNumber = 0;
 
 	// Now set the color constant buffer in the pixel shader with the updated color values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_colorBuffer);
+	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_colourBuffer);
 
 	return true;
 }

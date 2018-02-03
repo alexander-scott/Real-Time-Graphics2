@@ -530,7 +530,7 @@ bool Terrain::LoadColourMap()
 		return false;
 	}
 
-	// Initialize the position in the image data buffer.
+	// Initialize the Position in the image data buffer.
 	k = 0;
 
 	// Read the image data into the color map portion of the height map structure.
@@ -786,7 +786,7 @@ void Terrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType ve
 	vector2[1] = vertex3.Y - vertex1.Y;
 	vector2[2] = vertex3.Z - vertex1.Z;
 
-	// Calculate the tu and tv texture space vectors.
+	// Calculate the Tu and Tv texture space vectors.
 	tuVector[0] = vertex2.Tu - vertex1.Tu;
 	tvVector[0] = vertex2.Tv - vertex1.Tv;
 
