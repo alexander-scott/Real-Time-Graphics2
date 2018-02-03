@@ -25,9 +25,9 @@ private:
 	bool Render(DX11Instance*, ShaderManager*, TextureManager*);
 
 private:
-	Camera* m_Camera;
-	Terrain* m_Terrain;
-	bool m_wireFrame;
+	Camera*			_camera;
+	Terrain*		_terrain;
+	bool			_wireFrame;
 };
 
 #endif

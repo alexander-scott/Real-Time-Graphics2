@@ -24,10 +24,10 @@ bool Timer::Initialize()
 	}
 	
 	// Store it in floating point.
-	m_frequency = (float)frequency;
+	_frequency = (float)frequency;
 
 	// Get the initial start time.
-	QueryPerformanceCounter((LARGE_INTEGER*)&m_startTime);
+	QueryPerformanceCounter((LARGE_INTEGER*)&_startTime);
 
 	return true;
 }
@@ -41,31 +41,31 @@ void Timer::Update()
 	QueryPerformanceCounter((LARGE_INTEGER*)&currentTime);
 
 	// Calculate the difference in time since the last time we queried for the current time.
-	elapsedTicks = currentTime - m_startTime;
+	elapsedTicks = currentTime - _startTime;
 
 	// Calculate the frame time.
-	m_frameTime = (float)elapsedTicks / m_frequency;
+	_frameTime = (float)elapsedTicks / _frequency;
 
 	// Restart the timer.
-	m_startTime = currentTime;
+	_startTime = currentTime;
 
 	return;
 }
 
 float Timer::GetTime()
 {
-	return m_frameTime;
+	return _frameTime;
 }
 
 void Timer::StartTimer()
 {
-	QueryPerformanceCounter((LARGE_INTEGER*)&m_beginTime);
+	QueryPerformanceCounter((LARGE_INTEGER*)&_beginTime);
 	return;
 }
 
 void Timer::StopTimer()
 {
-	QueryPerformanceCounter((LARGE_INTEGER*)&m_endTime);
+	QueryPerformanceCounter((LARGE_INTEGER*)&_endTime);
 	return;
 }
 
@@ -76,7 +76,7 @@ int Timer::GetTiming()
 	float milliseconds;
 
 	// Get the elapsed ticks between the two times.
-	elapsedTicks = (float)(m_endTime - m_beginTime);
+	elapsedTicks = (float)(_endTime - _beginTime);
 
 	// Get the ticks per second speed of the timer.
 	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);

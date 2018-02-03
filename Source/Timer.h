@@ -20,10 +20,10 @@ public:
 	int GetTiming();
 
 private:
-	float m_frequency;
-	INT64 m_startTime;
-	float m_frameTime;
-	INT64 m_beginTime, m_endTime;
+	float		_frequency;
+	INT64		_startTime;
+	float		_frameTime;
+	INT64		_beginTime, _endTime;
 };
 
 #endif

@@ -19,8 +19,8 @@ public:
 	bool RenderTextureShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
 
 private:
-	ColourShader* m_ColourShader;
-	TextureShader* m_TextureShader;
+	ColourShader*		_colourShader;
+	TextureShader*		_textureShader;
 };
 
 #endif

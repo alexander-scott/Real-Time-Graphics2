@@ -2,7 +2,7 @@
 
 TextureManager::TextureManager()
 {
-	m_TextureArray = nullptr;
+	_textureArray = nullptr;
 }
 
 TextureManager::TextureManager(const TextureManager &)
@@ -15,11 +15,11 @@ TextureManager::~TextureManager()
 
 bool TextureManager::Initialize(int count)
 {
-	m_textureCount = count;
+	_textureCount = count;
 
-	// Create the color texture object.
-	m_TextureArray = new Texture[m_textureCount];
-	if (!m_TextureArray)
+	// Create the color Texture object.
+	_textureArray = new Texture[_textureCount];
+	if (!_textureArray)
 	{
 		return false;
 	}
@@ -31,15 +31,15 @@ void TextureManager::Destroy()
 {
 	int i;
 
-	// Release the texture objects.
-	if (m_TextureArray)
+	// Release the Texture objects.
+	if (_textureArray)
 	{
-		for (i = 0; i<m_textureCount; i++)
+		for (i = 0; i<_textureCount; i++)
 		{
-			m_TextureArray[i].Destroy();
+			_textureArray[i].Destroy();
 		}
-		delete[] m_TextureArray;
-		m_TextureArray = 0;
+		delete[] _textureArray;
+		_textureArray = 0;
 	}
 
 	return;
@@ -49,8 +49,8 @@ bool TextureManager::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* devi
 {
 	bool result;
 
-	// Initialize the color texture object.
-	result = m_TextureArray[location].Initialize(device, deviceContext, filename);
+	// Initialize the color Texture object.
+	result = _textureArray[location].Initialize(device, deviceContext, filename);
 	if (!result)
 	{
 		return false;
@@ -61,5 +61,5 @@ bool TextureManager::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* devi
 
 ID3D11ShaderResourceView * TextureManager::GetTexture(int id)
 {
-	return m_TextureArray[id].GetTexture();
+	return _textureArray[id].GetTexture();
 }

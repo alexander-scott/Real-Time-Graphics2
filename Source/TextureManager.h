@@ -17,6 +17,6 @@ public:
 	ID3D11ShaderResourceView* GetTexture(int);
 
 private:
-	Texture* m_TextureArray;
-	int m_textureCount;
+	Texture*		_textureArray;
+	int				_textureCount;
 };

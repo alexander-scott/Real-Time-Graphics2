@@ -40,18 +40,18 @@ private:
 	void ProcessInput();
 
 private:
-	IDirectInput8* m_directInput;
-	IDirectInputDevice8* m_keyboard;
-	IDirectInputDevice8* m_mouse;
+	IDirectInput8*			_directInput;
+	IDirectInputDevice8*	_keyboard;
+	IDirectInputDevice8*	_mouse;
 
-	unsigned char m_keyboardState[256];
-	DIMOUSESTATE m_mouseState;
+	unsigned char			_keyboardState[256];
+	DIMOUSESTATE			_mouseState;
 
-	int m_screenWidth, m_screenHeight;
-	int m_mouseX, m_mouseY;
+	int						_screenWidth, _screenHeight;
+	int						_mouseX, _mouseY;
 
-	bool m_F1_released;
-	bool m_F2_released;
+	bool					_f1Released;
+	bool					_f2Released;
 };
 
 #endif

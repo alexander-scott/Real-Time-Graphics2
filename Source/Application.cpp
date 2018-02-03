@@ -82,14 +82,14 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	// Create the texture manager object.
+	// Create the Texture manager object.
 	_textureManager = new TextureManager;
 	if (!_textureManager)
 	{
 		return false;
 	}
 
-	// Initialize the texture manager object.
+	// Initialize the Texture manager object.
 	result = _textureManager->Initialize(10);
 	if (!result)
 	{
@@ -97,7 +97,7 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	// Load textures into the texture manager.
+	// Load textures into the Texture manager.
 	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/test.tga", 0);
 	if (!result)
 	{
@@ -153,7 +153,7 @@ void Application::Destroy()
 		_shaderManager = 0;
 	}
 
-	// Release the texture manager object.
+	// Release the Texture manager object.
 	if (_textureManager)
 	{
 		_textureManager->Destroy();

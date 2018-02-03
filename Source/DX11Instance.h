@@ -44,26 +44,24 @@ public:
 	void DisableWireframe();
 
 private:
-	bool m_vsync_enabled;
-	int m_videoCardMemory;
-	char m_videoCardDescription[128];
-	IDXGISwapChain* m_swapChain;
-	ID3D11Device* m_device;
-	ID3D11DeviceContext* m_deviceContext;
-	ID3D11RenderTargetView* m_renderTargetView;
-	ID3D11Texture2D* m_depthStencilBuffer;
-	ID3D11DepthStencilState* m_depthStencilState;
-	ID3D11DepthStencilView* m_depthStencilView;
-	ID3D11RasterizerState* m_rasterState;
-	ID3D11RasterizerState* m_rasterStateNoCulling;
-	ID3D11RasterizerState* m_rasterStateWireframe;
-	XMMATRIX m_projectionMatrix;
-	XMMATRIX m_worldMatrix;
-	XMMATRIX m_orthoMatrix;
-	ID3D11DepthStencilState* m_depthDisabledStencilState;
-	ID3D11BlendState* m_alphaEnableBlendingState;
-	ID3D11BlendState* m_alphaDisableBlendingState;
-	ID3D11BlendState* m_alphaEnableBlendingState2;
+	bool						_vsyncEnabled;
+	IDXGISwapChain*				_swapChain;
+	ID3D11Device*				_device;
+	ID3D11DeviceContext*		_deviceContext;
+	ID3D11RenderTargetView*		_renderTargetView;
+	ID3D11Texture2D*			_depthStencilBuffer;
+	ID3D11DepthStencilState*	_depthStencilState;
+	ID3D11DepthStencilView*		_depthStencilView;
+	ID3D11RasterizerState*		_rasterState;
+	ID3D11RasterizerState*		_rasterStateNoCulling;
+	ID3D11RasterizerState*		_rasterStateWireframe;
+	XMMATRIX					_projectionMatrix;
+	XMMATRIX					_worldMatrix;
+	XMMATRIX					_orthoMatrix;
+	ID3D11DepthStencilState*	_depthDisabledStencilState;
+	ID3D11BlendState*			_alphaEnableBlendingState;
+	ID3D11BlendState*			_alphaDisableBlendingState;
+	ID3D11BlendState*			_alphaEnableBlendingState2;
 };
 
 #endif

@@ -2,8 +2,8 @@
 
 Scene::Scene()
 {
-	m_Camera = 0;
-	m_Terrain = 0;
+	_camera = nullptr;
+	_terrain = nullptr;
 }
 
 Scene::Scene(const Scene& other)
@@ -19,37 +19,37 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	bool result;
 
 	// Create the camera object.
-	m_Camera = new Camera;
-	if(!m_Camera)
+	_camera = new Camera;
+	if(!_camera)
 	{
 		return false;
 	}
 
-	// Set the initial position of the camera and build the matrices needed for rendering.
-	m_Camera->Render();
-	m_Camera->RenderBaseViewMatrix();
+	// Set the initial Position of the camera and build the matrices needed for rendering.
+	_camera->Render();
+	_camera->RenderBaseViewMatrix();
 
-	// Set the initial position and rotation.
-	m_Camera->GetTransform()->SetPosition(128.0f, 10.0f, -10.0f);
-	m_Camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
+	// Set the initial Position and rotation.
+	_camera->GetTransform()->SetPosition(128.0f, 10.0f, -10.0f);
+	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the terrain object.
-	m_Terrain = new Terrain;
-	if(!m_Terrain)
+	_terrain = new Terrain;
+	if(!_terrain)
 	{
 		return false;
 	}
 
 	// Initialize the terrain object.
-	result = m_Terrain->Initialize(Direct3D->GetDevice(), "Source/setup.txt");
+	result = _terrain->Initialize(Direct3D->GetDevice(), "Source/setup.txt");
 	if(!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
 		return false;
 	}
 	
-	// Set wire frame rendering initially to enabled.
-	m_wireFrame = true;
+	// Set wire frame rendering initially to disabled.
+	_wireFrame = false;
 
 	return true;
 }
@@ -57,18 +57,18 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 void Scene::Destroy()
 {
 	// Release the terrain object.
-	if(m_Terrain)
+	if(_terrain)
 	{
-		m_Terrain->Destroy();
-		delete m_Terrain;
-		m_Terrain = 0;
+		_terrain->Destroy();
+		delete _terrain;
+		_terrain = 0;
 	}
 
 	// Release the camera object.
-	if(m_Camera)
+	if(_camera)
 	{
-		delete m_Camera;
-		m_Camera = 0;
+		delete _camera;
+		_camera = 0;
 	}
 
 	return;
@@ -82,9 +82,9 @@ bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderMa
 	// Do the frame input processing.
 	HandleMovementInput(input, frameTime);
 
-	// Get the view point position/rotation.
-	m_Camera->GetTransform()->GetPosition(posX, posY, posZ);
-	m_Camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
+	// Get the View point Position/rotation.
+	_camera->GetTransform()->GetPosition(posX, posY, posZ);
+	_camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
 
 	// Render the graphics.
 	result = Render(direct3D, shaderManager, textureManager);
@@ -101,41 +101,41 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	bool keyDown;
 	float posX, posY, posZ, rotX, rotY, rotZ;
 
-	// Set the frame time for calculating the updated position.
-	m_Camera->GetTransform()->SetFrameTime(frameTime);
+	// Set the frame time for calculating the updated Position.
+	_camera->GetTransform()->SetFrameTime(frameTime);
 
 	// Handle the input.
 	keyDown = Input->IsLeftPressed();
-	m_Camera->GetTransform()->TurnLeft(keyDown);
+	_camera->GetTransform()->TurnLeft(keyDown);
 
 	keyDown = Input->IsRightPressed();
-	m_Camera->GetTransform()->TurnRight(keyDown);
+	_camera->GetTransform()->TurnRight(keyDown);
 
 	keyDown = Input->IsUpPressed();
-	m_Camera->GetTransform()->MoveForward(keyDown);
+	_camera->GetTransform()->MoveForward(keyDown);
 
 	keyDown = Input->IsDownPressed();
-	m_Camera->GetTransform()->MoveBackward(keyDown);
+	_camera->GetTransform()->MoveBackward(keyDown);
 
 	keyDown = Input->IsAPressed();
-	m_Camera->GetTransform()->MoveUpward(keyDown);
+	_camera->GetTransform()->MoveUpward(keyDown);
 
 	keyDown = Input->IsZPressed();
-	m_Camera->GetTransform()->MoveDownward(keyDown);
+	_camera->GetTransform()->MoveDownward(keyDown);
 
 	keyDown = Input->IsPgUpPressed();
-	m_Camera->GetTransform()->LookUpward(keyDown);
+	_camera->GetTransform()->LookUpward(keyDown);
 
 	keyDown = Input->IsPgDownPressed();
-	m_Camera->GetTransform()->LookDownward(keyDown);
+	_camera->GetTransform()->LookDownward(keyDown);
 
-	// Get the view point position/rotation.
-	m_Camera->GetTransform()->GetPosition(posX, posY, posZ);
-	m_Camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
+	// Get the View point Position/rotation.
+	_camera->GetTransform()->GetPosition(posX, posY, posZ);
+	_camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
 
-	// Set the position of the camera.
-	m_Camera->GetTransform()->SetPosition(posX, posY, posZ);
-	m_Camera->GetTransform()->SetRotation(rotX, rotY, rotZ);
+	// Set the Position of the camera.
+	_camera->GetTransform()->SetPosition(posX, posY, posZ);
+	_camera->GetTransform()->SetRotation(rotX, rotY, rotZ);
 
 	if(Input->IsF1Toggled())
 	{
@@ -145,7 +145,7 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	// Determine if the terrain should be rendered in wireframe or not.
 	if (Input->IsF2Toggled())
 	{
-		m_wireFrame = !m_wireFrame;
+		_wireFrame = !_wireFrame;
 	}
 
 	return;
@@ -156,35 +156,35 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
 
-	// Generate the view matrix based on the camera's position.
-	m_Camera->Render();
+	// Generate the View matrix based on the camera's Position.
+	_camera->Render();
 
-	// Get the world, view, and projection matrices from the camera and d3d objects.
+	// Get the World, View, and Projection matrices from the camera and d3d objects.
 	direct3D->GetWorldMatrix(worldMatrix);
-	m_Camera->GetViewMatrix(viewMatrix);
+	_camera->GetViewMatrix(viewMatrix);
 	direct3D->GetProjectionMatrix(projectionMatrix);
-	m_Camera->GetBaseViewMatrix(baseViewMatrix);
+	_camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
 	
 	// Clear the buffers to begin the scene.
 	direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Turn on wire frame rendering of the terrain if needed.
-	if (m_wireFrame)
+	if (_wireFrame)
 	{
 		direct3D->EnableWireframe();
 	}
 
 	// Render the terrain grid using the color shader.
-	m_Terrain->Render(direct3D->GetDeviceContext());
-	result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), m_Terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
+	_terrain->Render(direct3D->GetDeviceContext());
+	result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
 	if(!result)
 	{
 		return false;
 	}
 
 	// Turn off wire frame rendering of the terrain if it was on.
-	if (m_wireFrame)
+	if (_wireFrame)
 	{
 		direct3D->DisableWireframe();
 	}

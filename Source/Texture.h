@@ -30,9 +30,9 @@ private:
 	bool LoadTarga(char*, int&, int&);
 
 private:
-	unsigned char* m_targaData;
-	ID3D11Texture2D* m_texture;
-	ID3D11ShaderResourceView* m_textureView;
+	unsigned char*				_targaData;
+	ID3D11Texture2D*			_texture;
+	ID3D11ShaderResourceView*	_textureView;
 
 };
 
