@@ -375,6 +375,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\ColourShader.cpp" />
     <ClCompile Include="Source\DX11Instance.cpp" />
+    <ClCompile Include="Source\Frustum.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\IShader.cpp" />
     <ClCompile Include="Source\Light.cpp" />
@@ -382,6 +383,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\SkyDome.cpp" />
     <ClCompile Include="Source\SkydomeShader.cpp" />
+    <ClCompile Include="Source\TerrainCell.cpp" />
     <ClCompile Include="Source\TerrainShader.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\TextureShader.cpp" />
@@ -398,12 +400,14 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\ColourShader.h" />
     <ClInclude Include="Source\DX11Instance.h" />
+    <ClInclude Include="Source\Frustum.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\IShader.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LightShader.h" />
     <ClInclude Include="Source\SkyDome.h" />
     <ClInclude Include="Source\SkydomeShader.h" />
+    <ClInclude Include="Source\TerrainCell.h" />
     <ClInclude Include="Source\TerrainShader.h" />
     <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\TextureShader.h" />

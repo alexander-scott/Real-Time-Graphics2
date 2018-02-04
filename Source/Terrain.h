@@ -6,6 +6,9 @@
 #include <fstream>
 #include <stdio.h>
 
+#include "TerrainCell.h"
+#include "Frustum.h"
+
 using namespace DirectX;
 using namespace std;
 
@@ -58,7 +61,19 @@ public:
 
 	bool Initialize(ID3D11Device*, char*);
 	void Destroy();
-	bool Render(ID3D11DeviceContext*);
+
+	void Update();
+
+	bool RenderCell(ID3D11DeviceContext*, int, Frustum*);
+	void RenderCellLines(ID3D11DeviceContext*, int);
+
+	int GetCellIndexCount(int);
+	int GetCellLinesIndexCount(int);
+	int GetCellCount();
+
+	int GetRenderCount();
+	int GetCellsDrawn();
+	int GetCellsCulled();
 
 	int GetIndexCount();
 
@@ -76,12 +91,10 @@ private:
 	void CalculateTerrainVectors();
 	void CalculateTangentBinormal(TempVertexType, TempVertexType, TempVertexType, VectorType&, VectorType&);
 
-	bool InitializeBuffers(ID3D11Device*);
-	void DestroyBuffers();
-	void RenderBuffers(ID3D11DeviceContext*);
+	bool LoadTerrainCells(ID3D11Device*);
+	void DestroyTerrainCells();
 
 private:
-	ID3D11Buffer		*_vertexBuffer, *_indexBuffer;
 	int					_vertexCount, _indexCount;
 
 	int					_terrainHeight, _terrainWidth;
@@ -89,6 +102,8 @@ private:
 	char*				_terrainFilename, *_colourMapFilename;
 	HeightMapType*		_heightMap;
 	ModelType*			_terrainModel;
+	TerrainCell*		_terrainCells;
+	int					_cellCount, m_renderCount, m_cellsDrawn, m_cellsCulled;
 };
 
 #endif
