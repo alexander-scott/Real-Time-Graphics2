@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Frustum.h"
 #include "SkyDome.h"
 #include "Terrain.h"
 
@@ -29,6 +30,7 @@ private:
 private:
 	Camera*			_camera;
 	Light*			_light;
+	Frustum*		_frustum;
 	SkyDome*		_skyDome;
 	Terrain*		_terrain;
 	bool			_wireFrame, m_cellLines;

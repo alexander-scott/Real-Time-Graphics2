@@ -65,7 +65,10 @@
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\TerrainCell.cpp">
-      <Filter>Application\GameObjects</Filter>
+      <Filter>Application\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Frustum.cpp">
+      <Filter>Application\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +133,10 @@
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\TerrainCell.h">
-      <Filter>Application\GameObjects</Filter>
+      <Filter>Application\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Frustum.h">
+      <Filter>Application\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

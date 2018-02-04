@@ -375,6 +375,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\ColourShader.cpp" />
     <ClCompile Include="Source\DX11Instance.cpp" />
+    <ClCompile Include="Source\Frustum.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\IShader.cpp" />
     <ClCompile Include="Source\Light.cpp" />
@@ -399,6 +400,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\ColourShader.h" />
     <ClInclude Include="Source\DX11Instance.h" />
+    <ClInclude Include="Source\Frustum.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\IShader.h" />
     <ClInclude Include="Source\Light.h" />

@@ -5,6 +5,7 @@ Scene::Scene()
 	_camera = nullptr;
 	_terrain = nullptr;
 	_light = nullptr;
+	_frustum = nullptr;
 	_skyDome = nullptr;
 }
 
@@ -45,6 +46,16 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	// Initialize the light object.
 	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	_light->SetDirection(-0.5f, -1.0f, -0.5f);
+
+	// Create the frustum object.
+	_frustum = new Frustum;
+	if (!_frustum)
+	{
+		return false;
+	}
+
+	// Initialize the frustum object.
+	_frustum->Initialize(screenDepth);
 
 	// Create the sky dome object.
 	_skyDome = new SkyDome;
@@ -103,6 +114,13 @@ void Scene::Destroy()
 		_skyDome = 0;
 	}
 
+	// Release the frustum object.
+	if (_frustum)
+	{
+		delete _frustum;
+		_frustum = 0;
+	}
+
 	// Release the light object.
 	if (_light)
 	{
@@ -131,6 +149,9 @@ bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderMa
 	// Get the View point Position/rotation.
 	_camera->GetTransform()->GetPosition(posX, posY, posZ);
 	_camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
+
+	// Do the terrain frame processing.
+	_terrain->Update();
 
 	// Render the graphics.
 	result = Render(direct3D, shaderManager, textureManager);
@@ -216,6 +237,9 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 
 	// Get the Position of the camera.
 	_camera->GetTransform()->GetPosition(cameraPosition);
+
+	// Construct the frustum.
+	_frustum->ConstructFrustum(projectionMatrix, viewMatrix);
 	
 	// Clear the buffers to begin the scene.
 	direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -252,38 +276,31 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 	// Render the terrain cells (and cell lines if needed).
 	for (int i = 0; i<_terrain->GetCellCount(); i++)
 	{
-		// Put the terrain cell buffers on the pipeline.
-		result = _terrain->RenderCell(direct3D->GetDeviceContext(), i);
-		if (!result)
+		// Render each terrain cell if it is visible only.
+		result = _terrain->RenderCell(direct3D->GetDeviceContext(), i, _frustum);
+		if (result)
 		{
-			return false;
-
-		}
-
-		// Render the cell buffers using the terrain shader.
-		result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetCellIndexCount(i), worldMatrix, viewMatrix,
-			projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1),
-			_light->GetDirection(), _light->GetDiffuseColor());
-		if (!result)
-		{
-			return false;
-		}
-
-		// If needed then render the bounding box around this terrain cell using the color shader. 
-		if (m_cellLines)
-		{
-			_terrain->RenderCellLines(direct3D->GetDeviceContext(), i);
-			shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _terrain->GetCellLinesIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
+			// Render the cell buffers using the terrain shader.
+			result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetCellIndexCount(i), worldMatrix, viewMatrix,
+				projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1),
+				_light->GetDirection(), _light->GetDiffuseColor());
 			if (!result)
 			{
 				return false;
 			}
+
+			// If needed then render the bounding box around this terrain cell using the color shader. 
+			if (m_cellLines)
+			{
+				_terrain->RenderCellLines(direct3D->GetDeviceContext(), i);
+				shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _terrain->GetCellLinesIndexCount(i), worldMatrix,
+					viewMatrix, projectionMatrix);
+				if (!result)
+				{
+					return false;
+				}
+			}
 		}
-	}
-	
-	if(!result)
-	{
-		return false;
 	}
 
 	// Turn off wire frame rendering of the terrain if it was on.

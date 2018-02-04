@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "TerrainCell.h"
+#include "Frustum.h"
 
 using namespace DirectX;
 using namespace std;
@@ -61,12 +62,18 @@ public:
 	bool Initialize(ID3D11Device*, char*);
 	void Destroy();
 
-	bool RenderCell(ID3D11DeviceContext*, int);
+	void Update();
+
+	bool RenderCell(ID3D11DeviceContext*, int, Frustum*);
 	void RenderCellLines(ID3D11DeviceContext*, int);
 
 	int GetCellIndexCount(int);
 	int GetCellLinesIndexCount(int);
 	int GetCellCount();
+
+	int GetRenderCount();
+	int GetCellsDrawn();
+	int GetCellsCulled();
 
 	int GetIndexCount();
 
@@ -96,7 +103,7 @@ private:
 	HeightMapType*		_heightMap;
 	ModelType*			_terrainModel;
 	TerrainCell*		_terrainCells;
-	int					_cellCount;
+	int					_cellCount, m_renderCount, m_cellsDrawn, m_cellsCulled;
 };
 
 #endif
