@@ -10,33 +10,33 @@ class TerrainCell
 private:
 	struct ModelType
 	{
-		float x, y, z;
-		float tu, tv;
-		float nx, ny, nz;
-		float tx, ty, tz;
-		float bx, by, bz;
-		float r, g, b;
+		float X, Y, Z;
+		float Tu, Tv;
+		float Nx, Ny, Nz;
+		float Tx, Ty, Tz;
+		float Bx, By, Bz;
+		float R, G, B;
 	};
 
 	struct VertexType
 	{
-		XMFLOAT3 position;
-		XMFLOAT2 texture;
-		XMFLOAT3 normal;
-		XMFLOAT3 tangent;
-		XMFLOAT3 binormal;
-		XMFLOAT3 color;
+		XMFLOAT3 Position;
+		XMFLOAT2 Texture;
+		XMFLOAT3 Normal;
+		XMFLOAT3 Tangent;
+		XMFLOAT3 Binormal;
+		XMFLOAT3 Colour;
 	};
 
 	struct VectorType
 	{
-		float x, y, z;
+		float X, Y, Z;
 	};
 
 	struct ColorVertexType
 	{
-		XMFLOAT3 position;
-		XMFLOAT4 color;
+		XMFLOAT3 Position;
+		XMFLOAT4 Colour;
 	};
 
 public:
@@ -63,11 +63,11 @@ private:
 	void DestroyLineBuffers();
 
 public:
-	VectorType * m_vertexList;
+	VectorType * _vertexList;
 
 private:
-	int m_vertexCount, m_indexCount, m_lineIndexCount;
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer, *m_lineVertexBuffer, *m_lineIndexBuffer;;
-	float m_maxWidth, m_maxHeight, m_maxDepth, m_minWidth, m_minHeight, m_minDepth;
-	float m_positionX, m_positionY, m_positionZ;
+	int					_vertexCount, _indexCount, _lineIndexCount;
+	ID3D11Buffer		*_vertexBuffer, *_indexBuffer, *_lineVertexBuffer, *_lineIndexBuffer;
+	float				_maxWidth, _maxHeight, _maxDepth, _minWidth, _minHeight, _minDepth;
+	float				_positionX, _positionY, _positionZ;
 };

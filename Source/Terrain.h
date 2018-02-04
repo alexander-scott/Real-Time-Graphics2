@@ -75,7 +75,7 @@ public:
 	int GetCellsDrawn();
 	int GetCellsCulled();
 
-	int GetIndexCount();
+	bool GetHeightAtPosition(float, float, float&);
 
 private:
 	bool LoadSetupFile(char*);
@@ -94,6 +94,8 @@ private:
 	bool LoadTerrainCells(ID3D11Device*);
 	void DestroyTerrainCells();
 
+	bool CheckHeightOfTriangle(float, float, float&, float[3], float[3], float[3]);
+
 private:
 	int					_vertexCount, _indexCount;
 
@@ -103,7 +105,7 @@ private:
 	HeightMapType*		_heightMap;
 	ModelType*			_terrainModel;
 	TerrainCell*		_terrainCells;
-	int					_cellCount, m_renderCount, m_cellsDrawn, m_cellsCulled;
+	int					_cellCount, _renderCount, _cellsDrawn, _cellsCulled;
 };
 
 #endif

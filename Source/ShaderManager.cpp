@@ -21,14 +21,14 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
-	// Create the color shader object.
+	// Create the Colour shader object.
 	_colourShader = new ColourShader;
 	if(!_colourShader)
 	{
 		return false;
 	}
 
-	// Initialize the color shader object.
+	// Initialize the Colour shader object.
 	result = _colourShader->Initialize(device, hwnd, L"Source/Shaders/ColourPixelShader.hlsl", L"Source/Shaders/ColourVertexShader.hlsl");
 	if(!result)
 	{
@@ -112,7 +112,7 @@ void ShaderManager::Destroy()
 		_skydomeShader = 0;
 	}
 
-	// Release the color shader object.
+	// Release the Colour shader object.
 	if(_colourShader)
 	{
 		_colourShader->Destroy();

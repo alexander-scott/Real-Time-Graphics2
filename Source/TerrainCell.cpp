@@ -2,11 +2,11 @@
 
 TerrainCell::TerrainCell()
 {
-	m_vertexList = nullptr;
-	m_vertexBuffer = nullptr;
-	m_indexBuffer = nullptr;
-	m_lineVertexBuffer = nullptr;
-	m_lineIndexBuffer = nullptr;
+	_vertexList = nullptr;
+	_vertexBuffer = nullptr;
+	_indexBuffer = nullptr;
+	_lineVertexBuffer = nullptr;
+	_lineIndexBuffer = nullptr;
 }
 
 TerrainCell::TerrainCell(const TerrainCell &)
@@ -78,10 +78,10 @@ void TerrainCell::DrawLineBuffers(ID3D11DeviceContext * deviceContext)
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetVertexBuffers(0, 1, &m_lineVertexBuffer, &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &_lineVertexBuffer, &stride, &offset);
 
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetIndexBuffer(m_lineIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(_lineIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case lines.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
@@ -91,28 +91,28 @@ void TerrainCell::DrawLineBuffers(ID3D11DeviceContext * deviceContext)
 
 int TerrainCell::GetVertexCount()
 {
-	return m_vertexCount;
+	return _vertexCount;
 }
 
 int TerrainCell::GetIndexCount()
 {
-	return m_indexCount;
+	return _indexCount;
 }
 
 int TerrainCell::GetLineBuffersIndexCount()
 {
-	return m_lineIndexCount;
+	return _lineIndexCount;
 }
 
 void TerrainCell::GetCellDimensions(float& maxWidth, float& maxHeight, float& maxDepth,
 	float& minWidth, float& minHeight, float& minDepth)
 {
-	maxWidth = m_maxWidth;
-	maxHeight = m_maxHeight;
-	maxDepth = m_maxDepth;
-	minWidth = m_minWidth;
-	minHeight = m_minHeight;
-	minDepth = m_minDepth;
+	maxWidth = _maxWidth;
+	maxHeight = _maxHeight;
+	maxDepth = _maxDepth;
+	minWidth = _minWidth;
+	minHeight = _minHeight;
+	minDepth = _minDepth;
 	return;
 }
 
@@ -127,20 +127,20 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 	HRESULT result;
 
 	// Calculate the number of vertices in this terrain cell.
-	m_vertexCount = (cellHeight - 1) * (cellWidth - 1) * 6;
+	_vertexCount = (cellHeight - 1) * (cellWidth - 1) * 6;
 
 	// Set the index count to the same as the vertex count.
-	m_indexCount = m_vertexCount;
+	_indexCount = _vertexCount;
 
 	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
+	vertices = new VertexType[_vertexCount];
 	if (!vertices)
 	{
 		return false;
 	}
 
 	// Create the index array.
-	indices = new unsigned long[m_indexCount];
+	indices = new unsigned long[_indexCount];
 	if (!indices)
 	{
 		return false;
@@ -155,12 +155,12 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 	{
 		for (i = 0; i<((cellWidth - 1) * 6); i++)
 		{
-			vertices[index].position = XMFLOAT3(terrainModel[modelIndex].x, terrainModel[modelIndex].y, terrainModel[modelIndex].z);
-			vertices[index].texture = XMFLOAT2(terrainModel[modelIndex].tu, terrainModel[modelIndex].tv);
-			vertices[index].normal = XMFLOAT3(terrainModel[modelIndex].nx, terrainModel[modelIndex].ny, terrainModel[modelIndex].nz);
-			vertices[index].tangent = XMFLOAT3(terrainModel[modelIndex].tx, terrainModel[modelIndex].ty, terrainModel[modelIndex].tz);
-			vertices[index].binormal = XMFLOAT3(terrainModel[modelIndex].bx, terrainModel[modelIndex].by, terrainModel[modelIndex].bz);
-			vertices[index].color = XMFLOAT3(terrainModel[modelIndex].r, terrainModel[modelIndex].g, terrainModel[modelIndex].b);
+			vertices[index].Position = XMFLOAT3(terrainModel[modelIndex].X, terrainModel[modelIndex].Y, terrainModel[modelIndex].Z);
+			vertices[index].Texture = XMFLOAT2(terrainModel[modelIndex].Tu, terrainModel[modelIndex].Tv);
+			vertices[index].Normal = XMFLOAT3(terrainModel[modelIndex].Nx, terrainModel[modelIndex].Ny, terrainModel[modelIndex].Nz);
+			vertices[index].Tangent = XMFLOAT3(terrainModel[modelIndex].Tx, terrainModel[modelIndex].Ty, terrainModel[modelIndex].Tz);
+			vertices[index].Binormal = XMFLOAT3(terrainModel[modelIndex].Bx, terrainModel[modelIndex].By, terrainModel[modelIndex].Bz);
+			vertices[index].Colour = XMFLOAT3(terrainModel[modelIndex].R, terrainModel[modelIndex].G, terrainModel[modelIndex].B);
 			indices[index] = index;
 			modelIndex++;
 			index++;
@@ -170,7 +170,7 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * _vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -182,7 +182,7 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 	vertexData.SysMemSlicePitch = 0;
 
 	// Now create the vertex buffer.
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -190,7 +190,7 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 
 	// Set up the description of the static index buffer.
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * _indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -202,25 +202,25 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 	indexData.SysMemSlicePitch = 0;
 
 	// Create the index buffer.
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
 	// Create a public vertex array that will be used for accessing vertex information about this cell.
-	m_vertexList = new VectorType[m_vertexCount];
-	if (!m_vertexList)
+	_vertexList = new VectorType[_vertexCount];
+	if (!_vertexList)
 	{
 		return false;
 	}
 
-	// Keep a local copy of the vertex position data for this cell.
-	for (i = 0; i<m_vertexCount; i++)
+	// Keep a local copy of the vertex Position data for this cell.
+	for (i = 0; i<_vertexCount; i++)
 	{
-		m_vertexList[i].x = vertices[i].position.x;
-		m_vertexList[i].y = vertices[i].position.y;
-		m_vertexList[i].z = vertices[i].position.z;
+		_vertexList[i].X = vertices[i].Position.x;
+		_vertexList[i].Y = vertices[i].Position.y;
+		_vertexList[i].Z = vertices[i].Position.z;
 	}
 
 	// Release the arrays now that the buffers have been created and loaded.
@@ -236,24 +236,24 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 void TerrainCell::DestroyBuffers()
 {
 	// Release the public vertex list.
-	if (m_vertexList)
+	if (_vertexList)
 	{
-		delete[] m_vertexList;
-		m_vertexList = 0;
+		delete[] _vertexList;
+		_vertexList = 0;
 	}
 
 	// Release the index buffer.
-	if (m_indexBuffer)
+	if (_indexBuffer)
 	{
-		m_indexBuffer->Release();
-		m_indexBuffer = 0;
+		_indexBuffer->Release();
+		_indexBuffer = 0;
 	}
 
 	// Release the vertex buffer.
-	if (m_vertexBuffer)
+	if (_vertexBuffer)
 	{
-		m_vertexBuffer->Release();
-		m_vertexBuffer = 0;
+		_vertexBuffer->Release();
+		_vertexBuffer = 0;
 	}
 
 	return;
@@ -269,10 +269,10 @@ void TerrainCell::DrawBuffers(ID3D11DeviceContext * deviceContext)
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
 
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -286,55 +286,55 @@ void TerrainCell::CalculateCellDimensions()
 	float width, height, depth;
 
 	// Initialize the dimensions of the node.
-	m_maxWidth = -1000000.0f;
-	m_maxHeight = -1000000.0f;
-	m_maxDepth = -1000000.0f;
+	_maxWidth = -1000000.0f;
+	_maxHeight = -1000000.0f;
+	_maxDepth = -1000000.0f;
 
-	m_minWidth = 1000000.0f;
-	m_minHeight = 1000000.0f;
-	m_minDepth = 1000000.0f;
+	_minWidth = 1000000.0f;
+	_minHeight = 1000000.0f;
+	_minDepth = 1000000.0f;
 
-	for (i = 0; i<m_vertexCount; i++)
+	for (i = 0; i<_vertexCount; i++)
 	{
-		width = m_vertexList[i].x;
-		height = m_vertexList[i].y;
-		depth = m_vertexList[i].z;
+		width = _vertexList[i].X;
+		height = _vertexList[i].Y;
+		depth = _vertexList[i].Z;
 
 		// Check if the width exceeds the minimum or maximum.
-		if (width > m_maxWidth)
+		if (width > _maxWidth)
 		{
-			m_maxWidth = width;
+			_maxWidth = width;
 		}
-		if (width < m_minWidth)
+		if (width < _minWidth)
 		{
-			m_minWidth = width;
+			_minWidth = width;
 		}
 
 		// Check if the height exceeds the minimum or maximum.
-		if (height > m_maxHeight)
+		if (height > _maxHeight)
 		{
-			m_maxHeight = height;
+			_maxHeight = height;
 		}
-		if (height < m_minHeight)
+		if (height < _minHeight)
 		{
-			m_minHeight = height;
+			_minHeight = height;
 		}
 
 		// Check if the depth exceeds the minimum or maximum.
-		if (depth > m_maxDepth)
+		if (depth > _maxDepth)
 		{
-			m_maxDepth = depth;
+			_maxDepth = depth;
 		}
-		if (depth < m_minDepth)
+		if (depth < _minDepth)
 		{
-			m_minDepth = depth;
+			_minDepth = depth;
 		}
 	}
 
-	// Calculate the center position of this cell.
-	m_positionX = (m_maxWidth - m_minWidth) + m_minWidth;
-	m_positionY = (m_maxHeight - m_minHeight) + m_minHeight;
-	m_positionZ = (m_maxDepth - m_minDepth) + m_minDepth;
+	// Calculate the center Position of this cell.
+	_positionX = (_maxWidth - _minWidth) + _minWidth;
+	_positionY = (_maxHeight - _minHeight) + _minHeight;
+	_positionZ = (_maxDepth - _minDepth) + _minDepth;
 
 	return;
 }
@@ -350,7 +350,7 @@ bool TerrainCell::BuildLineBuffers(ID3D11Device * device)
 	int index, vertexCount, indexCount;
 
 
-	// Set the color of the lines to orange.
+	// Set the Colour of the lines to orange.
 	lineColor = XMFLOAT4(1.0f, 0.5f, 0.0f, 1.0f);
 
 	// Set the number of vertices in the vertex array.
@@ -403,142 +403,142 @@ bool TerrainCell::BuildLineBuffers(ID3D11Device * device)
 	index = 0;
 
 	// 8 Horizontal lines.
-	vertices[index].position = XMFLOAT3(m_minWidth, m_minHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _minHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_minHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _minHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_minHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _minHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_minHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _minHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_minHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _minHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_minHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _minHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_minHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _minHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_minHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _minHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_maxHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _maxHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_maxHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _maxHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_maxHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _maxHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_maxHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _maxHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_maxHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _maxHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_maxHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _maxHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_maxHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _maxHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_maxHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _maxHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
 	// 4 Verticle lines.
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_maxHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _maxHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_minHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _minHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_maxHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _maxHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_minHeight, m_maxDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _minHeight, _maxDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_maxHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _maxHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_maxWidth, m_minHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_maxWidth, _minHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_maxHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _maxHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 	index++;
 
-	vertices[index].position = XMFLOAT3(m_minWidth, m_minHeight, m_minDepth);
-	vertices[index].color = lineColor;
+	vertices[index].Position = XMFLOAT3(_minWidth, _minHeight, _minDepth);
+	vertices[index].Colour = lineColor;
 	indices[index] = index;
 
 	// Create the vertex buffer.
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_lineVertexBuffer);
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_lineVertexBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
 	// Create the index buffer.
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_lineIndexBuffer);
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_lineIndexBuffer);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
 	// Store the index count for rendering.
-	m_lineIndexCount = indexCount;
+	_lineIndexCount = indexCount;
 
 	// Release the arrays now that the vertex and index buffers have been created and loaded.
 	delete[] vertices;
@@ -553,17 +553,17 @@ bool TerrainCell::BuildLineBuffers(ID3D11Device * device)
 void TerrainCell::DestroyLineBuffers()
 {
 	// Release the index buffer.
-	if (m_lineIndexBuffer)
+	if (_lineIndexBuffer)
 	{
-		m_lineIndexBuffer->Release();
-		m_lineIndexBuffer = 0;
+		_lineIndexBuffer->Release();
+		_lineIndexBuffer = 0;
 	}
 
 	// Release the vertex buffer.
-	if (m_lineVertexBuffer)
+	if (_lineVertexBuffer)
 	{
-		m_lineVertexBuffer->Release();
-		m_lineVertexBuffer = 0;
+		_lineVertexBuffer->Release();
+		_lineVertexBuffer = 0;
 	}
 
 	return;

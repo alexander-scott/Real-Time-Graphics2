@@ -91,7 +91,10 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	_wireFrame = false;
 
 	// Set the rendering of cell lines initially to enabled.
-	m_cellLines = true;
+	_cellLines = true;
+
+	// Set the user locked to the terrain height for movement.
+	_heightLocked = true;
 
 	return true;
 }
@@ -140,8 +143,8 @@ void Scene::Destroy()
 
 bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, TextureManager* textureManager, float frameTime)
 {
-	bool result;
-	float posX, posY, posZ, rotX, rotY, rotZ;
+	bool result, foundHeight;
+	float posX, posY, posZ, rotX, rotY, rotZ, height;
 
 	// Do the frame input processing.
 	HandleMovementInput(input, frameTime);
@@ -152,6 +155,18 @@ bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderMa
 
 	// Do the terrain frame processing.
 	_terrain->Update();
+
+	// If the height is locked to the terrain then Position the camera on top of it.
+	if (_heightLocked)
+	{
+		// Get the height of the triangle that is directly underneath the given camera Position.
+		foundHeight = _terrain->GetHeightAtPosition(posX, posZ, height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then Position the camera just above it By one meter.
+			_camera->GetTransform()->SetPosition(posX, height + 1.0f, posZ);
+		}
+	}
 
 	// Render the graphics.
 	result = Render(direct3D, shaderManager, textureManager);
@@ -213,7 +228,13 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	// Determine if we should render the lines around each terrain cell.
 	if (Input->IsF2Toggled())
 	{
-		m_cellLines = !m_cellLines;
+		_cellLines = !_cellLines;
+	}
+
+	// Determine if we should be locked to the terrain height when we move around or not.
+	if (Input->IsF3Toggled())
+	{
+		_heightLocked = !_heightLocked;
 	}
 
 	return;
@@ -289,8 +310,8 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 				return false;
 			}
 
-			// If needed then render the bounding box around this terrain cell using the color shader. 
-			if (m_cellLines)
+			// If needed then render the bounding box around this terrain cell using the Colour shader. 
+			if (_cellLines)
 			{
 				_terrain->RenderCellLines(direct3D->GetDeviceContext(), i);
 				shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _terrain->GetCellLinesIndexCount(i), worldMatrix,

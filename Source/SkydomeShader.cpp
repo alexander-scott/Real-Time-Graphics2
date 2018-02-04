@@ -254,27 +254,27 @@ bool SkyDomeShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	// Now set the matrix constant buffer in the vertex shader with the updated values.
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
-	// Lock the color constant buffer so it can be written to.
+	// Lock the Colour constant buffer so it can be written to.
 	result = deviceContext->Map(_colourBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Get a pointer to the data in the color constant buffer.
+	// Get a pointer to the data in the Colour constant buffer.
 	dataPtr2 = (ColorBufferType*)mappedResource.pData;
 
-	// Copy the color data into the color constant buffer.
+	// Copy the Colour data into the Colour constant buffer.
 	dataPtr2->ApexColour = apexColor;
 	dataPtr2->CentreColour = centerColor;
 
-	// Unlock the color constant buffer.
+	// Unlock the Colour constant buffer.
 	deviceContext->Unmap(_colourBuffer, 0);
 
-	// Set the Position of the color constant buffer in the pixel shader.
+	// Set the Position of the Colour constant buffer in the pixel shader.
 	bufferNumber = 0;
 
-	// Now set the color constant buffer in the pixel shader with the updated color values.
+	// Now set the Colour constant buffer in the pixel shader with the updated Colour values.
 	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_colourBuffer);
 
 	return true;

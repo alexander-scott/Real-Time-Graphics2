@@ -33,6 +33,7 @@ public:
 
 	bool IsF1Toggled();
 	bool IsF2Toggled();
+	bool IsF3Toggled();
 
 private:
 	bool ReadKeyboard();
@@ -52,6 +53,7 @@ private:
 
 	bool					_f1Released;
 	bool					_f2Released;
+	bool					_f3Released;
 };
 
 #endif

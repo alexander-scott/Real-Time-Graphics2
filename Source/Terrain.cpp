@@ -35,7 +35,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 		return false;
 	}
 
-	// Setup the X and Z coordinates for the height map as well as scale the terrain height by the height scale value.
+	// Setup the X and Z coordinates for the height map as well as scale the terrain height By the height scale value.
 	SetTerrainCoordinates();
 
 	// Calculate the normals for the terrain data.
@@ -45,7 +45,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 		return false;
 	}
 
-	// Load in the color map for the terrain.
+	// Load in the Colour map for the terrain.
 	result = LoadColourMap();
 	if (!result)
 	{
@@ -62,7 +62,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	// We can now release the height map since it is no longer needed in memory once the 3D terrain model has been built.
 	DestroyHeightMap();
 
-	// Calculate the tangent and binormal for the terrain model.
+	// Calculate the Tangent and Binormal for the terrain model.
 	CalculateTerrainVectors();
 
 	// Create and load the cells with the terrain data.
@@ -94,9 +94,9 @@ void Terrain::Destroy()
 
 void Terrain::Update()
 {
-	m_renderCount = 0;
-	m_cellsDrawn = 0;
-	m_cellsCulled = 0;
+	_renderCount = 0;
+	_cellsDrawn = 0;
+	_cellsCulled = 0;
 	return;
 }
 
@@ -113,7 +113,7 @@ bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum
 	if (!result)
 	{
 		// Increment the number of cells that were culled.
-		m_cellsCulled++;
+		_cellsCulled++;
 
 		return false;
 	}
@@ -122,10 +122,10 @@ bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum
 	_terrainCells[cellId].Draw(deviceContext);
 
 	// Add the polygons in the cell to the render count.
-	m_renderCount += (_terrainCells[cellId].GetVertexCount() / 3);
+	_renderCount += (_terrainCells[cellId].GetVertexCount() / 3);
 
 	// Increment the number of cells that were actually drawn.
-	m_cellsDrawn++;
+	_cellsDrawn++;
 
 	return true;
 }
@@ -153,22 +153,75 @@ int Terrain::GetCellCount()
 
 int Terrain::GetRenderCount()
 {
-	return m_renderCount;
+	return _renderCount;
 }
 
 int Terrain::GetCellsDrawn()
 {
-	return m_cellsDrawn;
+	return _cellsDrawn;
 }
 
 int Terrain::GetCellsCulled()
 {
-	return m_cellsCulled;
+	return _cellsCulled;
 }
 
-int Terrain::GetIndexCount()
+bool Terrain::GetHeightAtPosition(float inputX, float inputZ, float& height)
 {
-	return _indexCount;
+	int i, cellId, index;
+	float vertex1[3], vertex2[3], vertex3[3];
+	bool foundHeight;
+	float maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth;
+
+	// Loop through all of the terrain cells to find out which one the inputX and inputZ would be inside.
+	cellId = -1;
+	for (i = 0; i<_cellCount; i++)
+	{
+		// Get the current cell dimensions.
+		_terrainCells[i].GetCellDimensions(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
+
+		// Check to see if the positions are in this cell.
+		if ((inputX < maxWidth) && (inputX > minWidth) && (inputZ < maxDepth) && (inputZ > minDepth))
+		{
+			cellId = i;
+			i = _cellCount;
+		}
+	}
+
+	// If we didn't find a cell then the input Position is off the terrain grid.
+	if (cellId == -1)
+	{
+		return false;
+	}
+
+	// If this is the right cell then check all the triangles in this cell to see what the height of the triangle at this Position is.
+	for (i = 0; i<(_terrainCells[cellId].GetVertexCount() / 3); i++)
+	{
+		index = i * 3;
+
+		vertex1[0] = _terrainCells[cellId]._vertexList[index].X;
+		vertex1[1] = _terrainCells[cellId]._vertexList[index].Y;
+		vertex1[2] = _terrainCells[cellId]._vertexList[index].Z;
+		index++;
+
+		vertex2[0] = _terrainCells[cellId]._vertexList[index].X;
+		vertex2[1] = _terrainCells[cellId]._vertexList[index].Y;
+		vertex2[2] = _terrainCells[cellId]._vertexList[index].Z;
+		index++;
+
+		vertex3[0] = _terrainCells[cellId]._vertexList[index].X;
+		vertex3[1] = _terrainCells[cellId]._vertexList[index].Y;
+		vertex3[2] = _terrainCells[cellId]._vertexList[index].Z;
+
+		// Check to see if this is the polygon we are looking for.
+		foundHeight = CheckHeightOfTriangle(inputX, inputZ, height, vertex1, vertex2, vertex3);
+		if (foundHeight)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool Terrain::LoadSetupFile(char * filename)
@@ -238,14 +291,14 @@ bool Terrain::LoadSetupFile(char * filename)
 	// Read in the terrain height scaling.
 	fin >> _heightScale;
 
-	// Read up to the color map file name.
+	// Read up to the Colour map file name.
 	fin.get(input);
 	while (input != ':')
 	{
 		fin.get(input);
 	}
 
-	// Read in the color map file name.
+	// Read in the Colour map file name.
 	fin >> _colourMapFilename;
 
 	// Close the setup file.
@@ -264,7 +317,7 @@ bool Terrain::LoadBitmapHeightMap()
 	unsigned char* bitmapImage;
 	unsigned char height;
 
-	// Start by creating the array structure to hold the height map data.
+	// Start By creating the array structure to hold the height map data.
 	_heightMap = new HeightMapType[_terrainWidth * _terrainHeight];
 	if (!_heightMap)
 	{
@@ -299,7 +352,7 @@ bool Terrain::LoadBitmapHeightMap()
 	}
 
 	// Calculate the size of the bitmap image data.  
-	// Since we use non-divide by 2 dimensions (eg. 257x257) we need to add an extra byte to each line.
+	// Since we use non-divide By 2 dimensions (eg. 257x257) we need to add an extra byte to each line.
 	imageSize = _terrainHeight * ((_terrainWidth * 3) + 1);
 
 	// Allocate memory for the bitmap image data.
@@ -347,7 +400,7 @@ bool Terrain::LoadBitmapHeightMap()
 			k += 3;
 		}
 
-		// Compensate for the extra byte at end of each line in non-divide by 2 bitmaps (eg. 257x257).
+		// Compensate for the extra byte at end of each line in non-divide By 2 bitmaps (eg. 257x257).
 		k++;
 	}
 
@@ -474,7 +527,7 @@ bool Terrain::CalculateNormals()
 	float vertex1[3], vertex2[3], vertex3[3], vector1[3], vector2[3], sum[3], length;
 	VectorType* normals;
 
-	// Create a temporary array to hold the face normal vectors.
+	// Create a temporary array to hold the face Normal vectors.
 	normals = new VectorType[(_terrainHeight - 1) * (_terrainWidth - 1)];
 	if (!normals)
 	{
@@ -513,7 +566,7 @@ bool Terrain::CalculateNormals()
 
 			index = (j * (_terrainWidth - 1)) + i;
 
-			// Calculate the cross product of those two vectors to get the un-normalized value for this face normal.
+			// Calculate the cross product of those two vectors to get the un-normalized value for this face Normal.
 			normals[index].X = (vector1[1] * vector2[2]) - (vector1[2] * vector2[1]);
 			normals[index].Y = (vector1[2] * vector2[0]) - (vector1[0] * vector2[2]);
 			normals[index].Z = (vector1[0] * vector2[1]) - (vector1[1] * vector2[0]);
@@ -579,13 +632,13 @@ bool Terrain::CalculateNormals()
 				sum[2] += normals[index].Z;
 			}
 
-			// Calculate the length of this normal.
+			// Calculate the length of this Normal.
 			length = (float)sqrt((sum[0] * sum[0]) + (sum[1] * sum[1]) + (sum[2] * sum[2]));
 
 			// Get an index to the vertex location in the height map array.
 			index = (j * _terrainWidth) + i;
 
-			// Normalize the final shared normal for this vertex and store it in the height map array.
+			// Normalize the final shared Normal for this vertex and store it in the height map array.
 			_heightMap[index].Nx = (sum[0] / length);
 			_heightMap[index].Ny = (sum[1] / length);
 			_heightMap[index].Nz = (sum[2] / length);
@@ -609,7 +662,7 @@ bool Terrain::LoadColourMap()
 	unsigned char* bitmapImage;
 
 
-	// Open the color map file in binary.
+	// Open the Colour map file in binary.
 	error = fopen_s(&filePtr, _colourMapFilename, "rb");
 	if (error != 0)
 	{
@@ -630,13 +683,13 @@ bool Terrain::LoadColourMap()
 		return false;
 	}
 
-	// Make sure the color map dimensions are the same as the terrain dimensions for easy 1 to 1 mapping.
+	// Make sure the Colour map dimensions are the same as the terrain dimensions for easy 1 to 1 mapping.
 	if ((bitmapInfoHeader.biWidth != _terrainWidth) || (bitmapInfoHeader.biHeight != _terrainHeight))
 	{
 		return false;
 	}
 
-	// Calculate the size of the bitmap image data.  Since this is non-divide by 2 dimensions (eg. 257x257) need to add extra byte to each line.
+	// Calculate the size of the bitmap image data.  Since this is non-divide By 2 dimensions (eg. 257x257) need to add extra byte to each line.
 	imageSize = _terrainHeight * ((_terrainWidth * 3) + 1);
 
 	// Allocate memory for the bitmap image data.
@@ -666,7 +719,7 @@ bool Terrain::LoadColourMap()
 	// Initialize the Position in the image data buffer.
 	k = 0;
 
-	// Read the image data into the color map portion of the height map structure.
+	// Read the image data into the Colour map portion of the height map structure.
 	for (j = 0; j<_terrainHeight; j++)
 	{
 		for (i = 0; i<_terrainWidth; i++)
@@ -681,7 +734,7 @@ bool Terrain::LoadColourMap()
 			k += 3;
 		}
 
-		// Compensate for extra byte at end of each line in non-divide by 2 bitmaps (eg. 257x257).
+		// Compensate for extra byte at end of each line in non-divide By 2 bitmaps (eg. 257x257).
 		k++;
 	}
 
@@ -689,7 +742,7 @@ bool Terrain::LoadColourMap()
 	delete[] bitmapImage;
 	bitmapImage = 0;
 
-	// Release the color map filename now that is has been read in.
+	// Release the Colour map filename now that is has been read in.
 	delete[] _colourMapFilename;
 	_colourMapFilename = 0;
 
@@ -840,7 +893,7 @@ void Terrain::CalculateTerrainVectors()
 	// Initialize the index to the model data.
 	index = 0;
 
-	// Go through all the faces and calculate the the tangent, binormal, and normal vectors.
+	// Go through all the faces and calculate the the Tangent, Binormal, and Normal vectors.
 	for (i = 0; i<faceCount; i++)
 	{
 		// Get the three vertices for this face from the terrain model.
@@ -874,10 +927,10 @@ void Terrain::CalculateTerrainVectors()
 		vertex3.Nz = _terrainModel[index].Nz;
 		index++;
 
-		// Calculate the tangent and binormal of that face.
+		// Calculate the Tangent and Binormal of that face.
 		CalculateTangentBinormal(vertex1, vertex2, vertex3, tangent, binormal);
 
-		// Store the tangent and binormal for this face back in the model structure.
+		// Store the Tangent and Binormal for this face back in the model structure.
 		_terrainModel[index - 1].Tx = tangent.X;
 		_terrainModel[index - 1].Ty = tangent.Y;
 		_terrainModel[index - 1].Tz = tangent.Z;
@@ -919,17 +972,17 @@ void Terrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType ve
 	vector2[1] = vertex3.Y - vertex1.Y;
 	vector2[2] = vertex3.Z - vertex1.Z;
 
-	// Calculate the Tu and Tv texture space vectors.
+	// Calculate the Tu and Tv Texture space vectors.
 	tuVector[0] = vertex2.Tu - vertex1.Tu;
 	tvVector[0] = vertex2.Tv - vertex1.Tv;
 
 	tuVector[1] = vertex3.Tu - vertex1.Tu;
 	tvVector[1] = vertex3.Tv - vertex1.Tv;
 
-	// Calculate the denominator of the tangent/binormal equation.
+	// Calculate the denominator of the Tangent/Binormal equation.
 	den = 1.0f / (tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0]);
 
-	// Calculate the cross products and multiply by the coefficient to get the tangent and binormal.
+	// Calculate the cross products and multiply By the coefficient to get the Tangent and Binormal.
 	tangent.X = (tvVector[1] * vector1[0] - tvVector[0] * vector2[0]) * den;
 	tangent.Y = (tvVector[1] * vector1[1] - tvVector[0] * vector2[1]) * den;
 	tangent.Z = (tvVector[1] * vector1[2] - tvVector[0] * vector2[2]) * den;
@@ -938,18 +991,18 @@ void Terrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType ve
 	binormal.Y = (tuVector[0] * vector2[1] - tuVector[1] * vector1[1]) * den;
 	binormal.Z = (tuVector[0] * vector2[2] - tuVector[1] * vector1[2]) * den;
 
-	// Calculate the length of the tangent.
+	// Calculate the length of the Tangent.
 	length = (float)sqrt((tangent.X * tangent.X) + (tangent.Y * tangent.Y) + (tangent.Z * tangent.Z));
 
-	// Normalize the tangent and then store it.
+	// Normalize the Tangent and then store it.
 	tangent.X = tangent.X / length;
 	tangent.Y = tangent.Y / length;
 	tangent.Z = tangent.Z / length;
 
-	// Calculate the length of the binormal.
+	// Calculate the length of the Binormal.
 	length = (float)sqrt((binormal.X * binormal.X) + (binormal.Y * binormal.Y) + (binormal.Z * binormal.Z));
 
-	// Normalize the binormal and then store it.
+	// Normalize the Binormal and then store it.
 	binormal.X = binormal.X / length;
 	binormal.Y = binormal.Y / length;
 	binormal.Z = binormal.Z / length;
@@ -1012,4 +1065,135 @@ void Terrain::DestroyTerrainCells()
 	}
 
 	return;
+}
+
+bool Terrain::CheckHeightOfTriangle(float x, float z, float& height, float v0[3], float v1[3], float v2[3])
+{
+	float startVector[3], directionVector[3], edge1[3], edge2[3], normal[3];
+	float Q[3], e1[3], e2[3], e3[3], edgeNormal[3], temp[3];
+	float magnitude, D, denominator, numerator, t, determinant;
+
+	// Starting Position of the ray that is being cast.
+	startVector[0] = x;
+	startVector[1] = 0.0f;
+	startVector[2] = z;
+
+	// The direction the ray is being cast.
+	directionVector[0] = 0.0f;
+	directionVector[1] = -1.0f;
+	directionVector[2] = 0.0f;
+
+	// Calculate the two edges from the three points given.
+	edge1[0] = v1[0] - v0[0];
+	edge1[1] = v1[1] - v0[1];
+	edge1[2] = v1[2] - v0[2];
+
+	edge2[0] = v2[0] - v0[0];
+	edge2[1] = v2[1] - v0[1];
+	edge2[2] = v2[2] - v0[2];
+
+	// Calculate the Normal of the triangle from the two edges.
+	normal[0] = (edge1[1] * edge2[2]) - (edge1[2] * edge2[1]);
+	normal[1] = (edge1[2] * edge2[0]) - (edge1[0] * edge2[2]);
+	normal[2] = (edge1[0] * edge2[1]) - (edge1[1] * edge2[0]);
+
+	magnitude = (float)sqrt((normal[0] * normal[0]) + (normal[1] * normal[1]) + (normal[2] * normal[2]));
+	normal[0] = normal[0] / magnitude;
+	normal[1] = normal[1] / magnitude;
+	normal[2] = normal[2] / magnitude;
+
+	// Find the distance from the origin to the plane.
+	D = ((-normal[0] * v0[0]) + (-normal[1] * v0[1]) + (-normal[2] * v0[2]));
+
+	// Get the denominator of the equation.
+	denominator = ((normal[0] * directionVector[0]) + (normal[1] * directionVector[1]) + (normal[2] * directionVector[2]));
+
+	// Make sure the result doesn't get too close to zero to prevent divide By zero.
+	if (fabs(denominator) < 0.0001f)
+	{
+		return false;
+	}
+
+	// Get the numerator of the equation.
+	numerator = -1.0f * (((normal[0] * startVector[0]) + (normal[1] * startVector[1]) + (normal[2] * startVector[2])) + D);
+
+	// Calculate where we intersect the triangle.
+	t = numerator / denominator;
+
+	// Find the intersection vector.
+	Q[0] = startVector[0] + (directionVector[0] * t);
+	Q[1] = startVector[1] + (directionVector[1] * t);
+	Q[2] = startVector[2] + (directionVector[2] * t);
+
+	// Find the three edges of the triangle.
+	e1[0] = v1[0] - v0[0];
+	e1[1] = v1[1] - v0[1];
+	e1[2] = v1[2] - v0[2];
+
+	e2[0] = v2[0] - v1[0];
+	e2[1] = v2[1] - v1[1];
+	e2[2] = v2[2] - v1[2];
+
+	e3[0] = v0[0] - v2[0];
+	e3[1] = v0[1] - v2[1];
+	e3[2] = v0[2] - v2[2];
+
+	// Calculate the Normal for the first edge.
+	edgeNormal[0] = (e1[1] * normal[2]) - (e1[2] * normal[1]);
+	edgeNormal[1] = (e1[2] * normal[0]) - (e1[0] * normal[2]);
+	edgeNormal[2] = (e1[0] * normal[1]) - (e1[1] * normal[0]);
+
+	// Calculate the determinant to see if it is on the inside, outside, or directly on the edge.
+	temp[0] = Q[0] - v0[0];
+	temp[1] = Q[1] - v0[1];
+	temp[2] = Q[2] - v0[2];
+
+	determinant = ((edgeNormal[0] * temp[0]) + (edgeNormal[1] * temp[1]) + (edgeNormal[2] * temp[2]));
+
+	// Check if it is outside.
+	if (determinant > 0.001f)
+	{
+		return false;
+	}
+
+	// Calculate the Normal for the second edge.
+	edgeNormal[0] = (e2[1] * normal[2]) - (e2[2] * normal[1]);
+	edgeNormal[1] = (e2[2] * normal[0]) - (e2[0] * normal[2]);
+	edgeNormal[2] = (e2[0] * normal[1]) - (e2[1] * normal[0]);
+
+	// Calculate the determinant to see if it is on the inside, outside, or directly on the edge.
+	temp[0] = Q[0] - v1[0];
+	temp[1] = Q[1] - v1[1];
+	temp[2] = Q[2] - v1[2];
+
+	determinant = ((edgeNormal[0] * temp[0]) + (edgeNormal[1] * temp[1]) + (edgeNormal[2] * temp[2]));
+
+	// Check if it is outside.
+	if (determinant > 0.001f)
+	{
+		return false;
+	}
+
+	// Calculate the Normal for the third edge.
+	edgeNormal[0] = (e3[1] * normal[2]) - (e3[2] * normal[1]);
+	edgeNormal[1] = (e3[2] * normal[0]) - (e3[0] * normal[2]);
+	edgeNormal[2] = (e3[0] * normal[1]) - (e3[1] * normal[0]);
+
+	// Calculate the determinant to see if it is on the inside, outside, or directly on the edge.
+	temp[0] = Q[0] - v2[0];
+	temp[1] = Q[1] - v2[1];
+	temp[2] = Q[2] - v2[2];
+
+	determinant = ((edgeNormal[0] * temp[0]) + (edgeNormal[1] * temp[1]) + (edgeNormal[2] * temp[2]));
+
+	// Check if it is outside.
+	if (determinant > 0.001f)
+	{
+		return false;
+	}
+
+	// Now we have our height.
+	height = Q[1];
+
+	return true;
 }

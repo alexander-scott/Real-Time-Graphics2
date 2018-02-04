@@ -17,7 +17,7 @@ bool TextureManager::Initialize(int count)
 {
 	_textureCount = count;
 
-	// Create the color Texture object.
+	// Create the Colour Texture object.
 	_textureArray = new Texture[_textureCount];
 	if (!_textureArray)
 	{
@@ -49,7 +49,7 @@ bool TextureManager::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* devi
 {
 	bool result;
 
-	// Initialize the color Texture object.
+	// Initialize the Colour Texture object.
 	result = _textureArray[location].Initialize(device, deviceContext, filename);
 	if (!result)
 	{
