@@ -64,6 +64,9 @@
     <ClCompile Include="Source\SkyDome.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TerrainCell.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -124,6 +127,9 @@
       <Filter>DX11\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\SkyDome.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrainCell.h">
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

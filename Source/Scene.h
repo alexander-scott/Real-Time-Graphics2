@@ -31,7 +31,7 @@ private:
 	Light*			_light;
 	SkyDome*		_skyDome;
 	Terrain*		_terrain;
-	bool			_wireFrame;
+	bool			_wireFrame, m_cellLines;
 };
 
 #endif

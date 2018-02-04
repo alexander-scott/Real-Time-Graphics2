@@ -79,6 +79,9 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	// Set wire frame rendering initially to disabled.
 	_wireFrame = false;
 
+	// Set the rendering of cell lines initially to enabled.
+	m_cellLines = true;
+
 	return true;
 }
 
@@ -180,15 +183,16 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	_camera->GetTransform()->SetPosition(posX, posY, posZ);
 	_camera->GetTransform()->SetRotation(rotX, rotY, rotZ);
 
-	if(Input->IsF1Toggled())
-	{
-		// No action to map to yet
-	}
-
 	// Determine if the terrain should be rendered in wireframe or not.
-	if (Input->IsF2Toggled())
+	if (Input->IsF1Toggled())
 	{
 		_wireFrame = !_wireFrame;
+	}
+
+	// Determine if we should render the lines around each terrain cell.
+	if (Input->IsF2Toggled())
+	{
+		m_cellLines = !m_cellLines;
 	}
 
 	return;
@@ -245,14 +249,37 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 		direct3D->EnableWireframe();
 	}
 
-	// Render the terrain grid using the light shader.
-	_terrain->Render(direct3D->GetDeviceContext());
+	// Render the terrain cells (and cell lines if needed).
+	for (int i = 0; i<_terrain->GetCellCount(); i++)
+	{
+		// Put the terrain cell buffers on the pipeline.
+		result = _terrain->RenderCell(direct3D->GetDeviceContext(), i);
+		if (!result)
+		{
+			return false;
 
-	//result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(1));
-	/*result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, textureManager->GetTexture(1), _light->GetDirection(), _light->GetDiffuseColor());*/
-	result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetIndexCount(), worldMatrix, viewMatrix,
-		projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1), _light->GetDirection(), _light->GetDiffuseColor());
+		}
+
+		// Render the cell buffers using the terrain shader.
+		result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetCellIndexCount(i), worldMatrix, viewMatrix,
+			projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1),
+			_light->GetDirection(), _light->GetDiffuseColor());
+		if (!result)
+		{
+			return false;
+		}
+
+		// If needed then render the bounding box around this terrain cell using the color shader. 
+		if (m_cellLines)
+		{
+			_terrain->RenderCellLines(direct3D->GetDeviceContext(), i);
+			shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _terrain->GetCellLinesIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
+			if (!result)
+			{
+				return false;
+			}
+		}
+	}
 	
 	if(!result)
 	{

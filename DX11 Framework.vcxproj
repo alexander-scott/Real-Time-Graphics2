@@ -382,6 +382,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\SkyDome.cpp" />
     <ClCompile Include="Source\SkydomeShader.cpp" />
+    <ClCompile Include="Source\TerrainCell.cpp" />
     <ClCompile Include="Source\TerrainShader.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\TextureShader.cpp" />
@@ -404,6 +405,7 @@
     <ClInclude Include="Source\LightShader.h" />
     <ClInclude Include="Source\SkyDome.h" />
     <ClInclude Include="Source\SkydomeShader.h" />
+    <ClInclude Include="Source\TerrainCell.h" />
     <ClInclude Include="Source\TerrainShader.h" />
     <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\TextureShader.h" />
