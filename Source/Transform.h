@@ -25,6 +25,9 @@ public:
 	void GetPosition(XMFLOAT3&);
 	void GetRotation(XMFLOAT3&);
 
+	XMFLOAT3& GetPositionValue() { return _position; }
+	XMFLOAT3& GetRotationValue() { return _rotation; }
+
 	void SetFrameTime(float);
 
 	void MoveForward(bool);

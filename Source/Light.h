@@ -1,6 +1,9 @@
 #pragma once
 
 #include <directxmath.h>
+
+#include "Transform.h"
+
 using namespace DirectX;
 
 class Light
@@ -17,12 +20,12 @@ public:
 
 	XMFLOAT4 GetAmbientColor();
 	XMFLOAT4 GetDiffuseColor();
-	XMFLOAT3 GetDirection();
-	XMFLOAT3 GetPosition();
+
+	Transform* GetTransform() { return _transform; }
 
 private:
-	XMFLOAT4 _ambientColour;
-	XMFLOAT4 _diffuseColour;
-	XMFLOAT3 _direction;
-	XMFLOAT3 _position;
+	XMFLOAT4		_ambientColour;
+	XMFLOAT4		_diffuseColour;
+
+	Transform*		_transform;
 };
