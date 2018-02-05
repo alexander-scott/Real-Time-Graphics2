@@ -33,6 +33,7 @@ private:
 	Frustum*		_frustum;
 	SkyDome*		_skyDome;
 	Terrain*		_terrain;
+
 	bool			_wireFrame, _cellLines, _heightLocked;
 };
 

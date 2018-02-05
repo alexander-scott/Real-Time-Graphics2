@@ -803,8 +803,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index1].R;
 			_terrainModel[index].G = _heightMap[index1].G;
 			_terrainModel[index].B = _heightMap[index1].B;
-			_terrainModel[index].tu2 = tu2Left;
-			_terrainModel[index].tv2 = tv2Top;
+			_terrainModel[index].Tu2 = tu2Left;
+			_terrainModel[index].Tv2 = tv2Top;
 			index++;
 
 			// Triangle 1 - Upper right.
@@ -819,8 +819,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index2].R;
 			_terrainModel[index].G = _heightMap[index2].G;
 			_terrainModel[index].B = _heightMap[index2].B;
-			_terrainModel[index].tu2 = tu2Right;
-			_terrainModel[index].tv2 = tv2Top;
+			_terrainModel[index].Tu2 = tu2Right;
+			_terrainModel[index].Tv2 = tv2Top;
 			index++;
 
 			// Triangle 1 - Bottom left.
@@ -835,8 +835,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index3].R;
 			_terrainModel[index].G = _heightMap[index3].G;
 			_terrainModel[index].B = _heightMap[index3].B;
-			_terrainModel[index].tu2 = tu2Left;
-			_terrainModel[index].tv2 = tv2Bottom;
+			_terrainModel[index].Tu2 = tu2Left;
+			_terrainModel[index].Tv2 = tv2Bottom;
 			index++;
 
 			// Triangle 2 - Bottom left.
@@ -851,8 +851,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index3].R;
 			_terrainModel[index].G = _heightMap[index3].G;
 			_terrainModel[index].B = _heightMap[index3].B;
-			_terrainModel[index].tu2 = tu2Left;
-			_terrainModel[index].tv2 = tv2Bottom;
+			_terrainModel[index].Tu2 = tu2Left;
+			_terrainModel[index].Tv2 = tv2Bottom;
 			index++;
 
 			// Triangle 2 - Upper right.
@@ -867,8 +867,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index2].R;
 			_terrainModel[index].G = _heightMap[index2].G;
 			_terrainModel[index].B = _heightMap[index2].B;
-			_terrainModel[index].tu2 = tu2Right;
-			_terrainModel[index].tv2 = tv2Top;
+			_terrainModel[index].Tu2 = tu2Right;
+			_terrainModel[index].Tv2 = tv2Top;
 			index++;
 
 			// Triangle 2 - Bottom right.
@@ -883,8 +883,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index4].R;
 			_terrainModel[index].G = _heightMap[index4].G;
 			_terrainModel[index].B = _heightMap[index4].B;
-			_terrainModel[index].tu2 = tu2Right;
-			_terrainModel[index].tv2 = tv2Bottom;
+			_terrainModel[index].Tu2 = tu2Right;
+			_terrainModel[index].Tv2 = tv2Bottom;
 			index++;
 
 			// Increment the second tu texture coords.
