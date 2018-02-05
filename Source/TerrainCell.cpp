@@ -161,6 +161,7 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 			vertices[index].Tangent = XMFLOAT3(terrainModel[modelIndex].Tx, terrainModel[modelIndex].Ty, terrainModel[modelIndex].Tz);
 			vertices[index].Binormal = XMFLOAT3(terrainModel[modelIndex].Bx, terrainModel[modelIndex].By, terrainModel[modelIndex].Bz);
 			vertices[index].Colour = XMFLOAT3(terrainModel[modelIndex].R, terrainModel[modelIndex].G, terrainModel[modelIndex].B);
+			vertices[index].texture2 = XMFLOAT2(terrainModel[modelIndex].tu2, terrainModel[modelIndex].tv2);
 			indices[index] = index;
 			modelIndex++;
 			index++;

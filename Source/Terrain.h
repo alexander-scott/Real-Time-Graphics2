@@ -40,6 +40,7 @@ private:
 		float Tx, Ty, Tz;
 		float Bx, By, Bz;
 		float R, G, B;
+		float tu2, tv2;
 	};
 
 	struct VectorType

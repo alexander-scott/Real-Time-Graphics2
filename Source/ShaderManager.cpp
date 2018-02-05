@@ -166,7 +166,9 @@ bool ShaderManager::RenderSkyDomeShader(ID3D11DeviceContext* deviceContext, int 
 
 bool ShaderManager::RenderTerrainShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normalMap,
+	ID3D11ShaderResourceView* normalMap2, ID3D11ShaderResourceView* normalMap3,
 	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {
-	return _terrainShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, normalMap, lightDirection, diffuseColor);
+	return _terrainShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, normalMap, normalMap2, normalMap3,
+		lightDirection, diffuseColor);
 }
