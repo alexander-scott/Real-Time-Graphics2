@@ -752,6 +752,7 @@ bool Terrain::LoadColourMap()
 bool Terrain::BuildTerrainModel()
 {
 	int i, j, index, index1, index2, index3, index4;
+	float quadsCovered, incrementSize, tu2Left, tu2Right, tv2Bottom, tv2Top;
 
 	// Calculate the number of vertices in the 3D terrain model.
 	_vertexCount = (_terrainHeight - 1) * (_terrainWidth - 1) * 6;
@@ -762,6 +763,17 @@ bool Terrain::BuildTerrainModel()
 	{
 		return false;
 	}
+
+	// Setup the increment size for the second set of textures.
+	// This is a fixed 33x33 vertex array per cell so there will be 32 rows of quads in a cell.
+	quadsCovered = 32.0f;
+	incrementSize = 1.0f / quadsCovered;
+
+	// Initialize the texture increments.
+	tu2Left = 0.0f;
+	tu2Right = incrementSize;
+	tv2Top = 0.0f;
+	tv2Bottom = incrementSize;
 
 	// Initialize the index into the height map array.
 	index = 0;
@@ -791,6 +803,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index1].R;
 			_terrainModel[index].G = _heightMap[index1].G;
 			_terrainModel[index].B = _heightMap[index1].B;
+			_terrainModel[index].tu2 = tu2Left;
+			_terrainModel[index].tv2 = tv2Top;
 			index++;
 
 			// Triangle 1 - Upper right.
@@ -805,6 +819,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index2].R;
 			_terrainModel[index].G = _heightMap[index2].G;
 			_terrainModel[index].B = _heightMap[index2].B;
+			_terrainModel[index].tu2 = tu2Right;
+			_terrainModel[index].tv2 = tv2Top;
 			index++;
 
 			// Triangle 1 - Bottom left.
@@ -819,6 +835,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index3].R;
 			_terrainModel[index].G = _heightMap[index3].G;
 			_terrainModel[index].B = _heightMap[index3].B;
+			_terrainModel[index].tu2 = tu2Left;
+			_terrainModel[index].tv2 = tv2Bottom;
 			index++;
 
 			// Triangle 2 - Bottom left.
@@ -833,6 +851,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index3].R;
 			_terrainModel[index].G = _heightMap[index3].G;
 			_terrainModel[index].B = _heightMap[index3].B;
+			_terrainModel[index].tu2 = tu2Left;
+			_terrainModel[index].tv2 = tv2Bottom;
 			index++;
 
 			// Triangle 2 - Upper right.
@@ -847,6 +867,8 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index2].R;
 			_terrainModel[index].G = _heightMap[index2].G;
 			_terrainModel[index].B = _heightMap[index2].B;
+			_terrainModel[index].tu2 = tu2Right;
+			_terrainModel[index].tv2 = tv2Top;
 			index++;
 
 			// Triangle 2 - Bottom right.
@@ -861,7 +883,31 @@ bool Terrain::BuildTerrainModel()
 			_terrainModel[index].R = _heightMap[index4].R;
 			_terrainModel[index].G = _heightMap[index4].G;
 			_terrainModel[index].B = _heightMap[index4].B;
+			_terrainModel[index].tu2 = tu2Right;
+			_terrainModel[index].tv2 = tv2Bottom;
 			index++;
+
+			// Increment the second tu texture coords.
+			tu2Left += incrementSize;
+			tu2Right += incrementSize;
+
+			// Reset the second tu texture coordinate increments.
+			if (tu2Right > 1.0f)
+			{
+				tu2Left = 0.0f;
+				tu2Right = incrementSize;
+			}
+		}
+
+		// Increment the second tv texture coords.
+		tv2Top += incrementSize;
+		tv2Bottom += incrementSize;
+
+		// Reset the second tu texture coordinate increments.
+		if (tv2Bottom > 1.0f)
+		{
+			tv2Top = 0.0f;
+			tv2Bottom = incrementSize;
 		}
 	}
 

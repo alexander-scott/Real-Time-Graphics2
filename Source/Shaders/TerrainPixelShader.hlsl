@@ -1,6 +1,7 @@
 Texture2D diffuseTexture1 : register(t0);
 Texture2D normalTexture1 : register(t1);
 Texture2D normalTexture2 : register(t2);
+Texture2D normalTexture3 : register(t3);
 
 SamplerState SampleType : register(s0);
 
@@ -19,6 +20,8 @@ struct PixelInputType
 	float3 tangent : TANGENT;
 	float3 binormal : BINORMAL;
 	float4 color : COLOR;
+	float2 tex2 : TEXCOORD1;
+	float4 depthPosition : TEXCOORD2;
 };
 
 float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
@@ -34,16 +37,30 @@ float4 TerrainPixelShader(PixelInputType input) : SV_TARGET
 	float4 material2;
 	float blendAmount;
 	float4 color;
+	float depthValue;
 
 	// Calculate the slope of this point.
 	slope = 1.0f - input.normal.y;
+
+	// Get the depth value of the pixel by dividing the Z pixel depth by the homogeneous W coordinate.
+	depthValue = input.depthPosition.z / input.depthPosition.w;
 
 	// Invert the light direction for calculations.
 	lightDir = -lightDirection;
 
 	// Setup the first material.
 	textureColor1 = diffuseTexture1.Sample(SampleType, input.tex);
-	bumpMap = normalTexture1.Sample(SampleType, input.tex);
+
+	// Select the normal map for the first material based on the distance.
+	if (depthValue > 0.998f)
+	{
+		bumpMap = normalTexture3.Sample(SampleType, input.tex2);
+	}
+	else
+	{
+		bumpMap = normalTexture1.Sample(SampleType, input.tex);
+	}
+
 	bumpMap = (bumpMap * 2.0f) - 1.0f;
 	bumpNormal = (bumpMap.x * input.tangent) + (bumpMap.y * input.binormal) + (bumpMap.z * input.normal);
 	bumpNormal = normalize(bumpNormal);

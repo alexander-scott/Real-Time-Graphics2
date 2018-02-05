@@ -13,6 +13,7 @@ struct VertexInputType
 	float3 tangent : TANGENT;
 	float3 binormal : BINORMAL;
 	float3 color : COLOR;
+	float2 tex2 : TEXCOORD1;
 };
 
 struct PixelInputType
@@ -23,6 +24,8 @@ struct PixelInputType
 	float3 tangent : TANGENT;
 	float3 binormal : BINORMAL;
 	float4 color : COLOR;
+	float2 tex2 : TEXCOORD1;
+	float4 depthPosition : TEXCOORD2;
 };
 
 PixelInputType TerrainVertexShader(VertexInputType input)
@@ -56,6 +59,9 @@ PixelInputType TerrainVertexShader(VertexInputType input)
 
 	// Store the input color for the pixel shader to use.
 	output.color = float4(input.color, 1.0f);
+
+	// Store the position value in a second input value for depth value calculations.
+	output.depthPosition = output.position;
 
 	return output;
 }

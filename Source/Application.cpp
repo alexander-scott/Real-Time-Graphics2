@@ -115,6 +115,12 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
+	if (!result)
+	{
+		return false;
+	}
+
 	// Create the scene object.
 	_scene = new Scene;
 	if(!_scene)
