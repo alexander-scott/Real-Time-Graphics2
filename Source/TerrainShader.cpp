@@ -16,12 +16,13 @@ TerrainShader::~TerrainShader()
 
 bool TerrainShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normalMap,
-	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
+	ID3D11ShaderResourceView* normalMap2, XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {
 	bool result;
 
 	// Set the shader parameters that it will use for rendering.
-	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, normalMap, lightDirection, diffuseColor);
+	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, normalMap, normalMap2,
+		lightDirection, diffuseColor);
 	if (!result)
 	{
 		return false;
@@ -292,7 +293,7 @@ void TerrainShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCo
 
 bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normalMap,
-	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
+	ID3D11ShaderResourceView* normalMap2, XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -332,6 +333,7 @@ bool TerrainShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	// Set shader Texture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 	deviceContext->PSSetShaderResources(1, 1, &normalMap);
+	deviceContext->PSSetShaderResources(2, 1, &normalMap2);
 
 	// Lock the light constant buffer so it can be written to.
 	result = deviceContext->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

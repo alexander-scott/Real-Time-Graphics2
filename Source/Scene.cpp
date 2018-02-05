@@ -303,7 +303,7 @@ bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, Texture
 		{
 			// Render the cell buffers using the terrain shader.
 			result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetCellIndexCount(i), worldMatrix, viewMatrix,
-				projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1),
+				projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1), textureManager->GetTexture(2),
 				_light->GetDirection(), _light->GetDiffuseColor());
 			if (!result)
 			{

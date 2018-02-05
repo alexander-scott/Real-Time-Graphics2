@@ -97,13 +97,19 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/dirt01d.tga", 0);
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
 	if (!result)
 	{
 		return false;
 	}
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/dirt01n.tga", 1);
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
 	if (!result)
 	{
 		return false;
