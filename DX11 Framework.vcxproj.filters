@@ -28,9 +28,6 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TextureManager.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
@@ -70,6 +67,9 @@
     <ClCompile Include="Source\Light.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneTerrainLOD.cpp">
+      <Filter>SceneTerrainLOD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -94,9 +94,6 @@
       <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureManager.h">
@@ -138,6 +135,12 @@
     <ClInclude Include="Source\Light.h">
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Source\IScene.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneTerrainLOD.h">
+      <Filter>SceneTerrainLOD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -157,6 +160,9 @@
     </Filter>
     <Filter Include="Application\Components">
       <UniqueIdentifier>{3923f8e0-c2cc-421c-bba3-b5c0ce1d7c4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneTerrainLOD">
+      <UniqueIdentifier>{4885cf96-44a3-46f3-9885-fb95ad102c32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

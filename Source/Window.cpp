@@ -118,7 +118,7 @@ LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPA
 
 void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 {
-	WNDCLASSEX wc;
+	WNDCLASSEX wcex;
 	DEVMODE dmScreenSettings;
 	int posX, posY;
 
@@ -129,24 +129,24 @@ void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 	_hinstance = GetModuleHandle(NULL);
 
 	// Give the application a name.
-	_applicationName = L"Engine";
+	_applicationName = L"DX11 Framework";
 
 	// Setup the windows class with default settings.
-	wc.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc   = WndProc;
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 0;
-	wc.hInstance     = _hinstance;
-	wc.hIcon		 = LoadIcon(NULL, IDI_WINLOGO);
-	wc.hIconSm       = wc.hIcon;
-	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-	wc.lpszMenuName  = NULL;
-	wc.lpszClassName = _applicationName;
-	wc.cbSize        = sizeof(WNDCLASSEX);
+	wcex.style         = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc   = WndProc;
+	wcex.cbClsExtra    = 0;
+	wcex.cbWndExtra    = 0;
+	wcex.hInstance     = _hinstance;
+	wcex.hIcon		 = LoadIcon(NULL, IDI_WINLOGO);
+	wcex.hIconSm       = wcex.hIcon;
+	wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	wcex.lpszMenuName  = NULL;
+	wcex.lpszClassName = _applicationName;
+	wcex.cbSize        = sizeof(WNDCLASSEX);
 	
 	// Register the window class.
-	RegisterClassEx(&wc);
+	RegisterClassEx(&wcex);
 
 	// Determine the resolution of the clients desktop screen.
 	screenWidth  = GetSystemMetrics(SM_CXSCREEN);
@@ -181,7 +181,7 @@ void Window::InitializeWindows(int& screenWidth, int& screenHeight)
 	}
 
 	// Create the window with the screen settings and get the handle to it.
-	_hwnd = CreateWindowEx(WS_EX_APPWINDOW, _applicationName, _applicationName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+	_hwnd = CreateWindowEx(WS_EX_APPWINDOW, _applicationName, _applicationName, NULL,
 						    posX, posY, screenWidth, screenHeight, NULL, NULL, _hinstance, NULL);
 
 	// Bring the window up on the screen and set it as main focus.

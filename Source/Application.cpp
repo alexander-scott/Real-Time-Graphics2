@@ -97,43 +97,10 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
-	if (!result)
+	switch (CURRENT_SCENE)
 	{
-		return false;
-	}
-
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
-	if (!result)
-	{
-		return false;
-	}
-
-	// Create the scene object.
-	_scene = new Scene;
-	if(!_scene)
-	{
-		return false;
-	}
-
-	// Initialize the scene object.
-	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
-	if(!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the zone object.", L"Error", MB_OK);
-		return false;
+		case Scene::eSceneTerrainLOD:
+			return BuildSceneTerrainLOD(hwnd, screenWidth, screenHeight);
 	}
 
 	return true;
@@ -215,6 +182,50 @@ bool Application::Update()
 	result = _scene->Update(_dx11Instance, _input, _shaderManager, _textureManager, _timer->GetTime());
 	if (!result)
 	{
+		return false;
+	}
+
+	return result;
+}
+
+bool Application::BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight)
+{
+	bool result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
+	if (!result)
+	{
+		return false;
+	}
+
+	// Create the scene object.
+	_scene = new SceneTerrainLOD;
+	if (!_scene)
+	{
+		return false;
+	}
+
+	// Initialize the scene object.
+	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the zone object.", L"Error", MB_OK);
 		return false;
 	}
 

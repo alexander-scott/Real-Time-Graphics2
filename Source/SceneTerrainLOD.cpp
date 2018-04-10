@@ -1,23 +1,14 @@
-#include "Scene.h"
+#include "SceneTerrainLOD.h"
 
-Scene::Scene()
-{
-	_camera = nullptr;
-	_terrain = nullptr;
-	_light = nullptr;
-	_frustum = nullptr;
-	_skyDome = nullptr;
-}
-
-Scene::Scene(const Scene& other)
+SceneTerrainLOD::SceneTerrainLOD() : IScene()
 {
 }
 
-Scene::~Scene()
+SceneTerrainLOD::SceneTerrainLOD(const SceneTerrainLOD& other)
 {
 }
 
-bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
+bool SceneTerrainLOD::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
 
@@ -90,8 +81,8 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	// Set wire frame rendering initially to disabled.
 	_wireFrame = false;
 
-	// Set the rendering of cell lines initially to enabled.
-	_cellLines = true;
+	// Set the rendering of cell lines initially to disabled.
+	_cellLines = false;
 
 	// Set the user locked to the terrain height for movement.
 	_heightLocked = true;
@@ -99,7 +90,7 @@ bool Scene::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int s
 	return true;
 }
 
-void Scene::Destroy()
+void SceneTerrainLOD::Destroy()
 {
 	// Release the terrain object.
 	if(_terrain)
@@ -141,13 +132,13 @@ void Scene::Destroy()
 	return;
 }
 
-bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, TextureManager* textureManager, float frameTime)
+bool SceneTerrainLOD::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, TextureManager* textureManager, float frameTime)
 {
 	bool result, foundHeight;
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
 
 	// Do the frame input processing.
-	HandleMovementInput(input, frameTime);
+	ProcessInput(input, frameTime);
 
 	// Get the View point Position/rotation.
 	_camera->GetTransform()->GetPosition(posX, posY, posZ);
@@ -169,7 +160,7 @@ bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderMa
 	}
 
 	// Render the graphics.
-	result = Render(direct3D, shaderManager, textureManager);
+	result = Draw(direct3D, shaderManager, textureManager);
 	if(!result)
 	{
 		return false;
@@ -178,7 +169,7 @@ bool Scene::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderMa
 	return true;
 }
 
-void Scene::HandleMovementInput(Input* Input, float frameTime)
+void SceneTerrainLOD::ProcessInput(Input* Input, float frameTime)
 {
 	bool keyDown;
 	float posX, posY, posZ, rotX, rotY, rotZ;
@@ -211,14 +202,6 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	keyDown = Input->IsPgDownPressed();
 	_camera->GetTransform()->LookDownward(keyDown);
 
-	// Get the View point Position/rotation.
-	_camera->GetTransform()->GetPosition(posX, posY, posZ);
-	_camera->GetTransform()->GetRotation(rotX, rotY, rotZ);
-
-	// Set the Position of the camera.
-	_camera->GetTransform()->SetPosition(posX, posY, posZ);
-	_camera->GetTransform()->SetRotation(rotX, rotY, rotZ);
-
 	// Determine if the terrain should be rendered in wireframe or not.
 	if (Input->IsF1Toggled())
 	{
@@ -240,7 +223,7 @@ void Scene::HandleMovementInput(Input* Input, float frameTime)
 	return;
 }
 
-bool Scene::Render(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneTerrainLOD::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
