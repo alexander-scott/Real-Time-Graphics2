@@ -17,8 +17,8 @@ bool TextureManager::Initialize(int count)
 {
 	_textureCount = count;
 
-	// Create the Colour Texture object.
-	_textureArray = new Texture[_textureCount];
+	// Create the Colour TargaTexture object.
+	_textureArray = new TargaTexture[_textureCount];
 	if (!_textureArray)
 	{
 		return false;
@@ -31,7 +31,7 @@ void TextureManager::Destroy()
 {
 	int i;
 
-	// Release the Texture objects.
+	// Release the TargaTexture objects.
 	if (_textureArray)
 	{
 		for (i = 0; i<_textureCount; i++)
@@ -49,7 +49,7 @@ bool TextureManager::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* devi
 {
 	bool result;
 
-	// Initialize the Colour Texture object.
+	// Initialize the Colour TargaTexture object.
 	result = _textureArray[location].Initialize(device, deviceContext, filename);
 	if (!result)
 	{

@@ -232,7 +232,7 @@ bool DX11Instance::Initialize(int screenWidth, int screenHeight, bool vsync, HWN
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
 
-	// Create the Texture for the depth buffer using the filled out description.
+	// Create the TargaTexture for the depth buffer using the filled out description.
 	result = _device->CreateTexture2D(&depthBufferDesc, NULL, &_depthStencilBuffer);
 	if(FAILED(result))
 	{

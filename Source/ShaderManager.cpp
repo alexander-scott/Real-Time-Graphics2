@@ -35,14 +35,14 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
-	// Create the Texture shader object.
+	// Create the TargaTexture shader object.
 	_textureShader = new TextureShader;
 	if (!_textureShader)
 	{
 		return false;
 	}
 
-	// Initialize the Texture shader object.
+	// Initialize the TargaTexture shader object.
 	result = _textureShader->Initialize(device, hwnd, L"Source/Shaders/TexturePixelShader.hlsl", L"Source/Shaders/TextureVertexShader.hlsl");
 	if (!result)
 	{
@@ -120,7 +120,7 @@ void ShaderManager::Destroy()
 		_colourShader = 0;
 	}
 
-	// Release the Texture shader object.
+	// Release the TargaTexture shader object.
 	if (_textureShader)
 	{
 		_textureShader->Destroy();

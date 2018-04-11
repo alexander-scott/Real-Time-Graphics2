@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Texture.h"
+#include "TargaTexture.h"
 
 class TextureManager
 {
@@ -17,6 +17,6 @@ public:
 	ID3D11ShaderResourceView* GetTexture(int);
 
 private:
-	Texture*		_textureArray;
+	TargaTexture*		_textureArray;
 	int				_textureCount;
 };

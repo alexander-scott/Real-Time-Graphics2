@@ -371,6 +371,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DDSTextureLoader.cpp" />
+    <ClCompile Include="Source\SkeletonShader.cpp" />
+    <ClCompile Include="Source\Skeleton.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\ColourShader.cpp" />
@@ -391,11 +394,15 @@
     <ClCompile Include="Source\ShaderManager.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Terrain.cpp" />
-    <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\TargaTexture.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\DDSTextureLoader.h" />
+    <ClInclude Include="Source\ITexture.h" />
+    <ClInclude Include="Source\SkeletonShader.h" />
+    <ClInclude Include="Source\Skeleton.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\ColourShader.h" />
@@ -416,7 +423,7 @@
     <ClInclude Include="Source\ShaderManager.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Terrain.h" />
-    <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\TargaTexture.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\SceneTerrainLOD.h" />
   </ItemGroup>

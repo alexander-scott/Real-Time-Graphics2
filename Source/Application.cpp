@@ -82,14 +82,14 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	// Create the Texture manager object.
+	// Create the TargaTexture manager object.
 	_textureManager = new TextureManager;
 	if (!_textureManager)
 	{
 		return false;
 	}
 
-	// Initialize the Texture manager object.
+	// Initialize the TargaTexture manager object.
 	result = _textureManager->Initialize(10);
 	if (!result)
 	{
@@ -131,7 +131,7 @@ void Application::Destroy()
 		_shaderManager = 0;
 	}
 
-	// Release the Texture manager object.
+	// Release the TargaTexture manager object.
 	if (_textureManager)
 	{
 		_textureManager->Destroy();
@@ -190,7 +190,9 @@ bool Application::Update()
 
 bool Application::BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight)
 {
-	bool result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
+	bool result;
+
+	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
 	if (!result)
 	{
 		return false;

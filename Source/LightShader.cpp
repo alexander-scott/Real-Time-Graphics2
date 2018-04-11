@@ -159,7 +159,7 @@ bool LightShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFil
 		return false;
 	}
 
-	// Create a Texture sampler state description.
+	// Create a TargaTexture sampler state description.
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -174,7 +174,7 @@ bool LightShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFil
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	// Create the Texture sampler state.
+	// Create the TargaTexture sampler state.
 	result = device->CreateSamplerState(&samplerDesc, &_sampleState);
 	if (FAILED(result))
 	{
@@ -285,7 +285,7 @@ bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 	// Finanly set the constant buffer in the vertex shader with the updated values.
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
-	// Set shader Texture resource in the pixel shader.
+	// Set shader TargaTexture resource in the pixel shader.
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	// Lock the light constant buffer so it can be written to.

@@ -22,9 +22,6 @@
     <ClCompile Include="Source\ColourShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Texture.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -70,6 +67,18 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp">
       <Filter>SceneTerrainLOD</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SkeletonShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Skeleton.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DDSTextureLoader.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TargaTexture.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -89,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="Source\ColourShader.h">
       <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Texture.h">
-      <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Application</Filter>
@@ -140,6 +146,21 @@
     </ClInclude>
     <ClInclude Include="Source\SceneTerrainLOD.h">
       <Filter>SceneTerrainLOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SkeletonShader.h">
+      <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Skeleton.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DDSTextureLoader.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ITexture.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TargaTexture.h">
+      <Filter>DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
