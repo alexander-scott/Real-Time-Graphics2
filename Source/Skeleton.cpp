@@ -53,6 +53,26 @@ void Skeleton::Draw(ID3D11DeviceContext * deviceContext)
 	}
 }
 
+void Skeleton::DrawSubset(ID3D11DeviceContext * deviceContext, int index)
+{
+	unsigned int stride;
+	unsigned int offset;
+
+	// Set vertex buffer stride and offset.
+	stride = sizeof(Vertex);
+	offset = 0;
+
+	//Set the grounds index buffer
+	deviceContext->IASetIndexBuffer(MD5Model.subsets[index].indexBuff, DXGI_FORMAT_R32_UINT, 0);
+	//Set the grounds vertex buffer
+	deviceContext->IASetVertexBuffers(0, 1, &MD5Model.subsets[index].vertBuff, &stride, &offset);
+}
+
+int Skeleton::GetIndexCount(int index)
+{
+	return MD5Model.subsets[index].numTriangles * 3;
+}
+
 bool Skeleton::LoadMD5Model(ID3D11Device* device,
 	ID3D11DeviceContext* context,
 	std::wstring filename,

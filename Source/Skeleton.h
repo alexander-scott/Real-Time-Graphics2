@@ -86,6 +86,10 @@ public:
 
 	void Update(float deltaTime);
 	void Draw(ID3D11DeviceContext* deviceContext);
+	void DrawSubset(ID3D11DeviceContext* deviceContext, int index);
+
+	int GetIndexCount(int index);
+	int GetSubsetCount() { return MD5Model.numSubsets; }
 
 	Transform* GetTransform() { return _transform; }
 

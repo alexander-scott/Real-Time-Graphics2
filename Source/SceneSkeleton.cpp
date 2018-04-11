@@ -162,6 +162,17 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	// Reset the world matrix.
 	direct3D->GetWorldMatrix(worldMatrix);
 
+	for (int i = 0; i < _skeleton->GetSubsetCount(); i++)
+	{
+		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
+		result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
+
+		if (!result)
+		{
+			return false;
+		}
+	}
+
 	// Turn the Z buffer back and back face culling on.
 	direct3D->TurnZBufferOn();
 	direct3D->TurnOnCulling();
