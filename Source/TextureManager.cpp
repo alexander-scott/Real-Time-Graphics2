@@ -53,8 +53,11 @@ bool TextureManager::LoadTargaTexture(ID3D11Device* device, ID3D11DeviceContext*
 	bool result;
 
 	// Initialize the Colour TargaTexture object.
-	_textureArray.insert(std::make_pair(location, new TargaTexture));
-	result = _textureArray[location]->Initialize(device, deviceContext, filename);
+	auto texture = new TargaTexture;
+	texture->SetPath(filename);
+
+	_textureArray.insert(std::make_pair(location, texture));
+	result = _textureArray[location]->Initialize(device, deviceContext);
 	if (!result)
 	{
 		return false;
@@ -63,13 +66,16 @@ bool TextureManager::LoadTargaTexture(ID3D11Device* device, ID3D11DeviceContext*
 	return true;
 }
 
-bool TextureManager::LoadJPEGTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename, int location)
+bool TextureManager::LoadJPEGTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, std::wstring filename, int location)
 {
 	bool result;
 
 	// Initialize the JPEG object.
-	_textureArray.insert(std::make_pair(location, new JPEGTexture));
-	result = _textureArray[location]->Initialize(device, deviceContext, filename);
+	auto texture = new JPEGTexture;
+	texture->SetPath(filename);
+
+	_textureArray.insert(std::make_pair(location, texture));
+	result = _textureArray[location]->Initialize(device, deviceContext);
 	if (!result)
 	{
 		return false;

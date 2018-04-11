@@ -2,12 +2,12 @@
 
 #include <windows.h>
 #include <d3d11.h>
-#include <d3dcompiler.h>
-#include "DDSTextureLoader.h"
 #include <directxmath.h>
 
 #include <string>
 #include <vector>
+
+#include "TextureManager.h"
 
 using namespace DirectX;
 
@@ -87,11 +87,11 @@ public:
 	void Draw(ID3D11DeviceContext* deviceContext);
 
 private:
-	/*bool LoadMD5Model(ID3D11Device* device, 
+	bool LoadMD5Model(ID3D11Device* device, 
 		ID3D11DeviceContext* context, 
 		std::wstring filename,
 		Model3D& MD5Model,
-		TextureManager* textureManager);*/
+		TextureManager* textureManager);
 
 	XMMATRIX smilesWorld;
 	Model3D MD5Model;

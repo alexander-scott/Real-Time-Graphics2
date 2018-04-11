@@ -17,13 +17,16 @@ public:
 	TargaTexture(const TargaTexture&);
 	~TargaTexture();
 
-	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*) override;
+	void SetPath(char* path) { _path = path; }
+
+	bool Initialize(ID3D11Device*, ID3D11DeviceContext*) override;
 	void Destroy() override;
 
 private:
 	bool LoadTarga(char*, int&, int&);
 
 private:
+	char*						_path;
 	unsigned char*				_targaData;
 	ID3D11Texture2D*			_texture;
 };

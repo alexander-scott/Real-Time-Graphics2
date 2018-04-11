@@ -15,7 +15,7 @@ TargaTexture::~TargaTexture()
 {
 }
 
-bool TargaTexture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+bool TargaTexture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	bool result;
 	int height, width;
@@ -25,7 +25,7 @@ bool TargaTexture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceC
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 
 	// Load the targa image data into memory.
-	result = LoadTarga(filename, height, width);
+	result = LoadTarga(_path, height, width);
 	if(!result)
 	{
 		return false;

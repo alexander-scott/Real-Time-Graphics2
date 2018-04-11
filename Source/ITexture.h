@@ -6,7 +6,7 @@
 class ITexture
 {
 public:
-	virtual bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*) = 0;
+	virtual bool Initialize(ID3D11Device*, ID3D11DeviceContext*) = 0;
 	virtual void Destroy() = 0;
 
 	ID3D11ShaderResourceView * GetTexture() { return _textureView; }

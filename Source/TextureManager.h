@@ -16,7 +16,7 @@ public:
 	void Destroy();
 
 	bool LoadTargaTexture(ID3D11Device*, ID3D11DeviceContext*, char*, int);
-	bool LoadJPEGTexture(ID3D11Device*, ID3D11DeviceContext*, char*, int);
+	bool LoadJPEGTexture(ID3D11Device*, ID3D11DeviceContext*, std::wstring, int);
 
 	ID3D11ShaderResourceView* GetTexture(int);
 
