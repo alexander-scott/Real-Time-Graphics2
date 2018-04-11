@@ -17,6 +17,8 @@ bool Skeleton::Initialize(ID3D11Device * device, ID3D11DeviceContext* context, T
 	if (!LoadMD5Model(device, context, fileName, MD5Model, textureManager))
 		return false;
 
+	_transform = new Transform;
+
 	return true;
 }
 

@@ -39,7 +39,7 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	_camera->RenderBaseViewMatrix();
 
 	// Set the initial Position and rotation.
-	_camera->GetTransform()->SetPosition(128.0f, 10.0f, -10.0f);
+	_camera->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the light object.
@@ -69,8 +69,9 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 		return false;
 	}
 
-	// Initalize the skeelton object.
+	// Initalize the skeleton object.
 	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), _textureManager, L"Source/Animation/boy.md5mesh");
+	_skeleton->GetTransform()->SetPosition(XMFLOAT3(0, 0, 100));
 
 	return true;
 }
@@ -124,14 +125,44 @@ bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 
 void SceneSkeleton::ProcessInput(Input* input, float frameTime)
 {
+	bool keyDown;
 
+	// Set the frame time for calculating the updated Position.
+	_camera->GetTransform()->SetFrameTime(frameTime);
+
+	// Handle the input.
+	keyDown = input->IsLeftPressed();
+	_camera->GetTransform()->TurnLeft(keyDown);
+
+	keyDown = input->IsRightPressed();
+	_camera->GetTransform()->TurnRight(keyDown);
+
+	keyDown = input->IsUpPressed();
+	_camera->GetTransform()->MoveForward(keyDown);
+
+	keyDown = input->IsDownPressed();
+	_camera->GetTransform()->MoveBackward(keyDown);
+
+	keyDown = input->IsAPressed();
+	_camera->GetTransform()->MoveUpward(keyDown);
+
+	keyDown = input->IsZPressed();
+	_camera->GetTransform()->MoveDownward(keyDown);
+
+	keyDown = input->IsPgUpPressed();
+	_camera->GetTransform()->LookUpward(keyDown);
+
+	keyDown = input->IsPgDownPressed();
+	_camera->GetTransform()->LookDownward(keyDown);
+
+	return;
 }
 
 bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
-	XMFLOAT3 cameraPosition;
+	XMFLOAT3 cameraPosition, skeletonPosition;
 
 	// Generate the View matrix based on the camera's Position.
 	_camera->Render();
@@ -146,6 +177,9 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	// Get the Position of the camera.
 	_camera->GetTransform()->GetPosition(cameraPosition);
 
+	// Get the position of the skeleton
+	_skeleton->GetTransform()->GetPosition(skeletonPosition);
+
 	// Construct the frustum.
 	_frustum->ConstructFrustum(projectionMatrix, viewMatrix);
 
@@ -156,11 +190,11 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	direct3D->TurnOffCulling();
 	direct3D->TurnZBufferOff();
 
-	// Translate the sky dome to be centered around the camera Position.
-	worldMatrix = XMMatrixTranslation(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-
 	// Reset the world matrix.
 	direct3D->GetWorldMatrix(worldMatrix);
+
+	// Translate the sky dome to be centered around the skeleton Position.
+	worldMatrix = XMMatrixTranslation(skeletonPosition.x, skeletonPosition.y, skeletonPosition.z);
 
 	for (int i = 0; i < _skeleton->GetSubsetCount(); i++)
 	{
