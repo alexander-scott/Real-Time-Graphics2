@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "TextureManager.h"
+#include "Transform.h"
 
 using namespace DirectX;
 
@@ -80,11 +81,13 @@ public:
 	Skeleton();
 	~Skeleton();
 
-	bool Initialize(ID3D11Device*, char*);
+	bool Initialize(ID3D11Device * device, ID3D11DeviceContext* context, TextureManager* textureManager, std::wstring fileName);
 	void Destroy();
 
 	void Update(float deltaTime);
 	void Draw(ID3D11DeviceContext* deviceContext);
+
+	Transform* GetTransform() { return _transform; }
 
 private:
 	bool LoadMD5Model(ID3D11Device* device, 
@@ -93,7 +96,7 @@ private:
 		Model3D& MD5Model,
 		TextureManager* textureManager);
 
-	XMMATRIX smilesWorld;
-	Model3D MD5Model;
+	Model3D			MD5Model;
+	Transform*		_transform;
 };
 

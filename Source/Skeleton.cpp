@@ -12,11 +12,11 @@ Skeleton::~Skeleton()
 {
 }
 
-bool Skeleton::Initialize(ID3D11Device * device, char * md5FilePath)
+bool Skeleton::Initialize(ID3D11Device * device, ID3D11DeviceContext* context, TextureManager* textureManager, std::wstring fileName)
 {
-	/*if (!LoadMD5Model(device, L"boy.md5mesh", NewMD5Model, meshSRV, textureNameArray))
+	if (!LoadMD5Model(device, context, fileName, MD5Model, textureManager))
 		return false;
-*/
+
 	return true;
 }
 
