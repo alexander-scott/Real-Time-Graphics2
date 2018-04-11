@@ -6,7 +6,6 @@ Application::Application()
 	_dx11Instance = nullptr;
 	_timer = nullptr;
 	_shaderManager = nullptr;
-	_textureManager = nullptr;
 	_scene = nullptr;
 }
 
@@ -82,21 +81,6 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		return false;
 	}
 
-	// Create the TargaTexture manager object.
-	_textureManager = new TextureManager;
-	if (!_textureManager)
-	{
-		return false;
-	}
-
-	// Initialize the TargaTexture manager object.
-	result = _textureManager->Initialize(10, 10);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the texture manager object.", L"Error", MB_OK);
-		return false;
-	}
-
 	switch (CURRENT_SCENE)
 	{
 		case Scene::eSceneTerrainLOD:
@@ -136,14 +120,6 @@ void Application::Destroy()
 		_shaderManager->Destroy();
 		delete _shaderManager;
 		_shaderManager = 0;
-	}
-
-	// Release the TargaTexture manager object.
-	if (_textureManager)
-	{
-		_textureManager->Destroy();
-		delete _textureManager;
-		_textureManager = 0;
 	}
 
 	// Release the dx11 object.
@@ -186,7 +162,7 @@ bool Application::Update()
 	}
 
 	// Do the scene frame processing.
-	result = _scene->Update(_dx11Instance, _input, _shaderManager, _textureManager, _timer->GetTime());
+	result = _scene->Update(_dx11Instance, _input, _shaderManager,  _timer->GetTime());
 	if (!result)
 	{
 		return false;
@@ -198,30 +174,6 @@ bool Application::Update()
 bool Application::BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight)
 {
 	bool result;
-
-	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
-	if (!result)
-	{
-		return false;
-	}
 
 	// Create the scene object.
 	_scene = new SceneTerrainLOD;

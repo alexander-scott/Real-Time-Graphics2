@@ -8,9 +8,24 @@ SceneSkeleton::~SceneSkeleton()
 {
 }
 
-bool SceneSkeleton::Initialize(DX11Instance* Direct3D, TextureManager* textureManager, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
+bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
+
+	// Create the TargaTexture manager object.
+	_textureManager = new TextureManager;
+	if (!_textureManager)
+	{
+		return false;
+	}
+
+	// Initialize the TargaTexture manager object.
+	result = _textureManager->Initialize(10, 10);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture manager object.", L"Error", MB_OK);
+		return false;
+	}
 
 	// Create the camera object.
 	_camera = new Camera;
@@ -55,13 +70,21 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, TextureManager* textureMa
 	}
 
 	// Initalize the skeelton object.
-	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), textureManager, L"Source/Animation/boy.md5mesh");
+	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), _textureManager, L"Source/Animation/boy.md5mesh");
 
 	return true;
 }
 
 void SceneSkeleton::Destroy()
 {
+	// Release the TargaTexture manager object.
+	if (_textureManager)
+	{
+		_textureManager->Destroy();
+		delete _textureManager;
+		_textureManager = 0;
+	}
+
 	// Release the frustum object.
 	if (_frustum)
 	{
@@ -86,13 +109,13 @@ void SceneSkeleton::Destroy()
 	return;
 }
 
-bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, TextureManager* textureManager, float frameTime)
+bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, float frameTime)
 {
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
 
 	// Render the graphics.
-	bool result = Draw(direct3D, shaderManager, textureManager);
+	bool result = Draw(direct3D, shaderManager, _textureManager);
 	if (!result)
 	{
 		return false;

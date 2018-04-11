@@ -41,7 +41,6 @@ private:
 	Input*			_input;
 	DX11Instance*	_dx11Instance;
 	ShaderManager*	_shaderManager;
-	TextureManager* _textureManager;
 	Timer*			_timer;
 
 	IScene*			_scene;

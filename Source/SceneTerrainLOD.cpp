@@ -12,6 +12,45 @@ bool SceneTerrainLOD::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWi
 {
 	bool result;
 
+	// Create the TargaTexture manager object.
+	_textureManager = new TextureManager;
+	if (!_textureManager)
+	{
+		return false;
+	}
+
+	// Initialize the TargaTexture manager object.
+	result = _textureManager->Initialize(10, 10);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the texture manager object.", L"Error", MB_OK);
+		return false;
+	}
+
+	result = _textureManager->LoadTargaTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTargaTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTargaTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
+	if (!result)
+	{
+		return false;
+	}
+
+	result = _textureManager->LoadTargaTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
+	if (!result)
+	{
+		return false;
+	}
+
 	// Create the camera object.
 	_camera = new Camera;
 	if(!_camera)
@@ -92,6 +131,14 @@ bool SceneTerrainLOD::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWi
 
 void SceneTerrainLOD::Destroy()
 {
+	// Release the TargaTexture manager object.
+	if (_textureManager)
+	{
+		_textureManager->Destroy();
+		delete _textureManager;
+		_textureManager = 0;
+	}
+
 	// Release the terrain object.
 	if(_terrain)
 	{
@@ -132,7 +179,7 @@ void SceneTerrainLOD::Destroy()
 	return;
 }
 
-bool SceneTerrainLOD::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, TextureManager* textureManager, float frameTime)
+bool SceneTerrainLOD::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, float frameTime)
 {
 	bool result, foundHeight;
 	float posX, posY, posZ, rotX, rotY, rotZ, height;
@@ -160,7 +207,7 @@ bool SceneTerrainLOD::Update(DX11Instance* direct3D, Input* input, ShaderManager
 	}
 
 	// Render the graphics.
-	result = Draw(direct3D, shaderManager, textureManager);
+	result = Draw(direct3D, shaderManager, _textureManager);
 	if(!result)
 	{
 		return false;
