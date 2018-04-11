@@ -10,15 +10,17 @@ SkeletonShader::~SkeletonShader()
 {
 }
 
+// SHADER HAS 5 TEXTURES
+
 bool SkeletonShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normalMap,
-	ID3D11ShaderResourceView* normalMap2, ID3D11ShaderResourceView* normalMap3,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture0, ID3D11ShaderResourceView* texture1,
+	ID3D11ShaderResourceView* texture2, ID3D11ShaderResourceView* texture3, ID3D11ShaderResourceView* texture4,
 	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {
 	bool result;
 
 	// Set the shader parameters that it will use for rendering.
-	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, normalMap, normalMap2, normalMap3,
+	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture0, texture1, texture2, texture3, texture4,
 		lightDirection, diffuseColor);
 	if (!result)
 	{
@@ -272,8 +274,8 @@ void SkeletonShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexC
 }
 
 bool SkeletonShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* normalMap,
-	ID3D11ShaderResourceView* normalMap2, ID3D11ShaderResourceView* normalMap3,
+	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture0, ID3D11ShaderResourceView* texture1,
+	ID3D11ShaderResourceView* texture2, ID3D11ShaderResourceView* texture3, ID3D11ShaderResourceView* texture4,
 	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {
 	HRESULT result;
@@ -312,10 +314,11 @@ bool SkeletonShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMM
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
 	// Set shader TargaTexture resource in the pixel shader.
-	deviceContext->PSSetShaderResources(0, 1, &texture);
-	deviceContext->PSSetShaderResources(1, 1, &normalMap);
-	deviceContext->PSSetShaderResources(2, 1, &normalMap2);
-	deviceContext->PSSetShaderResources(3, 1, &normalMap3);
+	deviceContext->PSSetShaderResources(0, 1, &texture0);
+	deviceContext->PSSetShaderResources(1, 2, &texture1);
+	deviceContext->PSSetShaderResources(2, 3, &texture2);
+	deviceContext->PSSetShaderResources(3, 4, &texture3);
+	deviceContext->PSSetShaderResources(4, 5, &texture4);
 
 	// Lock the light constant buffer so it can be written to.
 	result = deviceContext->Map(_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

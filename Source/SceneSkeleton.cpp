@@ -8,7 +8,7 @@ SceneSkeleton::~SceneSkeleton()
 {
 }
 
-bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
+bool SceneSkeleton::Initialize(DX11Instance* Direct3D, TextureManager* textureManager, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
 
@@ -47,6 +47,15 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
+
+	_skeleton = new Skeleton;
+	if (!_skeleton)
+	{
+		return false;
+	}
+
+	// Initalize the skeelton object.
+	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), textureManager, L"Source/Animation/boy.md5mesh");
 
 	return true;
 }
