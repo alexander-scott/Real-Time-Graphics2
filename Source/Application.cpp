@@ -101,6 +101,13 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 	{
 		case Scene::eSceneTerrainLOD:
 			return BuildSceneTerrainLOD(hwnd, screenWidth, screenHeight);
+
+		case Scene::eSceneSkeleton:
+			return BuildSceneSkeleton(hwnd, screenWidth, screenHeight);
+
+		default:
+			MessageBox(hwnd, L"Switch statement incomplete.", L"Error", MB_OK);
+			return false;
 	}
 
 	return true;
@@ -227,7 +234,29 @@ bool Application::BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHei
 	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
 	if (!result)
 	{
-		MessageBox(hwnd, L"Could not initialize the zone object.", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the scene object.", L"Error", MB_OK);
+		return false;
+	}
+
+	return result;
+}
+
+bool Application::BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeight)
+{
+	bool result;
+
+	 // Create the scene object.
+	_scene = new SceneSkeleton;
+	if (!_scene)
+	{
+		return false;
+	}
+
+	// Initialize the scene object.
+	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the scene object.", L"Error", MB_OK);
 		return false;
 	}
 

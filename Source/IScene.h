@@ -1,3 +1,5 @@
+#pragma once
+
 #include "DX11Instance.h"
 #include "Input.h"
 #include "ShaderManager.h"
@@ -15,10 +17,8 @@ public:
 	IScene()
 	{
 		_camera = nullptr;
-		_terrain = nullptr;
 		_light = nullptr;
 		_frustum = nullptr;
-		_skyDome = nullptr;
 	}
 
 	virtual bool Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth) = 0;
@@ -33,6 +33,4 @@ protected:
 	Camera*			_camera;
 	Light*			_light;
 	Frustum*		_frustum;
-	SkyDome*		_skyDome;
-	Terrain*		_terrain;
 };

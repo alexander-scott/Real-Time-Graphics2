@@ -2,11 +2,11 @@
 
 #include "IScene.h"
 
-class SceneTerrainLOD : public IScene
+class SceneSkeleton : public IScene
 {
 public:
-	SceneTerrainLOD();
-	SceneTerrainLOD(const SceneTerrainLOD&);
+	SceneSkeleton();
+	~SceneSkeleton();
 
 	bool Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth) override;
 	void Destroy() override;
@@ -16,8 +16,6 @@ private:
 	void ProcessInput(Input*, float) override;
 	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
 
-	SkyDome*		_skyDome;
-	Terrain*		_terrain;
 
-	bool			_wireFrame, _cellLines, _heightLocked;
 };
+

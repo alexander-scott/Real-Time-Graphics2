@@ -65,7 +65,7 @@
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneTerrainLOD.cpp">
-      <Filter>SceneTerrainLOD</Filter>
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\SkeletonShader.cpp">
       <Filter>DX11\Shaders</Filter>
@@ -81,6 +81,9 @@
     </ClCompile>
     <ClCompile Include="Source\JPEGTexture.cpp">
       <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneSkeleton.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +151,7 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneTerrainLOD.h">
-      <Filter>SceneTerrainLOD</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\SkeletonShader.h">
       <Filter>DX11\Shaders</Filter>
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="Source\JPEGTexture.h">
       <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneSkeleton.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +194,7 @@
     <Filter Include="Application\Components">
       <UniqueIdentifier>{3923f8e0-c2cc-421c-bba3-b5c0ce1d7c4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SceneTerrainLOD">
+    <Filter Include="Scenes">
       <UniqueIdentifier>{4885cf96-44a3-46f3-9885-fb95ad102c32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

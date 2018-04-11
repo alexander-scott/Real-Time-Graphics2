@@ -172,7 +172,6 @@ bool SceneTerrainLOD::Update(DX11Instance* direct3D, Input* input, ShaderManager
 void SceneTerrainLOD::ProcessInput(Input* Input, float frameTime)
 {
 	bool keyDown;
-	float posX, posY, posZ, rotX, rotY, rotZ;
 
 	// Set the frame time for calculating the updated Position.
 	_camera->GetTransform()->SetFrameTime(frameTime);
