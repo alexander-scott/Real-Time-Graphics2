@@ -79,6 +79,9 @@
     <ClCompile Include="Source\TargaTexture.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
+    <ClCompile Include="Source\JPEGTexture.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -160,6 +163,9 @@
       <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\TargaTexture.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\JPEGTexture.h">
       <Filter>DX11</Filter>
     </ClInclude>
   </ItemGroup>

@@ -90,7 +90,7 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 	}
 
 	// Initialize the TargaTexture manager object.
-	result = _textureManager->Initialize(10);
+	result = _textureManager->Initialize(10, 10);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the texture manager object.", L"Error", MB_OK);
@@ -192,25 +192,25 @@ bool Application::BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHei
 {
 	bool result;
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
+	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01d.tga", 0);
 	if (!result)
 	{
 		return false;
 	}
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
+	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/rock01n.tga", 1);
 	if (!result)
 	{
 		return false;
 	}
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
+	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/snow01n.tga", 2);
 	if (!result)
 	{
 		return false;
 	}
 
-	result = _textureManager->LoadTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
+	result = _textureManager->LoadTargaTexture(_dx11Instance->GetDevice(), _dx11Instance->GetDeviceContext(), "Source/terrain/distance01n.tga", 3);
 	if (!result)
 	{
 		return false;

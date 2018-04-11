@@ -54,7 +54,7 @@ void Skeleton::Draw(ID3D11DeviceContext * deviceContext)
 		deviceContext->IASetVertexBuffers(0, 1, &MD5Model.subsets[i].vertBuff, &stride, &offset);
 	}
 }
-
+//
 //bool Skeleton::LoadMD5Model(ID3D11Device* device,
 //	ID3D11DeviceContext* context,
 //	std::wstring filename,
@@ -209,7 +209,7 @@ void Skeleton::Draw(ID3D11DeviceContext * deviceContext)
 //						if (!alreadyLoaded)
 //						{
 //							ID3D11ShaderResourceView* tempMeshSRV;
-//							textureManager->LoadTexture(device, context, fileNamePath.c_str(), )
+//							textureManager->LoadTargaTexture(device, context, fileNamePath.c_str(), )
 //
 //							HRESULT hr = CreateDDSTextureFromFile(device, fileNamePath.c_str(), NULL, &tempMeshSRV);
 //
