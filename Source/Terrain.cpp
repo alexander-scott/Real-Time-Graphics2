@@ -1,5 +1,8 @@
 #include "Terrain.h"
 
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 Terrain::Terrain()
 {
 	_terrainFilename = nullptr;
@@ -29,7 +32,8 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	}
 
 	// Initialize the terrain height map with the data from the bitmap file.
-	result = LoadRawHeightMap();
+	//result = LoadRawHeightMap();
+	result = ProcGenHeightMap();
 	if (!result)
 	{
 		return false;
@@ -482,6 +486,136 @@ bool Terrain::LoadRawHeightMap()
 
 	return true;
 }
+
+bool Terrain::ProcGenHeightMap()
+{
+	// Create the float array to hold the height map data.
+	_heightMap = new HeightMapType[_terrainWidth * _terrainHeight];
+	if (!_heightMap)
+	{
+		return false;
+	}
+
+	int index;
+
+	/* initialize random seed: */
+	srand(time(NULL));
+
+	// Generate the height map array
+	for (int j = 0; j<_terrainHeight; j++)
+	{
+		for (int i = 0; i<_terrainWidth; i++)
+		{
+			index = (_terrainWidth * j) + i;
+
+			// Store the height at this point in the height map array.
+			//_heightMap[index].Y = rand() % 30000 + 1;
+		}
+	}
+
+	DiamondSquareAlgorithm(10.0f, 109.0f, 10.0f);
+
+	return true;
+}
+
+void Terrain::DiamondSquareAlgorithm(float cornerHeight, float randomRange, float heightScalar)
+{
+	// Step 1 - create and initialize duplicate vector //
+	// Storage vector, its 2D dimensions, and its index
+	std::vector< float > heights;
+	int index, numOfIterations, step;
+
+	// Initialize variables
+	step = (_terrainHeight - 1); // -1 as dimensions are odd
+	index = numOfIterations = 0;
+	heights.resize(_terrainHeight * _terrainWidth);
+
+	// Initialize heights vector
+	for (int i = 0; i < (int)heights.size(); i++) {
+		heights[i] = 0.0f;
+	}
+
+	// Set the corner heights
+	heights[0] = cornerHeight; // bottom-left
+	heights[(_terrainHeight * (_terrainHeight - 1))] = cornerHeight; // top-left
+	heights[(_terrainWidth - 1)] = cornerHeight; // bottom-right
+	heights[((_terrainHeight * (_terrainHeight - 1)) + (_terrainWidth - 1))] = cornerHeight; // top-right
+
+	// Step 2 - Diamond Square algorithm //
+	// Loop till step becomes less than 1 
+	while (step > 1) {
+		// Increment variables for current iteration
+		numOfIterations++;
+		step /= 2;
+		index = 0;
+
+		// Loop through center points
+		for (int j = step; j < _terrainHeight - step; j += (step * 2)) {
+			for (int i = step; i < _terrainWidth - step; i += (step * 2)) {
+				// DIAMOND //
+				// There will always be four diagonal neighbours
+				// Initialize average height
+				float averageHeight = 0.0f;
+
+				// Top-left
+				averageHeight += heights[(_terrainHeight * (j - step)) + (i - step)];
+				// Top-right
+				averageHeight += heights[(_terrainHeight * (j - step)) + (i + step)];
+				// Bottom-left
+				averageHeight += heights[(_terrainHeight * (j + step)) + (i - step)];
+				// Bottom-right
+				averageHeight += heights[(_terrainHeight * (j + step)) + (i + step)];
+
+				// Get current index
+				index = (_terrainHeight * j) + i;
+
+				float smoothingValue = (float)numOfIterations;
+
+				// Set as average of four corners + a random float from -randomRange to randomRange
+				heights[index] = (averageHeight / 4.0f) + RandomRange(-randomRange, randomRange) / smoothingValue;
+
+				// SQUARE //
+				// Calls GetSquareAverage() for the points NESW of the center point(if within bounds)
+				// Calculates its average height based on its NESW neighbours(if within bounds)
+				// Smoothing value reduced to 3/4 for square step
+				// North
+				if ((j - step) >= 0) {
+					heights[(_terrainHeight * (j - step)) + i] = GetSquareAverage(heights, i, (j - step), step, randomRange, smoothingValue * 0.75f);
+				}
+				// East
+				if ((i + step) < _terrainWidth) {
+					heights[(_terrainHeight * j) + (i + step)] = GetSquareAverage(heights, (i + step), j, step, randomRange, smoothingValue * 0.75f);
+				}
+				// South
+				if ((j + step) < _terrainHeight) {
+					heights[(_terrainHeight * (j + step)) + i] = GetSquareAverage(heights, i, (j + step), step, randomRange, smoothingValue * 0.75f);
+				}
+				// West
+				if ((i - step) >= 0) {
+					heights[(_terrainHeight * j) + (i - step)] = GetSquareAverage(heights, (i - step), j, step, randomRange, smoothingValue * 0.75f);
+				}
+			}
+		}
+	}
+
+	// Set data
+	// Making sure to loop
+	for (int j = 0; j < _terrainHeight; j++) {
+		for (int i = 0; i < _terrainWidth; i++) {
+			// Get current index
+			index = (_terrainHeight * j) + i;
+
+			// Set data
+			// Displace down by half of the initial height
+			// Scalar provided
+			_heightMap[index].Y = ((heights[index] - (cornerHeight / 2.0f)) * heightScalar);
+		}
+	}
+
+	// Tidy vector
+	heights.clear();
+}
+
 
 void Terrain::DestroyHeightMap()
 {
@@ -1242,4 +1376,49 @@ bool Terrain::CheckHeightOfTriangle(float x, float z, float& height, float v0[3]
 	height = Q[1];
 
 	return true;
+}
+
+// Random float between passed max & min //
+float Terrain::RandomRange(float min, float max) 
+{
+	if (max < min) {
+		return 0.0f;
+	}
+
+	return ((rand() % 20000) / 20000.0f) * (max - min) + min;
+}
+
+// Gets NESW neighbours (if within bounds) and returns average value //
+float Terrain::GetSquareAverage(std::vector< float > &vector, int i, int j, int step, float randomRange, float smoothingValue) 
+{
+	// Initialize variables
+	float averageHeight = 0.0f;
+	float numOfAverages = 0;
+
+	// North
+	if ((j - step) >= 0) {
+		averageHeight += vector[(_terrainHeight * (j - step)) + i];
+		numOfAverages++;
+	}
+	// East
+	if ((i + step) < (_terrainWidth)) {
+		averageHeight += vector[(_terrainHeight * j) + (i + step)];
+		numOfAverages++;
+	}
+	// South
+	if ((j + step) < (_terrainHeight)) {
+		averageHeight += vector[(_terrainHeight * (j + step)) + i];
+		numOfAverages++;
+	}
+	// West
+	if ((i - step) >= 0) {
+		averageHeight += vector[(_terrainHeight * j) + (i - step)];
+		numOfAverages++;
+	}
+
+	// Calculate square average plus small random offset
+	float newHeight = (averageHeight / numOfAverages) + RandomRange(-randomRange, randomRange) / smoothingValue;
+
+	// Return newHeight
+	return newHeight;
 }

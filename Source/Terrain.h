@@ -5,6 +5,7 @@
 #include <directxmath.h>
 #include <fstream>
 #include <stdio.h>
+#include <vector>
 
 #include "TerrainCell.h"
 #include "Frustum.h"
@@ -82,6 +83,10 @@ private:
 	bool LoadSetupFile(char*);
 	bool LoadBitmapHeightMap();
 	bool LoadRawHeightMap();
+
+	bool ProcGenHeightMap();
+	void DiamondSquareAlgorithm(float cornerHeight, float randomRange, float heightScalar);
+
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
 	bool CalculateNormals();
@@ -96,6 +101,9 @@ private:
 	void DestroyTerrainCells();
 
 	bool CheckHeightOfTriangle(float, float, float&, float[3], float[3], float[3]);
+
+	float RandomRange(float min, float max);
+	float GetSquareAverage(std::vector< float > &vector, int i, int j, int step, float randomRange, float smoothingValue);
 
 private:
 	int					_vertexCount, _indexCount;
