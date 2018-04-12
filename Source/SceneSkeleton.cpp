@@ -42,17 +42,6 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	_camera->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
 
-	// Create the light object.
-	_light = new Light;
-	if (!_light)
-	{
-		return false;
-	}
-
-	// Initialize the light object.
-	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	_light->SetDirection(-0.5f, -1.0f, -0.5f);
-
 	// Create the frustum object.
 	_frustum = new Frustum;
 	if (!_frustum)
@@ -91,13 +80,6 @@ void SceneSkeleton::Destroy()
 	{
 		delete _frustum;
 		_frustum = 0;
-	}
-
-	// Release the light object.
-	if (_light)
-	{
-		delete _light;
-		_light = 0;
 	}
 
 	// Release the camera object.

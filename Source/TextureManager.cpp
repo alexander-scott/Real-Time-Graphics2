@@ -86,5 +86,6 @@ bool TextureManager::LoadJPEGTexture(ID3D11Device* device, ID3D11DeviceContext* 
 
 ID3D11ShaderResourceView * TextureManager::GetTexture(int id)
 {
-	return _textureArray[id]->GetTexture();
+	auto texture = _textureArray[id]->GetTexture();
+	return texture;
 }

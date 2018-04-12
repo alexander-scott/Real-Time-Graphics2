@@ -39,7 +39,7 @@ joints {
 }
 
 mesh {
-	shader "face.jpg"
+	shader "floorTexture.dds"
 
 	numverts 104
 	vert 0 ( -0.5367231369 0.7984934329 ) 0 6
@@ -644,7 +644,7 @@ mesh {
 }
 
 mesh {
-	shader "arms.jpg"
+	shader "floorTexture.dds"
 
 	numverts 48
 	vert 0 ( 0.8750000000 0.6666666030 ) 0 1
@@ -892,7 +892,7 @@ mesh {
 }
 
 mesh {
-	shader "shirt.jpg"
+	shader "floorTexture.dds"
 
 	numverts 240
 	vert 0 ( 0.4276846885 1.5026621818 ) 0 5
@@ -2748,7 +2748,7 @@ mesh {
 }
 
 mesh {
-	shader "pants.jpg"
+	shader "floorTexture.dds"
 
 	numverts 120
 	vert 0 ( 1.0000000000 1.0000000000 ) 0 3
@@ -3349,7 +3349,7 @@ mesh {
 }
 
 mesh {
-	shader "shoes.jpg"
+	shader "floorTexture.dds"
 
 	numverts 86
 	vert 0 ( -0.0188323631 1.0094162225 ) 0 2
