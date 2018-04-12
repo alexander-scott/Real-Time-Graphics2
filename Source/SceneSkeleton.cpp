@@ -70,7 +70,7 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	}
 
 	// Initalize the skeleton object.
-	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), _textureManager, L"Source/Animation/boy.md5mesh");
+	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), _textureManager, L"Source/Animation/boy.md5mesh", L"Source/Animation/boy.md5anim");
 	_skeleton->GetTransform()->SetPosition(XMFLOAT3(0, 0, 100));
 
 	return true;
@@ -114,6 +114,8 @@ bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 {
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
+
+	_skeleton->Update(direct3D->GetDeviceContext(), frameTime);
 
 	// Render the graphics.
 	bool result = Draw(direct3D, shaderManager, _textureManager);
@@ -200,6 +202,7 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	{
 		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
 		result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
+		//result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
 
 		if (!result)
 		{

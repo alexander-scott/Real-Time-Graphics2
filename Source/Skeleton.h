@@ -49,6 +49,7 @@ struct Weight
 	int jointID;
 	float bias;
 	XMFLOAT3 pos;
+	XMFLOAT3 normal;
 };
 
 struct ModelSubset
@@ -66,6 +67,44 @@ struct ModelSubset
 	ID3D11Buffer* indexBuff;
 };
 
+struct BoundingBox
+{
+	XMFLOAT3 min;
+	XMFLOAT3 max;
+};
+
+struct FrameData
+{
+	int frameID;
+	std::vector<float> frameData;
+};
+struct AnimJointInfo
+{
+	std::wstring name;
+	int parentID;
+
+	int flags;
+	int startIndex;
+};
+
+struct ModelAnimation
+{
+	int numFrames;
+	int numJoints;
+	int frameRate;
+	int numAnimatedComponents;
+
+	float frameTime;
+	float totalAnimTime;
+	float currAnimTime;
+
+	std::vector<AnimJointInfo> jointInfo;
+	std::vector<BoundingBox> frameBounds;
+	std::vector<Joint>    baseFrameJoints;
+	std::vector<FrameData>    frameData;
+	std::vector<std::vector<Joint>> frameSkeleton;
+};
+
 struct Model3D
 {
 	int numSubsets;
@@ -73,6 +112,7 @@ struct Model3D
 
 	std::vector<Joint> joints;
 	std::vector<ModelSubset> subsets;
+	std::vector<ModelAnimation> animations;
 };
 
 class Skeleton
@@ -81,10 +121,10 @@ public:
 	Skeleton();
 	~Skeleton();
 
-	bool Initialize(ID3D11Device * device, ID3D11DeviceContext* context, TextureManager* textureManager, std::wstring fileName);
+	bool Initialize(ID3D11Device * device, ID3D11DeviceContext* context, TextureManager* textureManager, std::wstring meshFileName, std::wstring animFileName);
 	void Destroy();
 
-	void Update(float deltaTime);
+	void Update(ID3D11DeviceContext* context, float deltaTime);
 	void Draw(ID3D11DeviceContext* deviceContext);
 	void DrawSubset(ID3D11DeviceContext* deviceContext, int index);
 
@@ -99,6 +139,8 @@ private:
 		std::wstring filename,
 		Model3D& MD5Model,
 		TextureManager* textureManager);
+
+	bool LoadMD5Anim(std::wstring filename, Model3D& MD5Model);
 
 	Model3D			MD5Model;
 	Transform*		_transform;
