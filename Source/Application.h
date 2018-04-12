@@ -4,10 +4,11 @@
 enum Scene 
 {
 	eSceneTerrainLOD,
+	eSceneTerrainGeneration,
 	eSceneSkeleton
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneTerrainLOD;
+const Scene CURRENT_SCENE = Scene::eSceneTerrainGeneration;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -21,6 +22,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "Timer.h"
 
 #include "SceneTerrainLOD.h"
+#include "SceneTerrainGeneration.h"
 #include "SceneSkeleton.h"
 
 class Application
@@ -36,6 +38,7 @@ public:
 
 private:
 	bool BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight);
+	bool BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeight);
 
 	Input*			_input;

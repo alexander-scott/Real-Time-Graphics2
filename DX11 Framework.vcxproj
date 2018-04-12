@@ -371,6 +371,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\SceneTerrainGeneration.cpp" />
     <ClCompile Include="Source\SceneSkeleton.cpp" />
     <ClCompile Include="Source\JPEGTexture.cpp" />
     <ClCompile Include="Source\DDSTextureLoader.cpp" />
@@ -401,6 +402,7 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\SceneTerrainGeneration.h" />
     <ClInclude Include="Source\SceneSkeleton.h" />
     <ClInclude Include="Source\JPEGTexture.h" />
     <ClInclude Include="Source\DDSTextureLoader.h" />

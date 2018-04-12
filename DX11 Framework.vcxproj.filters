@@ -85,6 +85,9 @@
     <ClCompile Include="Source\SceneSkeleton.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneTerrainGeneration.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -172,6 +175,9 @@
       <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneSkeleton.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneTerrainGeneration.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>

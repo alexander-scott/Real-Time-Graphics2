@@ -86,6 +86,9 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		case Scene::eSceneTerrainLOD:
 			return BuildSceneTerrainLOD(hwnd, screenWidth, screenHeight);
 
+		case Scene::eSceneTerrainGeneration:
+			return BuildSceneTerrainGeneration(hwnd, screenWidth, screenHeight);
+
 		case Scene::eSceneSkeleton:
 			return BuildSceneSkeleton(hwnd, screenWidth, screenHeight);
 
@@ -172,6 +175,28 @@ bool Application::Update()
 }
 
 bool Application::BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight)
+{
+	bool result;
+
+	// Create the scene object.
+	_scene = new SceneTerrainLOD;
+	if (!_scene)
+	{
+		return false;
+	}
+
+	// Initialize the scene object.
+	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the scene object.", L"Error", MB_OK);
+		return false;
+	}
+
+	return result;
+}
+
+bool Application::BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int screenHeight)
 {
 	bool result;
 
