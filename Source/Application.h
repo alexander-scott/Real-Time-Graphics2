@@ -5,7 +5,7 @@ enum Scene
 	eSceneSkeleton
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneTerrainGeneration;
+const Scene CURRENT_SCENE = Scene::eSceneSkeleton;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

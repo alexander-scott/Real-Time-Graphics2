@@ -183,8 +183,8 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	for (int i = 0; i < _skeleton->GetSubsetCount(); i++)
 	{
 		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
-		result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
-		//result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
+		//result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
+		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
 
 		if (!result)
 		{
