@@ -2,10 +2,11 @@ enum Scene
 {
 	eSceneTerrainLOD,
 	eSceneTerrainGeneration,
-	eSceneSkeleton
+	eSceneSkeleton,
+	eSceneGraphics
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneSkeleton;
+const Scene CURRENT_SCENE = Scene::eSceneGraphics;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -21,6 +22,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "SceneTerrainLOD.h"
 #include "SceneTerrainGeneration.h"
 #include "SceneSkeleton.h"
+#include "SceneGraphics.h"
 
 class Application
 {
@@ -37,6 +39,7 @@ private:
 	bool BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeight);
+	bool BuildSceneGraphics(HWND hwnd, int screenWidth, int screenHeight);
 
 	Input*			_input;
 	DX11Instance*	_dx11Instance;

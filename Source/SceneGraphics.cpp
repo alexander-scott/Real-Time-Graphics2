@@ -1,14 +1,14 @@
-#include "SceneSkeleton.h"
+#include "SceneGraphics.h"
 
-SceneSkeleton::SceneSkeleton() : IScene()
+SceneGraphics::SceneGraphics()
 {
 }
 
-SceneSkeleton::~SceneSkeleton()
+SceneGraphics::SceneGraphics(const SceneGraphics &)
 {
 }
 
-bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
+bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
 
@@ -52,20 +52,10 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
 
-	_skeleton = new Skeleton;
-	if (!_skeleton)
-	{
-		return false;
-	}
-
-	// Initalize the skeleton object.
-	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), _textureManager, L"Source/Animation/boy.md5mesh", L"Source/Animation/boy.md5anim");
-	_skeleton->GetTransform()->SetPosition(XMFLOAT3(0, 0, 100));
-
 	return true;
 }
 
-void SceneSkeleton::Destroy()
+void SceneGraphics::Destroy()
 {
 	// Release the TargaTexture manager object.
 	if (_textureManager)
@@ -92,12 +82,10 @@ void SceneSkeleton::Destroy()
 	return;
 }
 
-bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* shaderManager, float frameTime)
+bool SceneGraphics::Update(DX11Instance * direct3D, Input * input, ShaderManager * shaderManager, float frameTime)
 {
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
-
-	_skeleton->Update(direct3D->GetDeviceContext(), frameTime);
 
 	// Render the graphics.
 	bool result = Draw(direct3D, shaderManager, _textureManager);
@@ -109,42 +97,12 @@ bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 	return true;
 }
 
-void SceneSkeleton::ProcessInput(Input* input, float frameTime)
+void SceneGraphics::ProcessInput(Input *, float)
 {
-	bool keyDown;
-
-	// Set the frame time for calculating the updated Position.
-	_camera->GetTransform()->SetFrameTime(frameTime);
-
-	// Handle the input.
-	keyDown = input->IsLeftPressed();
-	_camera->GetTransform()->TurnLeft(keyDown);
-
-	keyDown = input->IsRightPressed();
-	_camera->GetTransform()->TurnRight(keyDown);
-
-	keyDown = input->IsUpPressed();
-	_camera->GetTransform()->MoveForward(keyDown);
-
-	keyDown = input->IsDownPressed();
-	_camera->GetTransform()->MoveBackward(keyDown);
-
-	keyDown = input->IsAPressed();
-	_camera->GetTransform()->MoveUpward(keyDown);
-
-	keyDown = input->IsZPressed();
-	_camera->GetTransform()->MoveDownward(keyDown);
-
-	keyDown = input->IsPgUpPressed();
-	_camera->GetTransform()->LookUpward(keyDown);
-
-	keyDown = input->IsPgDownPressed();
-	_camera->GetTransform()->LookDownward(keyDown);
-
 	return;
 }
 
-bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneGraphics::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -163,9 +121,6 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	// Get the Position of the camera.
 	_camera->GetTransform()->GetPosition(cameraPosition);
 
-	// Get the position of the skeleton
-	_skeleton->GetTransform()->GetPosition(skeletonPosition);
-
 	// Construct the frustum.
 	_frustum->ConstructFrustum(projectionMatrix, viewMatrix);
 
@@ -178,21 +133,6 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 
 	// Reset the world matrix.
 	direct3D->GetWorldMatrix(worldMatrix);
-
-	// Translate the sky dome to be centered around the skeleton Position.
-	worldMatrix = XMMatrixTranslation(skeletonPosition.x, skeletonPosition.y, skeletonPosition.z);
-
-	for (int i = 0; i < _skeleton->GetSubsetCount(); i++)
-	{
-		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
-		//result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
-		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
-
-		if (!result)
-		{
-			return false;
-		}
-	}
 
 	// Turn the Z buffer back and back face culling on.
 	direct3D->TurnZBufferOn();
