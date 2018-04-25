@@ -1,9 +1,9 @@
-#include "Terrain.h"
+#include "ProceduralTerrain.h"
 
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
-Terrain::Terrain()
+ProceduralTerrain::ProceduralTerrain()
 {
 	_terrainFilename = nullptr;
 	_colourMapFilename = nullptr;
@@ -12,15 +12,15 @@ Terrain::Terrain()
 	_terrainCells = nullptr;
 }
 
-Terrain::Terrain(const Terrain& other)
+ProceduralTerrain::ProceduralTerrain(const ProceduralTerrain& other)
 {
 }
 
-Terrain::~Terrain()
+ProceduralTerrain::~ProceduralTerrain()
 {
 }
 
-bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
+bool ProceduralTerrain::Initialize(ID3D11Device* device, char* setupFilename)
 {
 	bool result;
 
@@ -32,7 +32,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	}
 
 	// Initialize the terrain height map with the data from the bitmap file.
-	result = LoadRawHeightMap();
+	result = ProcGenHeightMap();
 	if (!result)
 	{
 		return false;
@@ -81,7 +81,7 @@ bool Terrain::Initialize(ID3D11Device* device, char* setupFilename)
 	return true;
 }
 
-void Terrain::Destroy()
+void ProceduralTerrain::Destroy()
 {
 	// Release the terrain cells.
 	DestroyTerrainCells();
@@ -95,7 +95,7 @@ void Terrain::Destroy()
 	return;
 }
 
-void Terrain::Update()
+void ProceduralTerrain::Update()
 {
 	_renderCount = 0;
 	_cellsDrawn = 0;
@@ -103,7 +103,7 @@ void Terrain::Update()
 	return;
 }
 
-bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* Frustum)
+bool ProceduralTerrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* Frustum)
 {
 	float maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth;
 	bool result;
@@ -133,43 +133,43 @@ bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum
 	return true;
 }
 
-void Terrain::RenderCellLines(ID3D11DeviceContext* deviceContext, int cellId)
+void ProceduralTerrain::RenderCellLines(ID3D11DeviceContext* deviceContext, int cellId)
 {
 	_terrainCells[cellId].DrawLineBuffers(deviceContext);
 	return;
 }
 
-int Terrain::GetCellIndexCount(int cellId)
+int ProceduralTerrain::GetCellIndexCount(int cellId)
 {
 	return _terrainCells[cellId].GetIndexCount();
 }
 
-int Terrain::GetCellLinesIndexCount(int cellId)
+int ProceduralTerrain::GetCellLinesIndexCount(int cellId)
 {
 	return _terrainCells[cellId].GetLineBuffersIndexCount();
 }
 
-int Terrain::GetCellCount()
+int ProceduralTerrain::GetCellCount()
 {
 	return _cellCount;
 }
 
-int Terrain::GetRenderCount()
+int ProceduralTerrain::GetRenderCount()
 {
 	return _renderCount;
 }
 
-int Terrain::GetCellsDrawn()
+int ProceduralTerrain::GetCellsDrawn()
 {
 	return _cellsDrawn;
 }
 
-int Terrain::GetCellsCulled()
+int ProceduralTerrain::GetCellsCulled()
 {
 	return _cellsCulled;
 }
 
-bool Terrain::GetHeightAtPosition(float inputX, float inputZ, float& height)
+bool ProceduralTerrain::GetHeightAtPosition(float inputX, float inputZ, float& height)
 {
 	int i, cellId, index;
 	float vertex1[3], vertex2[3], vertex3[3];
@@ -227,7 +227,7 @@ bool Terrain::GetHeightAtPosition(float inputX, float inputZ, float& height)
 	return false;
 }
 
-bool Terrain::LoadSetupFile(char * filename)
+bool ProceduralTerrain::LoadSetupFile(char * filename)
 {
 	int stringLength;
 	ifstream fin;
@@ -310,121 +310,8 @@ bool Terrain::LoadSetupFile(char * filename)
 	return true;
 }
 
-bool Terrain::LoadBitmapHeightMap()
+bool ProceduralTerrain::ProcGenHeightMap()
 {
-	int error, imageSize, i, j, k, index;
-	FILE* filePtr;
-	unsigned long long count;
-	BITMAPFILEHEADER bitmapFileHeader;
-	BITMAPINFOHEADER bitmapInfoHeader;
-	unsigned char* bitmapImage;
-	unsigned char height;
-
-	// Start By creating the array structure to hold the height map data.
-	_heightMap = new HeightMapType[_terrainWidth * _terrainHeight];
-	if (!_heightMap)
-	{
-		return false;
-	}
-
-	// Open the bitmap map file in binary.
-	error = fopen_s(&filePtr, _terrainFilename, "rb");
-	if (error != 0)
-	{
-		return false;
-	}
-
-	// Read in the bitmap file header.
-	count = fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, filePtr);
-	if (count != 1)
-	{
-		return false;
-	}
-
-	// Read in the bitmap info header.
-	count = fread(&bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1, filePtr);
-	if (count != 1)
-	{
-		return false;
-	}
-
-	// Make sure the height map dimensions are the same as the terrain dimensions for easy 1 to 1 mapping.
-	if ((bitmapInfoHeader.biHeight != _terrainHeight) || (bitmapInfoHeader.biWidth != _terrainWidth))
-	{
-		return false;
-	}
-
-	// Calculate the size of the bitmap image data.  
-	// Since we use non-divide By 2 dimensions (eg. 257x257) we need to add an extra byte to each line.
-	imageSize = _terrainHeight * ((_terrainWidth * 3) + 1);
-
-	// Allocate memory for the bitmap image data.
-	bitmapImage = new unsigned char[imageSize];
-	if (!bitmapImage)
-	{
-		return false;
-	}
-
-	// Move to the beginning of the bitmap data.
-	fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
-
-	// Read in the bitmap image data.
-	count = fread(bitmapImage, 1, imageSize, filePtr);
-	if (count != imageSize)
-	{
-		return false;
-	}
-
-	// Close the file.
-	error = fclose(filePtr);
-	if (error != 0)
-	{
-		return false;
-	}
-
-	// Initialize the Position in the image data buffer.
-	k = 0;
-
-	// Read the image data into the height map array.
-	for (j = 0; j<_terrainHeight; j++)
-	{
-		for (i = 0; i<_terrainWidth; i++)
-		{
-			// Bitmaps are upside down so load bottom to top into the height map array.
-			index = (_terrainWidth * (_terrainHeight - 1 - j)) + i;
-
-			// Get the grey scale pixel value from the bitmap image data at this location.
-			height = bitmapImage[k];
-
-			// Store the pixel value as the height at this point in the height map array.
-			_heightMap[index].Y = (float)height;
-
-			// Increment the bitmap image data index.
-			k += 3;
-		}
-
-		// Compensate for the extra byte at end of each line in non-divide By 2 bitmaps (eg. 257x257).
-		k++;
-	}
-
-	// Release the bitmap image data now that the height map array has been loaded.
-	delete[] bitmapImage;
-	bitmapImage = 0;
-
-	// Release the terrain filename now that is has been read in.
-	delete[] _terrainFilename;
-	_terrainFilename = 0;
-
-	return true;
-}
-
-bool Terrain::LoadRawHeightMap()
-{
-	int error, i, j, index;
-	FILE* filePtr;
-	unsigned long long imageSize, count;
-	unsigned short* rawImage;
-
 	// Create the float array to hold the height map data.
 	_heightMap = new HeightMapType[_terrainWidth * _terrainHeight];
 	if (!_heightMap)
@@ -432,61 +319,169 @@ bool Terrain::LoadRawHeightMap()
 		return false;
 	}
 
-	// Open the 16 bit raw height map file for reading in binary.
-	error = fopen_s(&filePtr, _terrainFilename, "rb");
-	if (error != 0)
-	{
-		return false;
-	}
+	int index;
 
-	// Calculate the size of the raw image data.
-	imageSize = _terrainHeight * _terrainWidth;
+	/* initialize random seed: */
+	srand(time(NULL));
 
-	// Allocate memory for the raw image data.
-	rawImage = new unsigned short[imageSize];
-	if (!rawImage)
-	{
-		return false;
-	}
-
-	// Read in the raw image data.
-	count = fread(rawImage, sizeof(unsigned short), imageSize, filePtr);
-	if (count != imageSize)
-	{
-		return false;
-	}
-
-	// Close the file.
-	error = fclose(filePtr);
-	if (error != 0)
-	{
-		return false;
-	}
-
-	// Copy the image data into the height map array.
-	for (j = 0; j<_terrainHeight; j++)
-	{
-		for (i = 0; i<_terrainWidth; i++)
-		{
-			index = (_terrainWidth * j) + i;
-
-			// Store the height at this point in the height map array.
-			_heightMap[index].Y = (float)rawImage[index];
-		}
-	}
-
-	// Release the bitmap image data.
-	delete[] rawImage;
-	rawImage = 0;
-
-	// Release the terrain filename now that it has been read in.
-	delete[] _terrainFilename;
-	_terrainFilename = 0;
+	DiamondSquareAlgorithm(1000.0f, 50.0f, 5.0f);
+	//DiamondSquareAlgorithm(0, 0, _terrainWidth, _terrainHeight, 100.0f, (_terrainWidth * _terrainHeight) - 1);
 
 	return true;
 }
 
-void Terrain::DestroyHeightMap()
+void ProceduralTerrain::DiamondSquareAlgorithm(float cornerHeight, float randomRange, float heightScalar)
+{
+	// Step 1 - create and initialize duplicate vector //
+	// Storage vector, its 2D dimensions, and its index
+	std::vector< float > heights;
+	int index, numOfIterations, step;
+
+	// Initialize variables
+	step = (_terrainHeight - 1); // -1 as dimensions are odd
+	index = numOfIterations = 0;
+	heights.resize(_terrainHeight * _terrainWidth);
+
+	// Initialize heights vector
+	for (int i = 0; i < (int)heights.size(); i++) {
+		heights[i] = 0.0f;
+	}
+
+	// Set the corner heights
+	heights[0] = cornerHeight; // bottom-left
+	heights[(_terrainHeight * (_terrainHeight - 1))] = cornerHeight; // top-left
+	heights[(_terrainWidth - 1)] = cornerHeight; // bottom-right
+	heights[((_terrainHeight * (_terrainHeight - 1)) + (_terrainWidth - 1))] = cornerHeight; // top-right
+
+	// Step 2 - Diamond Square algorithm //
+	// Loop till step becomes less than 1 
+	while (step > 1) 
+	{
+		// Increment variables for current iteration
+		numOfIterations++;
+		step /= 2;
+		index = 0;
+
+		// Loop through center points
+		for (int j = step; j < _terrainHeight - step; j += (step * 2)) 
+		{
+			for (int i = step; i < _terrainWidth - step; i += (step * 2)) 
+			{
+				// DIAMOND //
+				// There will always be four diagonal neighbours
+				// Initialize average height
+				float averageHeight = 0.0f;
+
+				// Top-left
+				averageHeight += heights[(_terrainHeight * (j - step)) + (i - step)];
+				// Top-right
+				averageHeight += heights[(_terrainHeight * (j - step)) + (i + step)];
+				// Bottom-left
+				averageHeight += heights[(_terrainHeight * (j + step)) + (i - step)];
+				// Bottom-right
+				averageHeight += heights[(_terrainHeight * (j + step)) + (i + step)];
+
+				// Get current index
+				index = (_terrainHeight * j) + i;
+
+				float smoothingValue = (float)numOfIterations;
+
+				// Set as average of four corners + a random float from -randomRange to randomRange
+				heights[index] = (averageHeight / 4.0f) + RandomRange(-randomRange, randomRange) / smoothingValue;
+
+				// SQUARE //
+				// Calls GetSquareAverage() for the points NESW of the center point(if within bounds)
+				// Calculates its average height based on its NESW neighbours(if within bounds)
+				// Smoothing value reduced to 3/4 for square step
+				// North
+				if ((j - step) >= 0) 
+				{
+					heights[(_terrainHeight * (j - step)) + i] = GetSquareAverage(heights, i, (j - step), step, randomRange, smoothingValue * 0.75f);
+				}
+				// East
+				if ((i + step) < _terrainWidth) 
+				{
+					heights[(_terrainHeight * j) + (i + step)] = GetSquareAverage(heights, (i + step), j, step, randomRange, smoothingValue * 0.75f);
+				}
+				// South
+				if ((j + step) < _terrainHeight) 
+				{
+					heights[(_terrainHeight * (j + step)) + i] = GetSquareAverage(heights, i, (j + step), step, randomRange, smoothingValue * 0.75f);
+				}
+				// West
+				if ((i - step) >= 0) 
+				{
+					heights[(_terrainHeight * j) + (i - step)] = GetSquareAverage(heights, (i - step), j, step, randomRange, smoothingValue * 0.75f);
+				}
+			}
+		}
+	}
+
+	// Set data
+	// Making sure to loop
+	for (int j = 0; j < _terrainHeight; j++) 
+	{
+		for (int i = 0; i < _terrainWidth; i++) 
+		{
+			// Get current index
+			index = (_terrainHeight * j) + i;
+
+			// Set data
+			// Displace down by half of the initial height
+			// Scalar provided
+			_heightMap[index].Y = ((heights[index] - (cornerHeight / 2.0f)) * heightScalar);
+		}
+	}
+
+	// Tidy vector
+	heights.clear();
+}
+
+void ProceduralTerrain::DiamondSquareAlgorithm(int x1, int y1, int x2, int y2, float range, unsigned level)
+{
+	//level = size - 1 when called the first time
+	if (level <= 1) return;
+
+	float a;
+	float b;
+	float c;
+	float d;
+	float e;
+	int width = x2 - x1;
+	for (int y = x1; y < x2; y += level)
+	{
+		for (int x = y1; x < y2; x += level)
+		{
+			//diamond
+			a = _heightMap[x + y * width].Y; //lo
+			b = _heightMap[(x + level) + y * width].Y; //ro
+			c = _heightMap[x + (y + level) * width].Y; //lu
+			d = _heightMap[(x + level) + (y + level) * width].Y; //ru
+			e = _heightMap[(x + level / 2) + (y + level / 2) * width].Y = Fit(((a + b + c + d) / 4) + RandomRange(-1, 1) * range);
+		}
+	}
+	for (int y = x1; y < x2; y += level)
+	{
+		for (int x = y1; x < y2; x += level)
+		{
+			a = _heightMap[x + y * width].Y; //lo
+			b = _heightMap[(x + level) + y * width].Y; //ro
+			c = _heightMap[x + (y + level) * width].Y; //lu
+			d = _heightMap[(x + level) + (y + level) * width].Y; //ru
+			e = _heightMap[(x + level / 2) + (y + level / 2) * width].Y;
+
+			//square
+			_heightMap[(x + level / 2) + y * width].Y = Fit(((a + b + e) / 3) + RandomRange(-0.5, 0.5) * range); //o
+			_heightMap[(x + level) + (y + level / 2) * width].Y = Fit(((b + d + e) / 3) + RandomRange(-0.5, 0.5) * range); //r
+			_heightMap[(x + level / 2) + (y + level) * width].Y = Fit(((d + c + e) / 3) + RandomRange(-0.5, 0.5) * range); //u
+			_heightMap[x + (y + level / 2) * width].Y = Fit(((a + c + e) / 3) + RandomRange(-0.5, 0.5) * range); //l
+		}
+	}
+
+	DiamondSquareAlgorithm(x1, y1, x2, y2, range / 2, (level / 2));
+}
+
+void ProceduralTerrain::DestroyHeightMap()
 {
 	// Release the height map array.
 	if (_heightMap)
@@ -498,7 +493,7 @@ void Terrain::DestroyHeightMap()
 	return;
 }
 
-void Terrain::SetTerrainCoordinates()
+void ProceduralTerrain::SetTerrainCoordinates()
 {
 	int i, j, index;
 
@@ -524,7 +519,7 @@ void Terrain::SetTerrainCoordinates()
 	return;
 }
 
-bool Terrain::CalculateNormals()
+bool ProceduralTerrain::CalculateNormals()
 {
 	int i, j, index1, index2, index3, index;
 	float vertex1[3], vertex2[3], vertex3[3], vector1[3], vector2[3], sum[3], length;
@@ -655,7 +650,7 @@ bool Terrain::CalculateNormals()
 	return true;
 }
 
-bool Terrain::LoadColourMap()
+bool ProceduralTerrain::LoadColourMap()
 {
 	int error, imageSize, i, j, k, index;
 	FILE* filePtr;
@@ -752,7 +747,7 @@ bool Terrain::LoadColourMap()
 	return true;
 }
 
-bool Terrain::BuildTerrainModel()
+bool ProceduralTerrain::BuildTerrainModel()
 {
 	int i, j, index, index1, index2, index3, index4;
 	float quadsCovered, incrementSize, tu2Left, tu2Right, tv2Bottom, tv2Top;
@@ -917,7 +912,7 @@ bool Terrain::BuildTerrainModel()
 	return true;
 }
 
-void Terrain::DestroyTerrainModel()
+void ProceduralTerrain::DestroyTerrainModel()
 {
 	// Release the terrain model data.
 	if (_terrainModel)
@@ -929,7 +924,7 @@ void Terrain::DestroyTerrainModel()
 	return;
 }
 
-void Terrain::CalculateTerrainVectors()
+void ProceduralTerrain::CalculateTerrainVectors()
 {
 	int faceCount, i, index;
 	TempVertexType vertex1, vertex2, vertex3;
@@ -1005,7 +1000,7 @@ void Terrain::CalculateTerrainVectors()
 	return;
 }
 
-void Terrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType vertex2, TempVertexType vertex3, VectorType& tangent, VectorType& binormal)
+void ProceduralTerrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType vertex2, TempVertexType vertex3, VectorType& tangent, VectorType& binormal)
 {
 	float vector1[3], vector2[3];
 	float tuVector[2], tvVector[2];
@@ -1059,7 +1054,7 @@ void Terrain::CalculateTangentBinormal(TempVertexType vertex1, TempVertexType ve
 	return;
 }
 
-bool Terrain::LoadTerrainCells(ID3D11Device * device)
+bool ProceduralTerrain::LoadTerrainCells(ID3D11Device * device)
 {
 	int cellHeight, cellWidth, cellRowCount, i, j, index;
 	bool result;
@@ -1097,7 +1092,7 @@ bool Terrain::LoadTerrainCells(ID3D11Device * device)
 	return true;
 }
 
-void Terrain::DestroyTerrainCells()
+void ProceduralTerrain::DestroyTerrainCells()
 {
 	int i;
 
@@ -1116,7 +1111,7 @@ void Terrain::DestroyTerrainCells()
 	return;
 }
 
-bool Terrain::CheckHeightOfTriangle(float x, float z, float& height, float v0[3], float v1[3], float v2[3])
+bool ProceduralTerrain::CheckHeightOfTriangle(float x, float z, float& height, float v0[3], float v1[3], float v2[3])
 {
 	float startVector[3], directionVector[3], edge1[3], edge2[3], normal[3];
 	float Q[3], e1[3], e2[3], e3[3], edgeNormal[3], temp[3];
@@ -1245,4 +1240,60 @@ bool Terrain::CheckHeightOfTriangle(float x, float z, float& height, float v0[3]
 	height = Q[1];
 
 	return true;
+}
+
+// Random float between passed max & min //
+float ProceduralTerrain::RandomRange(float min, float max) 
+{
+	if (max < min) {
+		return 0.0f;
+	}
+
+	return ((rand() % 20000) / 20000.0f) * (max - min) + min;
+}
+
+// Gets NESW neighbours (if within bounds) and returns average value //
+float ProceduralTerrain::GetSquareAverage(std::vector< float > &vector, int i, int j, int step, float randomRange, float smoothingValue) 
+{
+	// Initialize variables
+	float averageHeight = 0.0f;
+	float numOfAverages = 0;
+
+	// North
+	if ((j - step) >= 0) {
+		averageHeight += vector[(_terrainHeight * (j - step)) + i];
+		numOfAverages++;
+	}
+	// East
+	if ((i + step) < (_terrainWidth)) {
+		averageHeight += vector[(_terrainHeight * j) + (i + step)];
+		numOfAverages++;
+	}
+	// South
+	if ((j + step) < (_terrainHeight)) {
+		averageHeight += vector[(_terrainHeight * (j + step)) + i];
+		numOfAverages++;
+	}
+	// West
+	if ((i - step) >= 0) {
+		averageHeight += vector[(_terrainHeight * j) + (i - step)];
+		numOfAverages++;
+	}
+
+	// Calculate square average plus small random offset
+	float newHeight = (averageHeight / numOfAverages) + RandomRange(-randomRange, randomRange) / smoothingValue;
+
+	// Return newHeight
+	return newHeight;
+}
+
+float ProceduralTerrain::Fit(float x)
+{
+	if (x > 1)
+		x = 1;
+
+	if (x < 0)
+		x = 0;
+
+	return x;
 }

@@ -1,6 +1,3 @@
-#ifndef _CAMERACLASS_H_
-#define _CAMERACLASS_H_
-
 #include <directxmath.h>
 
 #include "Transform.h"
@@ -27,5 +24,3 @@ private:
 
 	Transform*		_transform;
 };
-
-#endif

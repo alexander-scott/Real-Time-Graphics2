@@ -201,7 +201,7 @@ bool Application::BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int sc
 	bool result;
 
 	// Create the scene object.
-	_scene = new SceneTerrainLOD;
+	_scene = new SceneTerrainGeneration;
 	if (!_scene)
 	{
 		return false;

@@ -1,6 +1,3 @@
-#ifndef _APPLICATIONCLASS_H_
-#define _APPLICATIONCLASS_H_
-
 enum Scene 
 {
 	eSceneTerrainLOD,
@@ -48,5 +45,3 @@ private:
 
 	IScene*			_scene;
 };
-
-#endif

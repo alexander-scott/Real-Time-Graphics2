@@ -2,6 +2,8 @@
 
 #include "IScene.h"
 
+#include "Terrain.h"
+
 class SceneTerrainLOD : public IScene
 {
 public:

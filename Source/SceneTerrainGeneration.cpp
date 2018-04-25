@@ -103,7 +103,7 @@ bool SceneTerrainGeneration::Initialize(DX11Instance* Direct3D, HWND hwnd, int s
 	}
 
 	// Create the terrain object.
-	_terrain = new Terrain;
+	_terrain = new ProceduralTerrain;
 	if (!_terrain)
 	{
 		return false;

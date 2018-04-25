@@ -10,7 +10,7 @@
 using namespace DirectX;
 using namespace std;
 
-class Terrain
+class ProceduralTerrain
 {
 private:
 	struct VertexType
@@ -54,9 +54,9 @@ private:
 	};
 
 public:
-	Terrain();
-	Terrain(const Terrain&);
-	~Terrain();
+	ProceduralTerrain();
+	ProceduralTerrain(const ProceduralTerrain&);
+	~ProceduralTerrain();
 
 	bool Initialize(ID3D11Device*, char*);
 	void Destroy();
@@ -78,8 +78,10 @@ public:
 
 private:
 	bool LoadSetupFile(char*);
-	bool LoadBitmapHeightMap();
-	bool LoadRawHeightMap();
+
+	bool ProcGenHeightMap();
+	void DiamondSquareAlgorithm(float cornerHeight, float randomRange, float heightScalar);
+	void DiamondSquareAlgorithm(int x1, int y1, int x2, int y2, float range, unsigned level);
 
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
@@ -95,6 +97,10 @@ private:
 	void DestroyTerrainCells();
 
 	bool CheckHeightOfTriangle(float, float, float&, float[3], float[3], float[3]);
+
+	float RandomRange(float min, float max);
+	float GetSquareAverage(std::vector< float > &vector, int i, int j, int step, float randomRange, float smoothingValue);
+	float Fit(float x);
 
 private:
 	int					_vertexCount, _indexCount;

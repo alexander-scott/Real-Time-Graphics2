@@ -2,6 +2,8 @@
 
 #include "IScene.h"
 
+#include "ProceduralTerrain.h"
+
 class SceneTerrainGeneration : public IScene
 {
 public:
@@ -16,8 +18,8 @@ private:
 	void ProcessInput(Input*, float) override;
 	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
 
-	SkyDome*		_skyDome;
-	Terrain*		_terrain;
+	SkyDome*			_skyDome;
+	ProceduralTerrain*	_terrain;
 
-	bool			_wireFrame, _cellLines, _heightLocked;
+	bool				_wireFrame, _cellLines, _heightLocked;
 };
