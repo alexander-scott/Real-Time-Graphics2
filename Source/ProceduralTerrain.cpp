@@ -3,6 +3,8 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
+#include <random>
+
 ProceduralTerrain::ProceduralTerrain()
 {
 	_terrainFilename = nullptr;
@@ -324,7 +326,9 @@ bool ProceduralTerrain::ProcGenHeightMap()
 	/* initialize random seed: */
 	srand(time(NULL));
 
-	DiamondSquareAlgorithm(1000.0f, 50.0f, 5.0f);
+	//DiamondSquareAlgorithm(1000.0f, 300.0f, 5.0f);
+	FaultLineAlgorithm();
+	
 	//DiamondSquareAlgorithm(0, 0, _terrainWidth, _terrainHeight, 100.0f, (_terrainWidth * _terrainHeight) - 1);
 
 	return true;
@@ -437,48 +441,54 @@ void ProceduralTerrain::DiamondSquareAlgorithm(float cornerHeight, float randomR
 	heights.clear();
 }
 
-void ProceduralTerrain::DiamondSquareAlgorithm(int x1, int y1, int x2, int y2, float range, unsigned level)
+void ProceduralTerrain::FaultLineAlgorithm()
 {
-	//level = size - 1 when called the first time
-	if (level <= 1) return;
+	std::default_random_engine		_randNumGenerator;
+	std::uniform_int_distribution<int> randWidthNum(0, _terrainWidth);
+	std::uniform_int_distribution<int> randHeightNum(0, _terrainHeight);
 
-	float a;
-	float b;
-	float c;
-	float d;
-	float e;
-	int width = x2 - x1;
-	for (int y = x1; y < x2; y += level)
-	{
-		for (int x = y1; x < y2; x += level)
-		{
-			//diamond
-			a = _heightMap[x + y * width].Y; //lo
-			b = _heightMap[(x + level) + y * width].Y; //ro
-			c = _heightMap[x + (y + level) * width].Y; //lu
-			d = _heightMap[(x + level) + (y + level) * width].Y; //ru
-			e = _heightMap[(x + level / 2) + (y + level / 2) * width].Y = Fit(((a + b + c + d) / 4) + RandomRange(-1, 1) * range);
-		}
-	}
-	for (int y = x1; y < x2; y += level)
-	{
-		for (int x = y1; x < y2; x += level)
-		{
-			a = _heightMap[x + y * width].Y; //lo
-			b = _heightMap[(x + level) + y * width].Y; //ro
-			c = _heightMap[x + (y + level) * width].Y; //lu
-			d = _heightMap[(x + level) + (y + level) * width].Y; //ru
-			e = _heightMap[(x + level / 2) + (y + level / 2) * width].Y;
+	int index = 0;
 
-			//square
-			_heightMap[(x + level / 2) + y * width].Y = Fit(((a + b + e) / 3) + RandomRange(-0.5, 0.5) * range); //o
-			_heightMap[(x + level) + (y + level / 2) * width].Y = Fit(((b + d + e) / 3) + RandomRange(-0.5, 0.5) * range); //r
-			_heightMap[(x + level / 2) + (y + level) * width].Y = Fit(((d + c + e) / 3) + RandomRange(-0.5, 0.5) * range); //u
-			_heightMap[x + (y + level / 2) * width].Y = Fit(((a + c + e) / 3) + RandomRange(-0.5, 0.5) * range); //l
+	// Set all heights to 0. Remove this if we're doing fault line after diamond square
+	for (int j = 0; j < _terrainHeight; j++)
+	{
+		for (int i = 0; i < _terrainWidth; i++)
+		{
+			// Get current index
+			index = (_terrainHeight * j) + i;
+			_heightMap[index].Y = 200;
 		}
 	}
 
-	DiamondSquareAlgorithm(x1, y1, x2, y2, range / 2, (level / 2));
+	int iterationCount = 1000;
+	int displacement = 500;
+
+	for (int i = 0; i < iterationCount; i++)
+	{
+		int x1 = randWidthNum(_randNumGenerator);
+		int z1 = randHeightNum(_randNumGenerator);
+
+		int x2 = randWidthNum(_randNumGenerator);
+		int z2 = randHeightNum(_randNumGenerator);
+
+		double a = (z2 - z1);
+		double b = -(x2 - x1);
+		double c = -x1 * (z2 - z1) + z1 * (x2 - x1);
+
+		for (int j = 0; j < _terrainHeight; j++)
+		{
+			for (int i = 0; i < _terrainWidth; i++)
+			{
+				// Get current index
+				index = (_terrainHeight * j) + i;
+
+				if (a*j + b*i - c > 0)
+					_heightMap[index].Y += displacement;
+				else
+					_heightMap[index].Y -= displacement;
+			}
+		}
+	}
 }
 
 void ProceduralTerrain::DestroyHeightMap()

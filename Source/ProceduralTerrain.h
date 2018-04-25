@@ -81,7 +81,7 @@ private:
 
 	bool ProcGenHeightMap();
 	void DiamondSquareAlgorithm(float cornerHeight, float randomRange, float heightScalar);
-	void DiamondSquareAlgorithm(int x1, int y1, int x2, int y2, float range, unsigned level);
+	void FaultLineAlgorithm();
 
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
