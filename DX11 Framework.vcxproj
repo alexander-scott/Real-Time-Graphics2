@@ -371,6 +371,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\SceneCombined.cpp" />
     <ClCompile Include="Source\SceneGraphics.cpp" />
     <ClCompile Include="Source\ProceduralTerrain.cpp" />
     <ClCompile Include="Source\SceneTerrainGeneration.cpp" />
@@ -404,6 +405,7 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\SceneCombined.h" />
     <ClInclude Include="Source\SceneGraphics.h" />
     <ClInclude Include="Source\ProceduralTerrain.h" />
     <ClInclude Include="Source\SceneTerrainGeneration.h" />

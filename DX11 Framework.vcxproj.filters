@@ -94,6 +94,9 @@
     <ClCompile Include="Source\SceneGraphics.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneCombined.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -190,6 +193,9 @@
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneGraphics.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneCombined.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>

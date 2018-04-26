@@ -9,6 +9,7 @@
 #include "Light.h"
 #include "Frustum.h"
 #include "SkyDome.h"
+#include "Terrain.h"
 
 class IScene
 {

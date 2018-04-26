@@ -83,6 +83,9 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 
 	switch (CURRENT_SCENE)
 	{
+		case Scene::eSceneCombined:
+			return BuildSceneCombined(hwnd, screenWidth, screenHeight);
+
 		case Scene::eSceneTerrainLOD:
 			return BuildSceneTerrainLOD(hwnd, screenWidth, screenHeight);
 
@@ -171,6 +174,28 @@ bool Application::Update()
 	result = _scene->Update(_dx11Instance, _input, _shaderManager,  _timer->GetTime());
 	if (!result)
 	{
+		return false;
+	}
+
+	return result;
+}
+
+bool Application::BuildSceneCombined(HWND hwnd, int screenWidth, int screenHeight)
+{
+	bool result;
+
+	// Create the scene object.
+	_scene = new SceneCombined;
+	if (!_scene)
+	{
+		return false;
+	}
+
+	// Initialize the scene object.
+	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the scene object.", L"Error", MB_OK);
 		return false;
 	}
 

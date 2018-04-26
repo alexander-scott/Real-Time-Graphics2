@@ -1,5 +1,6 @@
 enum Scene 
 {
+	eSceneCombined,
 	eSceneTerrainLOD,
 	eSceneTerrainGeneration,
 	eSceneSkeleton,
@@ -19,6 +20,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "TextureManager.h"
 #include "Timer.h"
 
+#include "SceneCombined.h"
 #include "SceneTerrainLOD.h"
 #include "SceneTerrainGeneration.h"
 #include "SceneSkeleton.h"
@@ -36,6 +38,8 @@ public:
 	bool Update();
 
 private:
+	bool BuildSceneCombined(HWND hwnd, int screenWidth, int screenHeight);
+
 	bool BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeight);
