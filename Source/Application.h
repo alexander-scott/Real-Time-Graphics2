@@ -7,7 +7,7 @@ enum Scene
 	eSceneGraphics
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneSkeleton; 
+const Scene CURRENT_SCENE = Scene::eSceneGraphics;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

@@ -206,8 +206,9 @@ bool SceneGraphics::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	worldMatrix = XMMatrixTranslation(cubePosition.x, cubePosition.y, cubePosition.z);
 
 	_cube->Draw(direct3D->GetDeviceContext());
-	result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
-		_textureManager->GetTexture(42), light.LightVecW, light.DiffuseLight);
+	/*result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
+		_textureManager->GetTexture(42), light.LightVecW, light.DiffuseLight);*/
+	result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(42));
 	/*result = shaderManager->RenderCubeShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
 		surface, light, light.LightVecW, true, _textureManager->GetTexture(42));*/
 	//result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
