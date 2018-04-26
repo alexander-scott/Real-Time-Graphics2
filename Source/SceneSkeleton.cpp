@@ -52,6 +52,7 @@ bool SceneSkeleton::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
 
+	// Initialize the skeleton object.
 	_skeleton = new Skeleton;
 	if (!_skeleton)
 	{
@@ -87,6 +88,13 @@ void SceneSkeleton::Destroy()
 	{
 		delete _camera;
 		_camera = 0;
+	}
+
+	// Release the skeleton object.
+	if (_skeleton)
+	{
+		delete _skeleton;
+		_skeleton = 0;
 	}
 
 	return;
@@ -197,7 +205,6 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 			return false;
 		}
 	}
-
 
 	// Present the rendered scene to the screen.
 	direct3D->EndScene();

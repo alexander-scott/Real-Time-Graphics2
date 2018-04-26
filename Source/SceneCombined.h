@@ -18,6 +18,7 @@ private:
 
 	SkyDome*		_skyDome;
 	Terrain*		_terrain;
+	Skeleton*		_skeleton;
 
 	bool			_wireFrame, _cellLines, _heightLocked;
 };

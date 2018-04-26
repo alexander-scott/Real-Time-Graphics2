@@ -37,6 +37,12 @@ void Transform::SetRotation(float x, float y, float z)
 	return;
 }
 
+void Transform::SetScale(float x, float y, float z)
+{
+	_scale = XMFLOAT3(x, y, z);
+	return;
+}
+
 void Transform::SetPosition(XMFLOAT3 pos)
 {
 	_position = pos;
@@ -46,6 +52,12 @@ void Transform::SetPosition(XMFLOAT3 pos)
 void Transform::SetRotation(XMFLOAT3 rot)
 {
 	_rotation = rot;
+	return;
+}
+
+void Transform::SetScale(XMFLOAT3 scale)
+{
+	_scale = scale;
 	return;
 }
 
@@ -65,6 +77,14 @@ void Transform::GetRotation(float& x, float& y, float& z)
 	return;
 }
 
+void Transform::GetScale(float & x, float & y, float & z)
+{
+	x = _scale.x;
+	y = _scale.y;
+	z = _scale.z;
+	return;
+}
+
 void Transform::GetPosition(XMFLOAT3 & pos)
 {
 	pos = _position;
@@ -74,6 +94,12 @@ void Transform::GetPosition(XMFLOAT3 & pos)
 void Transform::GetRotation(XMFLOAT3 & rot)
 {
 	rot = _rotation;
+	return;
+}
+
+void Transform::GetScale(XMFLOAT3 & scale)
+{
+	scale = _scale;
 	return;
 }
 

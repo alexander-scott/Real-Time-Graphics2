@@ -63,7 +63,7 @@ bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	_camera->RenderBaseViewMatrix();
 
 	// Set the initial Position and rotation.
-	_camera->GetTransform()->SetPosition(128.0f, 10.0f, -10.0f);
+	_camera->GetTransform()->SetPosition(128.0f, 20.0f, 500.0f);
 	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the light object.
@@ -117,6 +117,19 @@ bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 		return false;
 	}
 
+	// Initialize the skeleton object.
+	_skeleton = new Skeleton;
+	if (!_skeleton)
+	{
+		return false;
+	}
+
+	// Initalize the skeleton object.
+	_skeleton->Initialize(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), _textureManager, L"Source/Animation/boy.md5mesh", L"Source/Animation/boy.md5anim");
+	_skeleton->GetTransform()->SetPosition(XMFLOAT3(128.0f, 20.0f, 500.0f));
+	_skeleton->GetTransform()->SetRotation(XMFLOAT3(0, 0, 0));
+	_skeleton->GetTransform()->SetScale(XMFLOAT3(0.1f, 0.1f, 0.1f));
+
 	// Set wire frame rendering initially to disabled.
 	_wireFrame = false;
 
@@ -162,6 +175,13 @@ void SceneCombined::Destroy()
 		_frustum = 0;
 	}
 
+	// Release the skeleton object.
+	if (_skeleton)
+	{
+		delete _skeleton;
+		_skeleton = 0;
+	}
+
 	// Release the light object.
 	if (_light)
 	{
@@ -186,6 +206,8 @@ bool SceneCombined::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
+
+	_skeleton->Update(direct3D->GetDeviceContext(), frameTime);
 
 	// Get the View point Position/rotation.
 	_camera->GetTransform()->GetPosition(posX, posY, posZ);
@@ -274,6 +296,7 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
 	XMFLOAT3 cameraPosition;
+	XMFLOAT3 skeletonPosition, skeletonRotation, skeletonScale;
 
 	// Generate the View matrix based on the camera's Position.
 	_camera->Render();
@@ -287,6 +310,11 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 
 	// Get the Position of the camera.
 	_camera->GetTransform()->GetPosition(cameraPosition);
+
+	// Get the skeleton details
+	_skeleton->GetTransform()->GetPosition(skeletonPosition);
+	_skeleton->GetTransform()->GetRotation(skeletonRotation);
+	_skeleton->GetTransform()->GetScale(skeletonScale);
 
 	// Construct the frustum.
 	_frustum->ConstructFrustum(projectionMatrix, viewMatrix);
@@ -357,6 +385,22 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	if (_wireFrame)
 	{
 		direct3D->DisableWireframe();
+	}
+
+	// Translate the sky dome to be centered around the skeleton Position.
+	worldMatrix = XMMatrixScaling(skeletonScale.x, skeletonScale.y, skeletonScale.z) *
+		(XMMatrixRotationX(skeletonRotation.x) * XMMatrixRotationY(skeletonRotation.y) * XMMatrixRotationZ(skeletonRotation.z)) *
+		XMMatrixTranslation(skeletonPosition.x, skeletonPosition.y, skeletonPosition.z);
+
+	for (int i = 0; i < _skeleton->GetSubsetCount(); i++)
+	{
+		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
+		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
+
+		if (!result)
+		{
+			return false;
+		}
 	}
 
 	// Present the rendered scene to the screen.

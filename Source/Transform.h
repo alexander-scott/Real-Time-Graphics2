@@ -15,18 +15,23 @@ public:
 
 	void SetPosition(float, float, float);
 	void SetRotation(float, float, float);
+	void SetScale(float, float, float);
 
 	void SetPosition(XMFLOAT3);
 	void SetRotation(XMFLOAT3);
+	void SetScale(XMFLOAT3);
 
 	void GetPosition(float&, float&, float&);
 	void GetRotation(float&, float&, float&);
+	void GetScale(float&, float&, float&);
 
 	void GetPosition(XMFLOAT3&);
 	void GetRotation(XMFLOAT3&);
+	void GetScale(XMFLOAT3&);
 
 	XMFLOAT3& GetPositionValue() { return _position; }
 	XMFLOAT3& GetRotationValue() { return _rotation; }
+	XMFLOAT3& GetScaleValue() { return _scale; }
 
 	void SetFrameTime(float);
 
@@ -42,6 +47,7 @@ public:
 private:
 	XMFLOAT3 _position;
 	XMFLOAT3 _rotation;
+	XMFLOAT3 _scale;
 
 	float _frameTime;
 
