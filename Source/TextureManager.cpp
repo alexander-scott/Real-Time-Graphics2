@@ -71,7 +71,7 @@ bool TextureManager::LoadJPEGTexture(ID3D11Device* device, ID3D11DeviceContext* 
 	bool result;
 
 	// Initialize the JPEG object.
-	auto texture = new JPEGTexture;
+	auto texture = new DDSTexture;
 	texture->SetPath(filename);
 
 	_textureArray.insert(std::make_pair(location, texture));

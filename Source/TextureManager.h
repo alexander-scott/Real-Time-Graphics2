@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TargaTexture.h"
-#include "JPEGTexture.h"
+#include "DDSTexture.h"
 
 #include <map>
 

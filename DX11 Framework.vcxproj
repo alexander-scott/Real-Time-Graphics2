@@ -371,12 +371,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Cube.cpp" />
     <ClCompile Include="Source\SceneCombined.cpp" />
     <ClCompile Include="Source\SceneGraphics.cpp" />
     <ClCompile Include="Source\ProceduralTerrain.cpp" />
     <ClCompile Include="Source\SceneTerrainGeneration.cpp" />
     <ClCompile Include="Source\SceneSkeleton.cpp" />
-    <ClCompile Include="Source\JPEGTexture.cpp" />
+    <ClCompile Include="Source\DDSTexture.cpp" />
     <ClCompile Include="Source\DDSTextureLoader.cpp" />
     <ClCompile Include="Source\SkeletonShader.cpp" />
     <ClCompile Include="Source\Skeleton.cpp" />
@@ -405,12 +406,13 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\SceneCombined.h" />
     <ClInclude Include="Source\SceneGraphics.h" />
     <ClInclude Include="Source\ProceduralTerrain.h" />
     <ClInclude Include="Source\SceneTerrainGeneration.h" />
     <ClInclude Include="Source\SceneSkeleton.h" />
-    <ClInclude Include="Source\JPEGTexture.h" />
+    <ClInclude Include="Source\DDSTexture.h" />
     <ClInclude Include="Source\DDSTextureLoader.h" />
     <ClInclude Include="Source\ITexture.h" />
     <ClInclude Include="Source\SkeletonShader.h" />

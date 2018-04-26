@@ -79,9 +79,6 @@
     <ClCompile Include="Source\TargaTexture.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
-    <ClCompile Include="Source\JPEGTexture.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneSkeleton.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -96,6 +93,12 @@
     </ClCompile>
     <ClCompile Include="Source\SceneCombined.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cube.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DDSTexture.cpp">
+      <Filter>DX11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -180,9 +183,6 @@
     <ClInclude Include="Source\TargaTexture.h">
       <Filter>DX11</Filter>
     </ClInclude>
-    <ClInclude Include="Source\JPEGTexture.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneSkeleton.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -197,6 +197,12 @@
     </ClInclude>
     <ClInclude Include="Source\SceneCombined.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Cube.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DDSTexture.h">
+      <Filter>DX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

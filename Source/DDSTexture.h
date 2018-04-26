@@ -10,11 +10,11 @@
 #include <directxmath.h>
 #include "DDSTextureLoader.h"
 
-class JPEGTexture : public ITexture
+class DDSTexture : public ITexture
 {
 public:
-	JPEGTexture();
-	~JPEGTexture();
+	DDSTexture();
+	~DDSTexture();
 
 	void SetPath(std::wstring path) { _path = path; }
 

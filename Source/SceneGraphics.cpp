@@ -27,6 +27,12 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 		return false;
 	}
 
+	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/terrain/Crate_COLOR.dds", 42);
+	if (!result)
+	{
+		return false;
+	}
+
 	// Create the camera object.
 	_camera = new Camera;
 	if (!_camera)
