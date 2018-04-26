@@ -58,6 +58,15 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
 
+	_cube = new Cube;
+	if (!_cube)
+	{
+		return false;
+	}
+
+	// Initalise the cube object
+	_cube->Initialize(Direct3D->GetDevice());
+
 	return true;
 }
 
@@ -68,21 +77,29 @@ void SceneGraphics::Destroy()
 	{
 		_textureManager->Destroy();
 		delete _textureManager;
-		_textureManager = 0;
+		_textureManager = nullptr;
 	}
 
 	// Release the frustum object.
 	if (_frustum)
 	{
 		delete _frustum;
-		_frustum = 0;
+		_frustum = nullptr;
 	}
 
 	// Release the camera object.
 	if (_camera)
 	{
 		delete _camera;
-		_camera = 0;
+		_camera = nullptr;
+	}
+
+	// Release the cube object.
+	if (_cube)
+	{
+		_cube->Destroy();
+		delete _cube;
+		_cube = nullptr;
 	}
 
 	return;

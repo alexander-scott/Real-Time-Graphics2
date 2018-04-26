@@ -371,6 +371,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CubeShader.cpp" />
     <ClCompile Include="Source\Cube.cpp" />
     <ClCompile Include="Source\SceneCombined.cpp" />
     <ClCompile Include="Source\SceneGraphics.cpp" />
@@ -406,6 +407,7 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CubeShader.h" />
     <ClInclude Include="Source\Cube.h" />
     <ClInclude Include="Source\SceneCombined.h" />
     <ClInclude Include="Source\SceneGraphics.h" />

@@ -17,15 +17,16 @@ public:
 	TextureShader(const TextureShader&);
 	~TextureShader();
 
-	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
+	bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture);
 
 protected:
-	bool InitializeShader(ID3D11Device*, HWND, WCHAR*, WCHAR*) override;
+	bool InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename) override;
 	void DestroyShader() override;
-	void RenderShader(ID3D11DeviceContext*, int) override;
+	void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount) override;
 
 private:
-	bool SetShaderParameters(ID3D11DeviceContext*, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+		XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture);
 
 	ID3D11SamplerState*			_sampleState;
 };

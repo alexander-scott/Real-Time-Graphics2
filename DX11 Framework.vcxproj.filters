@@ -100,6 +100,9 @@
     <ClCompile Include="Source\DDSTexture.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
+    <ClCompile Include="Source\CubeShader.cpp">
+      <Filter>DX11\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -203,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="Source\DDSTexture.h">
       <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CubeShader.h">
+      <Filter>DX11\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

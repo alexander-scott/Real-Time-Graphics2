@@ -15,5 +15,7 @@ public:
 private:
 	void ProcessInput(Input*, float) override;
 	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
+
+	Cube*	_cube;
 };
 
