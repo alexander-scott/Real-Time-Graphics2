@@ -9,9 +9,24 @@ CubeShader::~CubeShader()
 {
 }
 
-bool CubeShader::Render(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, SurfaceInfo surface, LightStruct light, XMFLOAT3 eyePosW, float hasTexture, ID3D11ShaderResourceView * texture)
+bool CubeShader::Render(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	SurfaceInfo surface, LightStruct light, XMFLOAT3 eyePosW, float hasTexture, ID3D11ShaderResourceView * texture)
 {
-	return false;
+	bool result;
+
+	// Set the shader parameters that it will use for rendering.
+	result = SetShaderParameters(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix,
+		surface, light, eyePosW, hasTexture, texture);
+
+	if (!result)
+	{
+		return false;
+	}
+
+	// Now render the prepared buffers with the shader.
+	RenderShader(deviceContext, indexCount);
+
+	return true;
 }
 
 bool CubeShader::InitializeShader(ID3D11Device * device, HWND hwnd, WCHAR * vsFilename, WCHAR * psFilename)
@@ -85,20 +100,172 @@ bool CubeShader::InitializeShader(ID3D11Device * device, HWND hwnd, WCHAR * vsFi
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	hr = device->CreateSamplerState(&sampDesc, &_samplerLinear);
 
+	D3D11_BUFFER_DESC matrixBufferDesc;
+	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	matrixBufferDesc.MiscFlags = 0;
+	matrixBufferDesc.StructureByteStride = 0;
+
+	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	hr = device->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	D3D11_BUFFER_DESC cBufferDesc;
+	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
+	cBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	cBufferDesc.ByteWidth = sizeof(LightBufferType);
+	cBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cBufferDesc.MiscFlags = 0;
+	cBufferDesc.StructureByteStride = 0;
+
+	// Create the constant buffer pointer so we can access the pixel shader constant buffer from within this class.
+	hr = device->CreateBuffer(&cBufferDesc, NULL, &_constantBuffer);
+	if (FAILED(hr))
+		return false;
+
 	return true;
 }
 
 void CubeShader::DestroyShader()
 {
+	// Release the light constant buffer.
+	if (_constantBuffer)
+	{
+		_constantBuffer->Release();
+		_constantBuffer = 0;
+	}
+
+	// Release the sampler state.
+	if (_samplerLinear)
+	{
+		_samplerLinear->Release();
+		_samplerLinear = 0;
+	}
+
+	// Release the matrix constant buffer.
+	if (_matrixBuffer)
+	{
+		_matrixBuffer->Release();
+		_matrixBuffer = 0;
+	}
+
+	// Release the layout.
+	if (_layout)
+	{
+		_layout->Release();
+		_layout = 0;
+	}
+
+	// Release the pixel shader.
+	if (_pixelShader)
+	{
+		_pixelShader->Release();
+		_pixelShader = 0;
+	}
+
+	// Release the vertex shader.
+	if (_vertexShader)
+	{
+		_vertexShader->Release();
+		_vertexShader = 0;
+	}
 }
 
 void CubeShader::RenderShader(ID3D11DeviceContext * deviceContext, int indexCount)
 {
+	// Set the vertex input layout.
+	deviceContext->IASetInputLayout(_layout);
+
+	// Set the vertex and pixel shaders that will be used to render.
+	deviceContext->VSSetShader(_vertexShader, NULL, 0);
+	deviceContext->PSSetShader(_pixelShader, NULL, 0);
+
+	// Set the sampler state in the pixel shader.
+	deviceContext->PSSetSamplers(0, 1, &_samplerLinear);
+
+	// Render the polygon data.
+	deviceContext->DrawIndexed(indexCount, 0, 0);
+
+	return;
 }
 
-bool CubeShader::SetShaderParameters(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, SurfaceInfo surface, LightStruct light, XMFLOAT3 eyePosW, float hasTexture, ID3D11ShaderResourceView * texture)
+bool CubeShader::SetShaderParameters(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	SurfaceInfo surface, LightStruct light, XMFLOAT3 eyePosW, float hasTexture, ID3D11ShaderResourceView * texture)
 {
-	return false;
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	MatrixBufferType* dataPtr;
+	unsigned int bufferNumber;
+	LightBufferType* dataPtr2;
+
+	// Transpose the matrices to prepare them for the shader.
+	worldMatrix = XMMatrixTranspose(worldMatrix);
+	viewMatrix = XMMatrixTranspose(viewMatrix);
+	projectionMatrix = XMMatrixTranspose(projectionMatrix);
+
+	// Lock the constant buffer so it can be written to.
+	result = deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	// Get a pointer to the data in the constant buffer.
+	dataPtr = (MatrixBufferType*)mappedResource.pData;
+
+	// Copy the matrices into the constant buffer.
+	dataPtr->World = worldMatrix;
+	dataPtr->View = viewMatrix;
+	dataPtr->Projection = projectionMatrix;
+
+	// Unlock the constant buffer.
+	deviceContext->Unmap(_matrixBuffer, 0);
+
+	// Set the Position of the constant buffer in the vertex shader.
+	bufferNumber = 0;
+
+	// Finanly set the constant buffer in the vertex shader with the updated values.
+	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
+
+	// Set shader TargaTexture resource in the pixel shader.
+	deviceContext->PSSetShaderResources(0, 1, &texture);
+
+	// Lock the light constant buffer so it can be written to.
+	result = deviceContext->Map(_constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	// Get a pointer to the data in the light constant buffer.
+	dataPtr2 = (LightBufferType*)mappedResource.pData;
+
+	// Copy the lighting variables into the constant buffer.
+	dataPtr2->World = worldMatrix;
+	dataPtr2->View = viewMatrix;
+	dataPtr2->Projection = projectionMatrix;
+	dataPtr2->surface = surface;
+	dataPtr2->light = light;
+	dataPtr2->HasTexture = hasTexture;
+	dataPtr2->EyePosW = eyePosW;
+
+	// Unlock the light constant buffer.
+	deviceContext->Unmap(_constantBuffer, 0);
+
+	// Set the Position of the light constant buffer in the pixel shader.
+	bufferNumber = 0;
+
+	// Finally set the light constant buffer in the pixel shader with the updated values.
+	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_constantBuffer);
+
+	return true;
 }
 
 HRESULT CubeShader::CompileShaderFromFile(WCHAR * szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob ** ppBlobOut)

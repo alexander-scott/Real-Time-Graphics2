@@ -103,6 +103,9 @@
     <ClCompile Include="Source\CubeShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="Source\NewCube.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="Source\CubeShader.h">
       <Filter>DX11\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NewCube.h">
+      <Filter>Application\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

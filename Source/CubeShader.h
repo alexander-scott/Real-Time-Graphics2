@@ -61,6 +61,7 @@ private:
 
 	HRESULT CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut);
 
-	ID3D11SamplerState * _samplerLinear;
+	ID3D11SamplerState *	_samplerLinear;
+	ID3D11Buffer*			_constantBuffer;
 };
 

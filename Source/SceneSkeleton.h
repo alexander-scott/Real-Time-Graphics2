@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IScene.h"
-#include "Skeleton.h"
 
 class SceneSkeleton : public IScene
 {

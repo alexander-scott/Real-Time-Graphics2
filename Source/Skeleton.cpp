@@ -579,7 +579,7 @@ bool Skeleton::LoadMD5Model(ID3D11Device* device,
 
 				ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
 				vertexBufferData.pSysMem = &subset.vertices[0];
-				HRESULT hr = device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &subset.vertBuff);
+				device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &subset.vertBuff);
 
 				// Push back the temp subset into the models subset vector
 				MD5Model.subsets.push_back(subset);

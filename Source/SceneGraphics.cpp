@@ -58,7 +58,7 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
 
-	_cube = new Cube;
+	_cube = new NewCube;
 	if (!_cube)
 	{
 		return false;
@@ -66,6 +66,7 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 
 	// Initalise the cube object
 	_cube->Initialize(Direct3D->GetDevice());
+	_cube->GetTransform()->SetPosition(XMFLOAT3(0, 0, 10));
 
 	return true;
 }
@@ -120,8 +121,38 @@ bool SceneGraphics::Update(DX11Instance * direct3D, Input * input, ShaderManager
 	return true;
 }
 
-void SceneGraphics::ProcessInput(Input *, float)
+void SceneGraphics::ProcessInput(Input * input, float frameTime)
 {
+	bool keyDown;
+
+	// Set the frame time for calculating the updated Position.
+	_camera->GetTransform()->SetFrameTime(frameTime);
+
+	// Handle the input.
+	keyDown = input->IsLeftPressed();
+	_camera->GetTransform()->TurnLeft(keyDown);
+
+	keyDown = input->IsRightPressed();
+	_camera->GetTransform()->TurnRight(keyDown);
+
+	keyDown = input->IsUpPressed();
+	_camera->GetTransform()->MoveForward(keyDown);
+
+	keyDown = input->IsDownPressed();
+	_camera->GetTransform()->MoveBackward(keyDown);
+
+	keyDown = input->IsAPressed();
+	_camera->GetTransform()->MoveUpward(keyDown);
+
+	keyDown = input->IsZPressed();
+	_camera->GetTransform()->MoveDownward(keyDown);
+
+	keyDown = input->IsPgUpPressed();
+	_camera->GetTransform()->LookUpward(keyDown);
+
+	keyDown = input->IsPgDownPressed();
+	_camera->GetTransform()->LookDownward(keyDown);
+
 	return;
 }
 
@@ -129,7 +160,7 @@ bool SceneGraphics::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
-	XMFLOAT3 cameraPosition, skeletonPosition;
+	XMFLOAT3 cameraPosition, cubePosition;
 
 	// Generate the View matrix based on the camera's Position.
 	_camera->Render();
@@ -144,6 +175,9 @@ bool SceneGraphics::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	// Get the Position of the camera.
 	_camera->GetTransform()->GetPosition(cameraPosition);
 
+	// Get the position of the cube
+	_cube->GetTransform()->GetPosition(cubePosition);
+
 	// Construct the frustum.
 	_frustum->ConstructFrustum(projectionMatrix, viewMatrix);
 
@@ -156,6 +190,31 @@ bool SceneGraphics::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 
 	// Reset the world matrix.
 	direct3D->GetWorldMatrix(worldMatrix);
+
+	SurfaceInfo surface;
+	surface.AmbientMtrl = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	surface.DiffuseMtrl = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	surface.SpecularMtrl = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+
+	LightStruct light;
+	light.AmbientLight = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	light.DiffuseLight = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	light.SpecularLight = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
+	light.SpecularPower = 20.0f;
+	light.LightVecW = XMFLOAT3(0.0f, 1.0f, -1.0f);
+
+	worldMatrix = XMMatrixTranslation(cubePosition.x, cubePosition.y, cubePosition.z);
+
+	_cube->Draw(direct3D->GetDeviceContext());
+	result = shaderManager->RenderLightShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, 
+		_textureManager->GetTexture(42), light.LightVecW, light.DiffuseLight);
+	/*result = shaderManager->RenderCubeShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		surface, light, light.LightVecW, true, _textureManager->GetTexture(42));*/
+	//result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	if (!result)
+	{
+		return false;
+	}
 
 	// Turn the Z buffer back and back face culling on.
 	direct3D->TurnZBufferOn();
