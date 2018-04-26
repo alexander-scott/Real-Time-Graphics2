@@ -219,12 +219,25 @@ bool SceneCombined::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 	// If the height is locked to the terrain then Position the camera on top of it.
 	if (_heightLocked)
 	{
+		XMFLOAT3 cameraRot;
+		_camera->GetTransform()->GetRotation(cameraRot);
+
+		float pitchRadian = cameraRot.x * (XM_PI / 180); // X rotation
+		float yawRadian = cameraRot.y * (XM_PI / 180); // Y rotation
+
+		float newPosX = -15 * (sinf(yawRadian) * cosf(pitchRadian));
+		float newPosY = -15 * (-sinf(pitchRadian));
+		float newPosZ = -15 * (cosf(yawRadian) * cosf(pitchRadian));
+
 		// Get the height of the triangle that is directly underneath the given camera Position.
-		foundHeight = _terrain->GetHeightAtPosition(posX, posZ, height);
+		foundHeight = _terrain->GetHeightAtPosition(posX - newPosX, posZ - newPosZ, height);
 		if (foundHeight)
 		{
-			// If there was a triangle under the camera then Position the camera just above it By one meter.
-			_camera->GetTransform()->SetPosition(posX, height + 1.0f, posZ);
+			_camera->GetTransform()->SetPosition(posX, height + 6.0f, posZ);
+
+			// If there was a triangle under the camera then Position the camera just above it
+			_skeleton->GetTransform()->SetPosition(posX - newPosX, height + 3, posZ - newPosZ);
+			_skeleton->GetTransform()->SetRotation(0, XM_PI + yawRadian, 0);
 		}
 	}
 
