@@ -2,10 +2,14 @@
 
 Cube::Cube()
 {
+	_model = nullptr;
 	_vertexBuffer = nullptr;
 	_indexBuffer = nullptr;
 }
 
+Cube::Cube(const Cube &)
+{
+}
 
 Cube::~Cube()
 {
@@ -22,12 +26,18 @@ bool Cube::Initialize(ID3D11Device * device)
 		return false;
 	}
 
-	// Load the cube into a vertex and index buffer for rendering.
+	// Load the sky dome into a vertex and index buffer for rendering.
 	result = InitializeBuffers(device);
 	if (!result)
 	{
 		return false;
 	}
+
+	// Set the Colour at the top of the sky dome.
+	_apexColour = XMFLOAT4(0.0f, 0.05f, 0.6f, 1.0f);
+
+	// Set the Colour at the center of the sky dome.
+	_centerColour = XMFLOAT4(0.0f, 0.5f, 0.8f, 1.0f);
 
 	_transform = new Transform;
 
@@ -36,16 +46,19 @@ bool Cube::Initialize(ID3D11Device * device)
 
 void Cube::Destroy()
 {
-	// Release the vertex and index buffer that were used for rendering the cube.
+	// Release the vertex and index buffer that were used for rendering the sky dome.
 	ReleaseBuffers();
+
+	// Release the sky dome model.
+	ReleaseSkyDomeModel();
 
 	return;
 }
 
-void Cube::Draw(ID3D11DeviceContext * context)
+void Cube::Draw(ID3D11DeviceContext * deviceContext)
 {
-	// Render the cube.
-	RenderBuffers(context);
+	// Render the sky dome.
+	RenderBuffers(deviceContext);
 
 	return;
 }
@@ -53,6 +66,85 @@ void Cube::Draw(ID3D11DeviceContext * context)
 int Cube::GetIndexCount()
 {
 	return _indexCount;
+}
+
+XMFLOAT4 Cube::GetApexColor()
+{
+	return _apexColour;
+}
+
+XMFLOAT4 Cube::GetCenterColor()
+{
+	return _centerColour;
+}
+
+bool Cube::LoadSkyDomeModel(char * filename)
+{
+	ifstream fin;
+	char input;
+	int i;
+
+	// Open the model file.
+	fin.open(filename);
+
+	// If it could not open the file then exit.
+	if (fin.fail())
+	{
+		return false;
+	}
+
+	// Read up to the value of vertex count.
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+
+	// Read in the vertex count.
+	fin >> _vertexCount;
+
+	// Set the number of indices to be the same as the vertex count.
+	_indexCount = _vertexCount;
+
+	// Create the model using the vertex count that was read in.
+	_model = new ModelType[_vertexCount];
+	if (!_model)
+	{
+		return false;
+	}
+
+	// Read up to the beginning of the data.
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+	fin.get(input);
+	fin.get(input);
+
+	// Read in the vertex data.
+	for (i = 0; i<_vertexCount; i++)
+	{
+		fin >> _model[i].X >> _model[i].Y >> _model[i].Z;
+		fin >> _model[i].Tu >> _model[i].Tv;
+		fin >> _model[i].Nx >> _model[i].Ny >> _model[i].Nz;
+	}
+
+	// Close the model file.
+	fin.close();
+
+	return true;
+}
+
+void Cube::ReleaseSkyDomeModel()
+{
+	if (_model)
+	{
+		delete[] _model;
+		_model = 0;
+	}
+
+	return;
 }
 
 bool Cube::InitializeBuffers(ID3D11Device * device)
@@ -81,7 +173,9 @@ bool Cube::InitializeBuffers(ID3D11Device * device)
 	// Load the vertex array and index array with data.
 	for (i = 0; i<_vertexCount; i++)
 	{
-		vertices[i].PosL = XMFLOAT3(_model[i].X, _model[i].Y, _model[i].Z);
+		vertices[i].position = XMFLOAT3(_model[i].X, _model[i].Y, _model[i].Z);
+		vertices[i].texture = XMFLOAT2(_model[i].Tu, _model[i].Tv);
+		vertices[i].normal = XMFLOAT3(_model[i].Nx, _model[i].Ny, _model[i].Nz);
 		indices[i] = i;
 	}
 
@@ -154,81 +248,24 @@ void Cube::ReleaseBuffers()
 	return;
 }
 
-void Cube::RenderBuffers(ID3D11DeviceContext * context)
+void Cube::RenderBuffers(ID3D11DeviceContext * deviceContext)
 {
 	unsigned int stride;
 	unsigned int offset;
+
 
 	// Set vertex buffer stride and offset.
 	stride = sizeof(VertexType);
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	context->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
 
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	context->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	return;
-}
-
-bool Cube::LoadSkyDomeModel(char * filename)
-{
-	ifstream fin;
-	char input;
-	int i;
-
-	// Open the model file.
-	fin.open(filename);
-
-	// If it could not open the file then exit.
-	if (fin.fail())
-	{
-		return false;
-	}
-
-	// Read up to the value of vertex count.
-	fin.get(input);
-	while (input != ':')
-	{
-		fin.get(input);
-	}
-
-	// Read in the vertex count.
-	fin >> _vertexCount;
-
-	// Set the number of indices to be the same as the vertex count.
-	_indexCount = _vertexCount;
-
-	// Create the model using the vertex count that was read in.
-	_model = new ModelType[_vertexCount];
-	if (!_model)
-	{
-		return false;
-	}
-
-	// Read up to the beginning of the data.
-	fin.get(input);
-	while (input != ':')
-	{
-		fin.get(input);
-	}
-	fin.get(input);
-	fin.get(input);
-
-	// Read in the vertex data.
-	for (i = 0; i<_vertexCount; i++)
-	{
-		fin >> _model[i].X >> _model[i].Y >> _model[i].Z;
-		fin >> _model[i].Tu >> _model[i].Tv;
-		fin >> _model[i].Nx >> _model[i].Ny >> _model[i].Nz;
-	}
-
-	// Close the model file.
-	fin.close();
-
-	return true;
 }

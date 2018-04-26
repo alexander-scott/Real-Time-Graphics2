@@ -94,16 +94,13 @@
     <ClCompile Include="Source\SceneCombined.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Cube.cpp">
-      <Filter>Application\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DDSTexture.cpp">
       <Filter>DX11</Filter>
     </ClCompile>
     <ClCompile Include="Source\CubeShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Source\NewCube.cpp">
+    <ClCompile Include="Source\Cube.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -204,16 +201,13 @@
     <ClInclude Include="Source\SceneCombined.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Cube.h">
-      <Filter>Application\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DDSTexture.h">
       <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\CubeShader.h">
       <Filter>DX11\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Source\NewCube.h">
+    <ClInclude Include="Source\Cube.h">
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

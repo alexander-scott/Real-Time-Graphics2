@@ -2,8 +2,6 @@
 
 #include "IScene.h"
 
-#include "NewCube.h"
-
 class SceneGraphics : public IScene
 {
 public:
@@ -18,6 +16,6 @@ private:
 	void ProcessInput(Input*, float) override;
 	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
 
-	NewCube*		_cube;
+	Cube*		_cube;
 };
 

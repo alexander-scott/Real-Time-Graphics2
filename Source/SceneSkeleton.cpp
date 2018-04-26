@@ -176,6 +176,10 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	direct3D->TurnOffCulling();
 	direct3D->TurnZBufferOff();
 
+	// Turn the Z buffer back and back face culling on.
+	direct3D->TurnZBufferOn();
+	direct3D->TurnOnCulling();
+
 	// Reset the world matrix.
 	direct3D->GetWorldMatrix(worldMatrix);
 
@@ -194,9 +198,6 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 		}
 	}
 
-	// Turn the Z buffer back and back face culling on.
-	direct3D->TurnZBufferOn();
-	direct3D->TurnOnCulling();
 
 	// Present the rendered scene to the screen.
 	direct3D->EndScene();

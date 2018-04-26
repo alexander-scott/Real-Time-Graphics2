@@ -21,35 +21,39 @@ private:
 
 	struct VertexType
 	{
-		XMFLOAT3 PosL;
-		XMFLOAT3 NormL;
-		XMFLOAT2 Tex;
+		XMFLOAT3 position;
+		XMFLOAT2 texture;
+		XMFLOAT3 normal;
 	};
 
 public:
 	Cube();
+	Cube(const Cube&);
 	~Cube();
 
-	bool Initialize(ID3D11Device* device);
+	bool Initialize(ID3D11Device*);
 	void Destroy();
-	void Draw(ID3D11DeviceContext* context);
+	void Draw(ID3D11DeviceContext*);
 
 	int GetIndexCount();
+	XMFLOAT4 GetApexColor();
+	XMFLOAT4 GetCenterColor();
 
 	Transform* GetTransform() { return _transform; }
 
 private:
-	bool InitializeBuffers(ID3D11Device* device);
+	bool LoadSkyDomeModel(char*);
+	void ReleaseSkyDomeModel();
+
+	bool InitializeBuffers(ID3D11Device*);
 	void ReleaseBuffers();
-	void RenderBuffers(ID3D11DeviceContext* context);
+	void RenderBuffers(ID3D11DeviceContext*);
 
-	bool LoadSkyDomeModel(char* filename);
-
+private:
+	ModelType *			_model;
 	int					_vertexCount, _indexCount;
 	ID3D11Buffer*		_vertexBuffer, *_indexBuffer;
-
-	ModelType *			_model;
+	XMFLOAT4			_apexColour, _centerColour;
 
 	Transform*		_transform;
 };
-

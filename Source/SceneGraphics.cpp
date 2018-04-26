@@ -58,7 +58,7 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
 
-	_cube = new NewCube;
+	_cube = new Cube;
 	if (!_cube)
 	{
 		return false;
