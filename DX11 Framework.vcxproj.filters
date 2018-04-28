@@ -14,28 +14,10 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\DX11Instance.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ShaderManager.cpp">
-      <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ColourShader.cpp">
-      <Filter>DX11\Shaders</Filter>
+      <Filter>DXGraphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TextureShader.cpp">
-      <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LightShader.cpp">
-      <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\IShader.cpp">
-      <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TerrainShader.cpp">
-      <Filter>DX11\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\Terrain.cpp">
       <Filter>Application\GameObjects</Filter>
@@ -45,9 +27,6 @@
     </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Application\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SkydomeShader.cpp">
-      <Filter>DX11\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\SkyDome.cpp">
       <Filter>Application\GameObjects</Filter>
@@ -65,7 +44,7 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\SkeletonShader.cpp">
-      <Filter>DX11\Shaders</Filter>
+      <Filter>DXGraphics\SkeletonShaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\Skeleton.cpp">
       <Filter>Application\GameObjects</Filter>
@@ -83,28 +62,28 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\TargaTexture.cpp">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClCompile>
     <ClCompile Include="Source\TextureManager.cpp">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClCompile>
     <ClCompile Include="Source\DDSTextureLoader.cpp">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClCompile>
     <ClCompile Include="Source\DDSTexture.cpp">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClCompile>
     <ClCompile Include="Source\DeferredShader.cpp">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\DeferredLightShader.cpp">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneDeferredLighting.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\OrthoWindow.cpp">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\Cube.cpp">
       <Filter>Application\GameObjects</Filter>
@@ -113,7 +92,34 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\RenderTextureBuffer.cpp">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShaderManager.cpp">
+      <Filter>DXGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LightShader.cpp">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\IShader.cpp">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColourShader.cpp">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureShader.cpp">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TerrainShader.cpp">
+      <Filter>DXGraphics\TerrainShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SkydomeShader.cpp">
+      <Filter>DXGraphics\TerrainShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DepthShader.cpp">
+      <Filter>DXGraphics\ShadowShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShadowShader.cpp">
+      <Filter>DXGraphics\ShadowShaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,28 +133,10 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\DX11Instance.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ShaderManager.h">
-      <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ColourShader.h">
-      <Filter>DX11\Shaders</Filter>
+      <Filter>DXGraphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextureShader.h">
-      <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LightShader.h">
-      <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\IShader.h">
-      <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TerrainShader.h">
-      <Filter>DX11\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\Terrain.h">
       <Filter>Application\GameObjects</Filter>
@@ -158,9 +146,6 @@
     </ClInclude>
     <ClInclude Include="Source\Transform.h">
       <Filter>Application\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SkydomeShader.h">
-      <Filter>DX11\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\SkyDome.h">
       <Filter>Application\GameObjects</Filter>
@@ -181,7 +166,7 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\SkeletonShader.h">
-      <Filter>DX11\Shaders</Filter>
+      <Filter>DXGraphics\SkeletonShaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\Skeleton.h">
       <Filter>Application\GameObjects</Filter>
@@ -199,31 +184,31 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureManager.h">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClInclude>
     <ClInclude Include="Source\ITexture.h">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClInclude>
     <ClInclude Include="Source\TargaTexture.h">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClInclude>
     <ClInclude Include="Source\DDSTextureLoader.h">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClInclude>
     <ClInclude Include="Source\DDSTexture.h">
-      <Filter>DX11\Textures</Filter>
+      <Filter>DXGraphics\Textures</Filter>
     </ClInclude>
     <ClInclude Include="Source\DeferredShader.h">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\DeferredLightShader.h">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneDeferredLighting.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\OrthoWindow.h">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\Cube.h">
       <Filter>Application\GameObjects</Filter>
@@ -232,18 +217,39 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\RenderTextureBuffer.h">
-      <Filter>DX11\Deferred</Filter>
+      <Filter>DXGraphics\DeferredShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShaderManager.h">
+      <Filter>DXGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LightShader.h">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IShader.h">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ColourShader.h">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureShader.h">
+      <Filter>DXGraphics\BasicShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrainShader.h">
+      <Filter>DXGraphics\TerrainShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SkydomeShader.h">
+      <Filter>DXGraphics\TerrainShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DepthShader.h">
+      <Filter>DXGraphics\ShadowShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShadowShader.h">
+      <Filter>DXGraphics\ShadowShaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
       <UniqueIdentifier>{3c76394f-cb8e-4b6b-a260-e0057bc5737c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11">
-      <UniqueIdentifier>{6c2c9c3e-7d1c-4d60-9850-44b34b186da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DX11\Shaders">
-      <UniqueIdentifier>{857a22aa-d2e3-4285-bd0f-7d83fd35c6c4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application">
       <UniqueIdentifier>{fb501156-6d86-4309-b503-74ebfb89d385}</UniqueIdentifier>
@@ -257,11 +263,26 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{4885cf96-44a3-46f3-9885-fb95ad102c32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11\Deferred">
+    <Filter Include="DXGraphics">
+      <UniqueIdentifier>{6c2c9c3e-7d1c-4d60-9850-44b34b186da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGraphics\Textures">
+      <UniqueIdentifier>{15d0e73d-8eec-4e2e-973c-cac6bdc28da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGraphics\BasicShaders">
+      <UniqueIdentifier>{b6b7e27a-484b-433c-bafb-b2994225292e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGraphics\DeferredShaders">
       <UniqueIdentifier>{8d9b8568-7862-429c-8a02-47af385d9c4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11\Textures">
-      <UniqueIdentifier>{15d0e73d-8eec-4e2e-973c-cac6bdc28da1}</UniqueIdentifier>
+    <Filter Include="DXGraphics\TerrainShaders">
+      <UniqueIdentifier>{de00bb96-6932-45cd-bf07-0314106a7ddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGraphics\ShadowShaders">
+      <UniqueIdentifier>{5b915db1-9157-4f52-9fe0-2a6f4a312fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXGraphics\SkeletonShaders">
+      <UniqueIdentifier>{857a22aa-d2e3-4285-bd0f-7d83fd35c6c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

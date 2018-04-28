@@ -223,6 +223,7 @@ void SceneShadows::ProcessInput(Input * input, float frameTime)
 bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
+	XMMATRIX lightViewMatrix, lightProjectionMatrix;
 	bool result;
 	XMFLOAT3 cameraPosition, cubePosition;
 
@@ -236,12 +237,22 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 	// Clear the buffers to begin the scene.
 	direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
+	// Generate the View matrix based on the camera's Position.
+	_camera->Render();
+
+	// Generate the light view matrix based on the light's position.
+	_light->GenerateViewMatrix();
+
 	// Get the World, View, and Projection matrices from the camera and d3d objects.
 	direct3D->GetWorldMatrix(worldMatrix);
 	_camera->GetViewMatrix(viewMatrix);
 	direct3D->GetProjectionMatrix(projectionMatrix);
 	_camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
+
+	// Get the light's view and projection matrices from the light object.
+	_light->GetViewMatrix(lightViewMatrix);
+	_light->GetProjectionMatrix(lightProjectionMatrix);
 
 	// Turn off the Z buffer to begin all 2D rendering.
 	direct3D->TurnZBufferOff();
@@ -250,9 +261,13 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 	_window->Render(direct3D->GetDeviceContext());
 
 	// Render the full screen ortho window using the deferred light shader and the render buffers.
-	shaderManager->RenderDeferredLightShader(direct3D->GetDeviceContext(), _window->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
+	/*shaderManager->RenderDeferredLightShader(direct3D->GetDeviceContext(), _window->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
 		_renderTextureBuffer->GetShaderResourceView(0), _renderTextureBuffer->GetShaderResourceView(1),
-		_light->GetTransform()->GetRotationValue());
+		_light->GetTransform()->GetRotationValue());*/
+
+	shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
+		lightProjectionMatrix, _textureManager->GetTexture(47), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
+		_light->GetAmbientColor(), _light->GetDiffuseColor());
 
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	direct3D->TurnZBufferOn();
@@ -265,7 +280,8 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 
 bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
 {
-	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
+	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix, lightViewMatrix, lightProjectionMatrix;
+	XMFLOAT3 cubePostion;
 
 	// Set the render buffers to be the render target.
 	_renderTextureBuffer->SetRenderTargets(direct3D->GetDeviceContext());
@@ -273,8 +289,8 @@ bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* s
 	// Clear the render buffers.
 	_renderTextureBuffer->ClearRenderTargets(direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
 
-	// Generate the View matrix based on the camera's Position.
-	_camera->Render();
+	// Generate the light view matrix based on the light's position.
+	_light->GenerateViewMatrix();
 
 	// Get the World, View, and Projection matrices from the camera and d3d objects.
 	direct3D->GetWorldMatrix(worldMatrix);
@@ -282,6 +298,10 @@ bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* s
 	direct3D->GetProjectionMatrix(projectionMatrix);
 	_camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
+
+	// Get the view and orthographic matrices from the light object.
+	_light->GetViewMatrix(lightViewMatrix);
+	_light->GetProjectionMatrix(lightProjectionMatrix);
 
 	// Update the rotation variable each frame.
 	static float rotation = 0.0f;
@@ -292,13 +312,13 @@ bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* s
 	}
 
 	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix *= XMMatrixRotationY(rotation);
+	worldMatrix = XMMatrixRotationY(rotation);
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	_cube->Render(direct3D->GetDeviceContext());
 
 	// Render the model using the deferred shader.
-	shaderManager->RenderDeferredShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(47));
+	shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
 
 	// Reset the render target back to the original back buffer and not the render buffers anymore.
 	direct3D->SetBackBufferRenderTarget();

@@ -115,6 +115,34 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
+	// Create the depth shader object.
+	_depthShader = new DepthShader;
+	if (!_depthShader)
+	{
+		return false;
+	}
+
+	// Initialize the depth shader object.
+	result = _depthShader->Initialize(device, hwnd, L"Source/Shaders/DepthPixelShader.hlsl", L"Source/Shaders/DepthVertexShader.hlsl");
+	if (!result)
+	{
+		return false;
+	}
+
+	// Create the shadow shader object.
+	_shadowShader = new ShadowShader;
+	if (!_shadowShader)
+	{
+		return false;
+	}
+
+	// Initialize the shadow shader object.
+	result = _shadowShader->Initialize(device, hwnd, L"Source/Shaders/ShadowPixelShader.hlsl", L"Source/Shaders/ShadowVertexShader.hlsl");
+	if (!result)
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -207,4 +235,16 @@ bool ShaderManager::RenderDeferredLightShader(ID3D11DeviceContext* deviceContext
 	XMMATRIX projectionMatrix, ID3D11ShaderResourceView* colourTexture, ID3D11ShaderResourceView* normalTexture, XMFLOAT3 lightDirection)
 {
 	return _deferredLightShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, colourTexture, normalTexture, lightDirection);
+}
+
+bool ShaderManager::RenderDepthShader(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+{
+	return _depthShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix);
+}
+
+bool ShaderManager::RenderShadowShader(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	XMMATRIX lightViewMatrix, XMMATRIX lightProjectionMatrix, ID3D11ShaderResourceView * texture, ID3D11ShaderResourceView * depthMapTexture, 
+	XMFLOAT3 lightPosition, XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor)
+{
+	return _shadowShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix, lightProjectionMatrix, texture, depthMapTexture, lightPosition, ambientColor, diffuseColor);
 }

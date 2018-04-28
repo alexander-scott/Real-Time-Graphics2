@@ -9,6 +9,9 @@
 #include "DeferredShader.h"
 #include "DeferredLightShader.h"
 
+#include "DepthShader.h"
+#include "ShadowShader.h"
+
 class ShaderManager
 {
 public:
@@ -28,6 +31,12 @@ public:
 	bool RenderDeferredShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
 	bool RenderDeferredLightShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, ID3D11ShaderResourceView*, XMFLOAT3);
 
+	bool RenderDepthShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX);
+	bool RenderShadowShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+		XMMATRIX projectionMatrix, XMMATRIX lightViewMatrix, XMMATRIX lightProjectionMatrix,
+		ID3D11ShaderResourceView* texture, ID3D11ShaderResourceView* depthMapTexture, XMFLOAT3 lightPosition,
+		XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor);
+
 private:
 	ColourShader*			_colourShader;
 	TextureShader*			_textureShader;
@@ -37,4 +46,7 @@ private:
 
 	DeferredShader*			_deferredShader;
 	DeferredLightShader*	_deferredLightShader;
+
+	DepthShader*			_depthShader;
+	ShadowShader*			_shadowShader;
 };

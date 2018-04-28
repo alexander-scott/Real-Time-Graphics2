@@ -371,6 +371,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DepthShader.cpp" />
     <ClCompile Include="Source\RenderTextureBuffer.cpp" />
     <ClCompile Include="Source\DeferredLightShader.cpp" />
     <ClCompile Include="Source\DeferredShader.cpp" />
@@ -384,6 +385,7 @@
     <ClCompile Include="Source\SceneSkeleton.cpp" />
     <ClCompile Include="Source\DDSTexture.cpp" />
     <ClCompile Include="Source\DDSTextureLoader.cpp" />
+    <ClCompile Include="Source\ShadowShader.cpp" />
     <ClCompile Include="Source\SkeletonShader.cpp" />
     <ClCompile Include="Source\Skeleton.cpp" />
     <ClCompile Include="Source\Application.cpp" />
@@ -411,6 +413,7 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\DepthShader.h" />
     <ClInclude Include="Source\RenderTextureBuffer.h" />
     <ClInclude Include="Source\DeferredLightShader.h" />
     <ClInclude Include="Source\DeferredShader.h" />
@@ -425,6 +428,7 @@
     <ClInclude Include="Source\DDSTexture.h" />
     <ClInclude Include="Source\DDSTextureLoader.h" />
     <ClInclude Include="Source\ITexture.h" />
+    <ClInclude Include="Source\ShadowShader.h" />
     <ClInclude Include="Source\SkeletonShader.h" />
     <ClInclude Include="Source\Skeleton.h" />
     <ClInclude Include="Source\Application.h" />

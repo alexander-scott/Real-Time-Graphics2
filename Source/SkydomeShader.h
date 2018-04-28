@@ -21,7 +21,6 @@ private:
 
 public:
 	SkyDomeShader();
-	SkyDomeShader(const SkyDomeShader&);
 	~SkyDomeShader();
 
 	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, XMFLOAT4, XMFLOAT4);

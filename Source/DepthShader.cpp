@@ -1,33 +1,11 @@
-#include "SkydomeShader.h"
+#include "DepthShader.h"
 
-SkyDomeShader::SkyDomeShader() : IShader()
+DepthShader::DepthShader()
 {
-	_colourBuffer = nullptr;
+
 }
 
-SkyDomeShader::~SkyDomeShader()
-{
-}
-
-bool SkyDomeShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, XMFLOAT4 apexColor, XMFLOAT4 centerColor)
-{
-	bool result;
-
-	// Set the shader parameters that it will use for rendering.
-	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, apexColor, centerColor);
-	if (!result)
-	{
-		return false;
-	}
-
-	// Now render the prepared buffers with the shader.
-	RenderShader(deviceContext, indexCount);
-
-	return true;
-}
-
-bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
+bool DepthShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage;
@@ -36,7 +14,6 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	D3D11_INPUT_ELEMENT_DESC polygonLayout[1];
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
-	D3D11_BUFFER_DESC colorBufferDesc;
 
 
 	// Initialize the pointers this function will use to null.
@@ -45,7 +22,7 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	pixelShaderBuffer = 0;
 
 	// Compile the vertex shader code.
-	result = D3DCompileFromFile(vsFilename, NULL, NULL, "SkyDomeVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(vsFilename, NULL, NULL, "DepthVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
 		&vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
@@ -64,7 +41,7 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	}
 
 	// Compile the pixel shader code.
-	result = D3DCompileFromFile(psFilename, NULL, NULL, "SkyDomePixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(psFilename, NULL, NULL, "DepthPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
 		&pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
@@ -97,6 +74,7 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	}
 
 	// Create the vertex input layout description.
+	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
 	polygonLayout[0].SemanticName = "POSITION";
 	polygonLayout[0].SemanticIndex = 0;
 	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -109,8 +87,7 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
 	// Create the vertex input layout.
-	result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
-		vertexShaderBuffer->GetBufferSize(), &_layout);
+	result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &_layout);
 	if (FAILED(result))
 	{
 		return false;
@@ -123,7 +100,7 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
 
-	// Setup the description of the dynamic constant buffer that is in the vertex shader.
+	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -138,33 +115,29 @@ bool SkyDomeShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsF
 		return false;
 	}
 
-	// Setup the description of the dynamic pixel constant buffer that is in the pixel shader.
-	colorBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	colorBufferDesc.ByteWidth = sizeof(ColorBufferType);
-	colorBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	colorBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	colorBufferDesc.MiscFlags = 0;
-	colorBufferDesc.StructureByteStride = 0;
+	return true;
+}
 
-	// Create the pixel constant buffer pointer so we can access the pixel shader constant buffer from within this class.
-	result = device->CreateBuffer(&colorBufferDesc, NULL, &_colourBuffer);
-	if (FAILED(result))
+bool DepthShader::Render(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+{
+	bool result;
+
+	// Set the shader parameters that it will use for rendering.
+	result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+	if (!result)
 	{
 		return false;
 	}
 
+	// Now render the prepared buffers with the shader.
+	RenderShader(deviceContext, indexCount);
+
 	return true;
 }
 
-void SkyDomeShader::DestroyShader()
-{
-	// Release the pixel constant buffer.
-	if (_colourBuffer)
-	{
-		_colourBuffer->Release();
-		_colourBuffer = 0;
-	}
 
+void DepthShader::DestroyShader()
+{
 	// Release the matrix constant buffer.
 	if (_matrixBuffer)
 	{
@@ -196,29 +169,27 @@ void SkyDomeShader::DestroyShader()
 	return;
 }
 
-void SkyDomeShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
+void DepthShader::RenderShader(ID3D11DeviceContext * context, int indexCount)
 {
 	// Set the vertex input layout.
-	deviceContext->IASetInputLayout(_layout);
+	context->IASetInputLayout(_layout);
 
-	// Set the vertex and pixel shaders that will be used to render the triangles.
-	deviceContext->VSSetShader(_vertexShader, NULL, 0);
-	deviceContext->PSSetShader(_pixelShader, NULL, 0);
+	// Set the vertex and pixel shaders that will be used to render this triangle.
+	context->VSSetShader(_vertexShader, NULL, 0);
+	context->PSSetShader(_pixelShader, NULL, 0);
 
-	// Render the triangles.
-	deviceContext->DrawIndexed(indexCount, 0, 0);
+	// Render the triangle.
+	context->DrawIndexed(indexCount, 0, 0);
 
 	return;
 }
 
-bool SkyDomeShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-	XMMATRIX projectionMatrix, XMFLOAT4 apexColor, XMFLOAT4 centerColor)
+bool DepthShader::SetShaderParameters(ID3D11DeviceContext * context, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType* dataPtr;
 	unsigned int bufferNumber;
-	ColorBufferType* dataPtr2;
+	MatrixBufferType* dataPtr;
 
 
 	// Transpose the matrices to prepare them for the shader.
@@ -226,52 +197,29 @@ bool SkyDomeShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 	viewMatrix = XMMatrixTranspose(viewMatrix);
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
-	// Lock the matrix constant buffer so it can be written to.
-	result = deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	// Lock the constant buffer so it can be written to.
+	result = context->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
 		return false;
 	}
 
-	// Get a pointer to the data in the matrix constant buffer.
+	// Get a pointer to the data in the constant buffer.
 	dataPtr = (MatrixBufferType*)mappedResource.pData;
 
-	// Copy the matrices into the matrix constant buffer.
+	// Copy the matrices into the constant buffer.
 	dataPtr->World = worldMatrix;
 	dataPtr->View = viewMatrix;
 	dataPtr->Projection = projectionMatrix;
 
-	// Unlock the matrix constant buffer.
-	deviceContext->Unmap(_matrixBuffer, 0);
+	// Unlock the constant buffer.
+	context->Unmap(_matrixBuffer, 0);
 
-	// Set the Position of the constant buffer in the vertex shader.
+	// Set the position of the constant buffer in the vertex shader.
 	bufferNumber = 0;
 
-	// Now set the matrix constant buffer in the vertex shader with the updated values.
-	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
-
-	// Lock the Colour constant buffer so it can be written to.
-	result = deviceContext->Map(_colourBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		return false;
-	}
-
-	// Get a pointer to the data in the Colour constant buffer.
-	dataPtr2 = (ColorBufferType*)mappedResource.pData;
-
-	// Copy the Colour data into the Colour constant buffer.
-	dataPtr2->ApexColour = apexColor;
-	dataPtr2->CentreColour = centerColor;
-
-	// Unlock the Colour constant buffer.
-	deviceContext->Unmap(_colourBuffer, 0);
-
-	// Set the Position of the Colour constant buffer in the pixel shader.
-	bufferNumber = 0;
-
-	// Now set the Colour constant buffer in the pixel shader with the updated Colour values.
-	deviceContext->PSSetConstantBuffers(bufferNumber, 1, &_colourBuffer);
+	// Now set the constant buffer in the vertex shader with the updated values.
+	context->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
 	return true;
 }
