@@ -70,7 +70,7 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 	_light->SetDirection(0.0f, 0.0f, 1.0f);
 
 	// Create the model object.
-	_cube = new Cube;
+	_cube = new Object;
 	if (!_cube)
 	{
 		return false;

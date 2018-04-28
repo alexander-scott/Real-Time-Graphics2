@@ -85,9 +85,6 @@
     <ClCompile Include="Source\OrthoWindow.cpp">
       <Filter>DXGraphics\DeferredShaders</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Cube.cpp">
-      <Filter>Application\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneShadows.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -120,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="Source\ShadowShader.cpp">
       <Filter>DXGraphics\ShadowShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object.cpp">
+      <Filter>Application\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +210,6 @@
     <ClInclude Include="Source\OrthoWindow.h">
       <Filter>DXGraphics\DeferredShaders</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Cube.h">
-      <Filter>Application\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneShadows.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -245,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="Source\ShadowShader.h">
       <Filter>DXGraphics\ShadowShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object.h">
+      <Filter>Application\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

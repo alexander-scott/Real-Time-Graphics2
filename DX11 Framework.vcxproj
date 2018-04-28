@@ -375,7 +375,7 @@
     <ClCompile Include="Source\RenderTextureBuffer.cpp" />
     <ClCompile Include="Source\DeferredLightShader.cpp" />
     <ClCompile Include="Source\DeferredShader.cpp" />
-    <ClCompile Include="Source\Cube.cpp" />
+    <ClCompile Include="Source\Object.cpp" />
     <ClCompile Include="Source\OrthoWindow.cpp" />
     <ClCompile Include="Source\SceneCombined.cpp" />
     <ClCompile Include="Source\SceneDeferredLighting.cpp" />
@@ -417,7 +417,7 @@
     <ClInclude Include="Source\RenderTextureBuffer.h" />
     <ClInclude Include="Source\DeferredLightShader.h" />
     <ClInclude Include="Source\DeferredShader.h" />
-    <ClInclude Include="Source\Cube.h" />
+    <ClInclude Include="Source\Object.h" />
     <ClInclude Include="Source\OrthoWindow.h" />
     <ClInclude Include="Source\SceneCombined.h" />
     <ClInclude Include="Source\SceneDeferredLighting.h" />

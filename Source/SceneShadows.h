@@ -2,7 +2,7 @@
 
 #include "IScene.h"
 
-#include "Cube.h"
+#include "Object.h"
 #include "OrthoWindow.h"
 #include "RenderTextureBuffer.h"
 
@@ -21,8 +21,7 @@ private:
 	bool RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager);
 
 	Light*					_light;
-	Cube*					_cube;
-	OrthoWindow*			_window;
+	Object*					_cube, *_plane, *_sphere;
 	RenderTextureBuffer*	_renderTextureBuffer;
 };
 
