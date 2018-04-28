@@ -5,12 +5,11 @@ const int BUFFER_COUNT = 2;
 #include <d3d11.h>
 #include <DirectXMath.h>
 
-class DeferredBuffers
+class RenderTextureBuffer
 {
 public:
-	DeferredBuffers();
-	DeferredBuffers(const DeferredBuffers&);
-	~DeferredBuffers();
+	RenderTextureBuffer();
+	~RenderTextureBuffer();
 
 	bool Initialize(ID3D11Device*, int, int, float, float);
 	void Shutdown();

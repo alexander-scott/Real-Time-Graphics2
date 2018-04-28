@@ -97,14 +97,14 @@ bool SceneShadows::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth
 	}
 
 	// Create the deferred buffers object.
-	_deferredBuffers = new DeferredBuffers;
-	if (!_deferredBuffers)
+	_renderTextureBuffer = new RenderTextureBuffer;
+	if (!_renderTextureBuffer)
 	{
 		return false;
 	}
 
 	// Initialize the deferred buffers object.
-	result = _deferredBuffers->Initialize(Direct3D->GetDevice(), screenWidth, screenHeight, screenDepth, 0.1f);
+	result = _renderTextureBuffer->Initialize(Direct3D->GetDevice(), screenWidth, screenHeight, screenDepth, 0.1f);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the deferred buffers object.", L"Error", MB_OK);
@@ -117,11 +117,11 @@ bool SceneShadows::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth
 void SceneShadows::Destroy()
 {
 	// Release the deferred buffers object.
-	if (_deferredBuffers)
+	if (_renderTextureBuffer)
 	{
-		_deferredBuffers->Shutdown();
-		delete _deferredBuffers;
-		_deferredBuffers = 0;
+		_renderTextureBuffer->Shutdown();
+		delete _renderTextureBuffer;
+		_renderTextureBuffer = 0;
 	}
 
 	// Release the full screen ortho window object.
@@ -251,7 +251,7 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 
 	// Render the full screen ortho window using the deferred light shader and the render buffers.
 	shaderManager->RenderDeferredLightShader(direct3D->GetDeviceContext(), _window->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
-		_deferredBuffers->GetShaderResourceView(0), _deferredBuffers->GetShaderResourceView(1),
+		_renderTextureBuffer->GetShaderResourceView(0), _renderTextureBuffer->GetShaderResourceView(1),
 		_light->GetTransform()->GetRotationValue());
 
 	// Turn the Z buffer back on now that all 2D rendering has completed.
@@ -268,10 +268,10 @@ bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* s
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 
 	// Set the render buffers to be the render target.
-	_deferredBuffers->SetRenderTargets(direct3D->GetDeviceContext());
+	_renderTextureBuffer->SetRenderTargets(direct3D->GetDeviceContext());
 
 	// Clear the render buffers.
-	_deferredBuffers->ClearRenderTargets(direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
+	_renderTextureBuffer->ClearRenderTargets(direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Generate the View matrix based on the camera's Position.
 	_camera->Render();

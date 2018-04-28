@@ -1,6 +1,6 @@
-#include "DeferredBuffers.h"
+#include "RenderTextureBuffer.h"
 
-DeferredBuffers::DeferredBuffers()
+RenderTextureBuffer::RenderTextureBuffer()
 {
 	int i;
 
@@ -15,15 +15,11 @@ DeferredBuffers::DeferredBuffers()
 	_depthStencilView = 0;
 }
 
-DeferredBuffers::DeferredBuffers(const DeferredBuffers& other)
+RenderTextureBuffer::~RenderTextureBuffer()
 {
 }
 
-DeferredBuffers::~DeferredBuffers()
-{
-}
-
-bool DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int textureHeight, float screenDepth, float screenNear)
+bool RenderTextureBuffer::Initialize(ID3D11Device* device, int textureWidth, int textureHeight, float screenDepth, float screenNear)
 {
 	D3D11_TEXTURE2D_DESC textureDesc;
 	HRESULT result;
@@ -143,7 +139,7 @@ bool DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int tex
 	return true;
 }
 
-void DeferredBuffers::Shutdown()
+void RenderTextureBuffer::Shutdown()
 {
 	int i;
 
@@ -184,7 +180,7 @@ void DeferredBuffers::Shutdown()
 }
 
 
-void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
+void RenderTextureBuffer::SetRenderTargets(ID3D11DeviceContext* deviceContext)
 {
 	// Bind the render target view array and depth stencil buffer to the output render pipeline.
 	deviceContext->OMSetRenderTargets(BUFFER_COUNT, _renderTargetViewArray, _depthStencilView);
@@ -195,7 +191,7 @@ void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
 	return;
 }
 
-void DeferredBuffers::ClearRenderTargets(ID3D11DeviceContext* deviceContext, float red, float green, float blue, float alpha)
+void RenderTextureBuffer::ClearRenderTargets(ID3D11DeviceContext* deviceContext, float red, float green, float blue, float alpha)
 {
 	float color[4];
 	int i;
@@ -219,7 +215,7 @@ void DeferredBuffers::ClearRenderTargets(ID3D11DeviceContext* deviceContext, flo
 	return;
 }
 
-ID3D11ShaderResourceView* DeferredBuffers::GetShaderResourceView(int view)
+ID3D11ShaderResourceView* RenderTextureBuffer::GetShaderResourceView(int view)
 {
 	return _shaderResourceViewArray[view];
 }
