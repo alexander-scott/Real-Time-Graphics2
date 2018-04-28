@@ -98,6 +98,9 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		case Scene::eSceneGraphics:
 			return BuildSceneGraphics(hwnd, screenWidth, screenHeight);
 
+		case Scene::eSceneDeferred:
+			return BuildSceneDeferred(hwnd, screenWidth, screenHeight);
+
 		default:
 			MessageBox(hwnd, L"Switch statement incomplete.", L"Error", MB_OK);
 			return false;
@@ -274,6 +277,28 @@ bool Application::BuildSceneGraphics(HWND hwnd, int screenWidth, int screenHeigh
 
 	// Create the scene object.
 	_scene = new SceneGraphics;
+	if (!_scene)
+	{
+		return false;
+	}
+
+	// Initialize the scene object.
+	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the scene object.", L"Error", MB_OK);
+		return false;
+	}
+
+	return result;
+}
+
+bool Application::BuildSceneDeferred(HWND hwnd, int screenWidth, int screenHeight)
+{
+	bool result;
+
+	// Create the scene object.
+	_scene = new SceneDeferredLighting;
 	if (!_scene)
 	{
 		return false;

@@ -44,13 +44,13 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 		return false;
 	}
 
+	// Set the initial Position and rotation.
+	_camera->GetTransform()->SetPosition(0.0f, 0.0f, -10.0f);
+	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
+
 	// Set the initial Position of the camera and build the matrices needed for rendering.
 	_camera->Render();
 	_camera->RenderBaseViewMatrix();
-
-	// Set the initial Position and rotation.
-	_camera->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
-	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
 
 	// Create the frustum object.
 	_frustum = new Frustum;
@@ -81,7 +81,7 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 	}
 
 	// Initialize the model object.
-	result = _cube->Initialize(Direct3D->GetDevice(), "../Engine/data/cube.txt");
+	result = _cube->Initialize(Direct3D->GetDevice(), "Source/skydome/cube.txt");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -259,7 +259,7 @@ bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderMa
 	// Render the full screen ortho window using the deferred light shader and the render buffers.
 	shaderManager->RenderDeferredLightShader(direct3D->GetDeviceContext(), _window->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
 		_deferredBuffers->GetShaderResourceView(0), _deferredBuffers->GetShaderResourceView(1),
-		_light->GetTransform()->GetRotationValue());
+		XMFLOAT3(0.0f, 0.0f, 1.0f));
 
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	direct3D->TurnZBufferOn();
@@ -280,6 +280,9 @@ bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderM
 	// Clear the render buffers.
 	_deferredBuffers->ClearRenderTargets(direct3D->GetDeviceContext(), 0.0f, 0.0f, 0.0f, 1.0f);
 
+	// Generate the View matrix based on the camera's Position.
+	_camera->Render();
+
 	// Get the World, View, and Projection matrices from the camera and d3d objects.
 	direct3D->GetWorldMatrix(worldMatrix);
 	_camera->GetViewMatrix(viewMatrix);
@@ -287,16 +290,16 @@ bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderM
 	_camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
 
-	//// Update the rotation variable each frame.
-	//static float rotation = 0.0f;
-	//rotation += (float)D3DX_PI * 0.01f;
-	//if (rotation > 360.0f)
-	//{
-	//	rotation -= 360.0f;
-	//}
+	// Update the rotation variable each frame.
+	static float rotation = 0.0f;
+	rotation += (float)XM_PI * 0.01f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
 
 	// Rotate the world matrix by the rotation value so that the cube will spin.
-	//D3DXMatrixRotationY(&worldMatrix, rotation);
+	worldMatrix *= XMMatrixRotationY(rotation);
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	_cube->Render(direct3D->GetDeviceContext());

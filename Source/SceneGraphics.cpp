@@ -27,7 +27,7 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 		return false;
 	}
 
-	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/terrain/Crate_COLOR.dds", 42);
+	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/skydome/seafloor.dds", 42);
 	if (!result)
 	{
 		return false;
@@ -40,13 +40,13 @@ bool SceneGraphics::Initialize(DX11Instance * Direct3D, HWND hwnd, int screenWid
 		return false;
 	}
 
-	// Set the initial Position of the camera and build the matrices needed for rendering.
-	_camera->Render();
-	_camera->RenderBaseViewMatrix();
-
 	// Set the initial Position and rotation.
 	_camera->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	_camera->GetTransform()->SetRotation(0.0f, 0.0f, 0.0f);
+
+	// Set the initial Position of the camera and build the matrices needed for rendering.
+	_camera->Render();
+	_camera->RenderBaseViewMatrix();
 
 	// Create the frustum object.
 	_frustum = new Frustum;
