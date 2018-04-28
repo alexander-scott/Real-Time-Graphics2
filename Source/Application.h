@@ -5,9 +5,10 @@ enum Scene
 	eSceneTerrainGeneration,
 	eSceneSkeleton,
 	eSceneDeferred,
+	eSceneShadows
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneCombined;
+const Scene CURRENT_SCENE = Scene::eSceneShadows;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -25,6 +26,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "SceneTerrainGeneration.h"
 #include "SceneSkeleton.h"
 #include "SceneDeferredLighting.h"
+#include "SceneShadows.h"
 
 class Application
 {
@@ -42,6 +44,7 @@ private:
 	bool BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneDeferred(HWND hwnd, int screenWidth, int screenHeight);
+	bool BuildSceneShadows(HWND hwnd, int screenWidth, int screenHeight);
 
 	Input*			_input;
 	DX11Instance*	_dx11Instance;

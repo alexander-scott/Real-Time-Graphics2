@@ -379,6 +379,7 @@
     <ClCompile Include="Source\SceneCombined.cpp" />
     <ClCompile Include="Source\SceneDeferredLighting.cpp" />
     <ClCompile Include="Source\ProceduralTerrain.cpp" />
+    <ClCompile Include="Source\SceneShadows.cpp" />
     <ClCompile Include="Source\SceneTerrainGeneration.cpp" />
     <ClCompile Include="Source\SceneSkeleton.cpp" />
     <ClCompile Include="Source\DDSTexture.cpp" />
@@ -418,6 +419,7 @@
     <ClInclude Include="Source\SceneCombined.h" />
     <ClInclude Include="Source\SceneDeferredLighting.h" />
     <ClInclude Include="Source\ProceduralTerrain.h" />
+    <ClInclude Include="Source\SceneShadows.h" />
     <ClInclude Include="Source\SceneTerrainGeneration.h" />
     <ClInclude Include="Source\SceneSkeleton.h" />
     <ClInclude Include="Source\DDSTexture.h" />

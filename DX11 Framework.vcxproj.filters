@@ -112,6 +112,9 @@
     <ClCompile Include="Source\Cube.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneShadows.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -227,6 +230,9 @@
     </ClInclude>
     <ClInclude Include="Source\Cube.h">
       <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneShadows.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
