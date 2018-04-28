@@ -6,7 +6,6 @@ class SceneCombined : public IScene
 {
 public:
 	SceneCombined();
-	SceneCombined(const SceneCombined&);
 
 	bool Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth) override;
 	void Destroy() override;

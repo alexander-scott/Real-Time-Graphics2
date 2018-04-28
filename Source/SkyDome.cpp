@@ -7,10 +7,6 @@ SkyDome::SkyDome()
 	_indexBuffer = nullptr;
 }
 
-SkyDome::SkyDome(const SkyDome &)
-{
-}
-
 SkyDome::~SkyDome()
 {
 }

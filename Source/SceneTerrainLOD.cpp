@@ -4,10 +4,6 @@ SceneTerrainLOD::SceneTerrainLOD() : IScene()
 {
 }
 
-SceneTerrainLOD::SceneTerrainLOD(const SceneTerrainLOD& other)
-{
-}
-
 bool SceneTerrainLOD::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;

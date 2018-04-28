@@ -5,10 +5,6 @@ TextureManager::TextureManager()
 
 }
 
-TextureManager::TextureManager(const TextureManager &)
-{
-}
-
 TextureManager::~TextureManager()
 {
 }
@@ -16,13 +12,6 @@ TextureManager::~TextureManager()
 bool TextureManager::Initialize(int targaCount, int jpgCount)
 {
 	_textureCount = targaCount + jpgCount;
-
-	//// Create the Colour TargaTexture object.
-	//_textureArray = new TargaTexture[_textureCount];
-	//if (!_textureArray)
-	//{
-	//	return false;
-	//}
 
 	return true;
 }

@@ -12,10 +12,6 @@ Terrain::Terrain()
 	_terrainCells = nullptr;
 }
 
-Terrain::Terrain(const Terrain& other)
-{
-}
-
 Terrain::~Terrain()
 {
 }
@@ -103,7 +99,7 @@ void Terrain::Update()
 	return;
 }
 
-bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* Frustum)
+bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* frustum)
 {
 	float maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth;
 	bool result;
@@ -112,7 +108,7 @@ bool Terrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum
 	_terrainCells[cellId].GetCellDimensions(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
 
 	// Check if the cell is visible.  If it is not visible then just return and don't render it.
-	result = Frustum->CheckRectangle2(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
+	result = frustum->CheckRectangle2(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
 	if (!result)
 	{
 		// Increment the number of cells that were culled.

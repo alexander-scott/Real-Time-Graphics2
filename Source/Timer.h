@@ -1,5 +1,4 @@
-#ifndef _TIMERCLASS_H_
-#define _TIMERCLASS_H_
+#pragma once
 
 #include <windows.h>
 
@@ -7,7 +6,6 @@ class Timer
 {
 public:
 	Timer();
-	Timer(const Timer&);
 	~Timer();
 
 	bool Initialize();
@@ -25,5 +23,3 @@ private:
 	float		_frameTime;
 	INT64		_beginTime, _endTime;
 };
-
-#endif

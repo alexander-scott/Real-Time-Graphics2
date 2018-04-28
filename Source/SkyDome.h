@@ -24,24 +24,23 @@ private:
 
 public:
 	SkyDome();
-	SkyDome(const SkyDome&);
 	~SkyDome();
 
-	bool Initialize(ID3D11Device*);
+	bool Initialize(ID3D11Device* device);
 	void Destroy();
-	void Draw(ID3D11DeviceContext*);
+	void Draw(ID3D11DeviceContext* context);
 
 	int GetIndexCount();
 	XMFLOAT4 GetApexColor();
 	XMFLOAT4 GetCenterColor();
 
 private:
-	bool LoadSkyDomeModel(char*);
+	bool LoadSkyDomeModel(char* filePath);
 	void ReleaseSkyDomeModel();
 
-	bool InitializeBuffers(ID3D11Device*);
+	bool InitializeBuffers(ID3D11Device* device);
 	void ReleaseBuffers();
-	void RenderBuffers(ID3D11DeviceContext*);
+	void RenderBuffers(ID3D11DeviceContext* context);
 
 private:
 	ModelType *			_model;

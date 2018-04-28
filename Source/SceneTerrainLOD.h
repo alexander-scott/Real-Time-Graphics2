@@ -6,7 +6,6 @@ class SceneTerrainLOD : public IScene
 {
 public:
 	SceneTerrainLOD();
-	SceneTerrainLOD(const SceneTerrainLOD&);
 
 	bool Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth) override;
 	void Destroy() override;

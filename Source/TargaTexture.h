@@ -14,7 +14,6 @@ private:
 
 public:
 	TargaTexture();
-	TargaTexture(const TargaTexture&);
 	~TargaTexture();
 
 	void SetPath(char* path) { _path = path; }

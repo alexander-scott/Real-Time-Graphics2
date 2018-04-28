@@ -4,10 +4,6 @@ SceneCombined::SceneCombined() : IScene()
 {
 }
 
-SceneCombined::SceneCombined(const SceneCombined& other)
-{
-}
-
 bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
@@ -226,7 +222,6 @@ bool SceneCombined::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 		float yawRadian = cameraRot.y * (XM_PI / 180); // Y rotation
 
 		float newPosX = -15 * (sinf(yawRadian) * cosf(pitchRadian));
-		float newPosY = -15 * (-sinf(pitchRadian));
 		float newPosZ = -15 * (cosf(yawRadian) * cosf(pitchRadian));
 
 		// Get the height of the triangle that is directly underneath the given camera Position.

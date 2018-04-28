@@ -13,21 +13,20 @@ class DX11Instance
 {
 public:
 	DX11Instance();
-	DX11Instance(const DX11Instance&);
 	~DX11Instance();
 
-	bool Initialize(int, int, bool, HWND, bool, float, float);
+	bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen, float screenDepth, float screenNear);
 	void Destroy();
 	
-	void BeginScene(float, float, float, float);
+	void BeginScene(float red, float green, float blue, float alpha);
 	void EndScene();
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
 
-	void GetProjectionMatrix(XMMATRIX&);
-	void GetWorldMatrix(XMMATRIX&);
-	void GetOrthoMatrix(XMMATRIX&);
+	void GetProjectionMatrix(XMMATRIX& projectionMatrix);
+	void GetWorldMatrix(XMMATRIX& worldMatrix);
+	void GetOrthoMatrix(XMMATRIX& orthoMatrix);
 
 	void TurnZBufferOn();
 	void TurnZBufferOff();

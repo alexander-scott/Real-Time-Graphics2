@@ -4,10 +4,6 @@ SceneTerrainGeneration::SceneTerrainGeneration() : IScene()
 {
 }
 
-SceneTerrainGeneration::SceneTerrainGeneration(const SceneTerrainGeneration& other)
-{
-}
-
 bool SceneTerrainGeneration::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;

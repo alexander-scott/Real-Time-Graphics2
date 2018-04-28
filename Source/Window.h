@@ -11,7 +11,6 @@ class Window
 {
 public:
 	Window();
-	Window(const Window&);
 	~Window();
 
 	bool Initialize();

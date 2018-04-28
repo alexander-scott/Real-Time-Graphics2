@@ -55,29 +55,28 @@ private:
 
 public:
 	Terrain();
-	Terrain(const Terrain&);
 	~Terrain();
 
-	bool Initialize(ID3D11Device*, char*);
+	bool Initialize(ID3D11Device* device, char* setupFilename);
 	void Destroy();
 
 	void Update();
 
-	bool RenderCell(ID3D11DeviceContext*, int, Frustum*);
+	bool RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* frustum);
 	void RenderCellLines(ID3D11DeviceContext*, int);
 
-	int GetCellIndexCount(int);
-	int GetCellLinesIndexCount(int);
+	int GetCellIndexCount(int cellId);
+	int GetCellLinesIndexCount(int cellId);
 	int GetCellCount();
 
 	int GetRenderCount();
 	int GetCellsDrawn();
 	int GetCellsCulled();
 
-	bool GetHeightAtPosition(float, float, float&);
+	bool GetHeightAtPosition(float inputX, float inputZ, float& height);
 
 private:
-	bool LoadSetupFile(char*);
+	bool LoadSetupFile(char* filename);
 	bool LoadBitmapHeightMap();
 	bool LoadRawHeightMap();
 
@@ -89,12 +88,12 @@ private:
 	void DestroyTerrainModel();
 
 	void CalculateTerrainVectors();
-	void CalculateTangentBinormal(TempVertexType, TempVertexType, TempVertexType, VectorType&, VectorType&);
+	void CalculateTangentBinormal(TempVertexType vertex1, TempVertexType vertex2, TempVertexType vertex3, VectorType& tangent, VectorType& binormal);
 
-	bool LoadTerrainCells(ID3D11Device*);
+	bool LoadTerrainCells(ID3D11Device* device);
 	void DestroyTerrainCells();
 
-	bool CheckHeightOfTriangle(float, float, float&, float[3], float[3], float[3]);
+	bool CheckHeightOfTriangle(float x, float z, float& height, float v0[3], float v1[3], float v2[3]);
 
 private:
 	int					_vertexCount, _indexCount;

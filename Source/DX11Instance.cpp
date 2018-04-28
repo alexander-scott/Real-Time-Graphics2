@@ -18,10 +18,6 @@ DX11Instance::DX11Instance()
 	_alphaEnableBlendingState2 = 0;
 }
 
-DX11Instance::DX11Instance(const DX11Instance& other)
-{
-}
-
 DX11Instance::~DX11Instance()
 {
 }
@@ -33,10 +29,8 @@ bool DX11Instance::Initialize(int screenWidth, int screenHeight, bool vsync, HWN
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
 	unsigned int numModes, i, numerator, denominator;
-	size_t stringLength;
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
-	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ID3D11Texture2D* backBufferPtr;
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
@@ -547,7 +541,6 @@ void DX11Instance::Destroy()
 void DX11Instance::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4];
-
 
 	// Setup the Colour to clear the buffer to.
 	color[0] = red;

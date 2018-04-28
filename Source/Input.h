@@ -1,5 +1,4 @@
-#ifndef _INPUTCLASS_H_
-#define _INPUTCLASS_H_
+#pragma once
 
 #define DIRECTINPUT_VERSION 0x0800
 
@@ -12,15 +11,14 @@ class Input
 {
 public:
 	Input();
-	Input(const Input&);
 	~Input();
 
-	bool Initialize(HINSTANCE, HWND, int, int);
+	bool Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight);
 	void Destroy();
 	bool Update();
 
 	bool IsEscapePressed();
-	void GetMouseLocation(int&, int&);
+	void GetMouseLocation(int& mouseX, int& mouseY);
 
 	bool IsLeftPressed();
 	bool IsRightPressed();
@@ -55,5 +53,3 @@ private:
 	bool					_f2Released;
 	bool					_f3Released;
 };
-
-#endif

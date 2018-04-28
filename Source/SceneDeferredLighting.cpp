@@ -8,10 +8,6 @@ SceneDeferredLighting::SceneDeferredLighting()
 	_deferredBuffers = 0;
 }
 
-SceneDeferredLighting::SceneDeferredLighting(const SceneDeferredLighting& other)
-{
-}
-
 bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;

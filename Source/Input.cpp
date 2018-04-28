@@ -7,10 +7,6 @@ Input::Input()
 	_mouse = nullptr;
 }
 
-Input::Input(const Input& other)
-{
-}
-
 Input::~Input()
 {
 }

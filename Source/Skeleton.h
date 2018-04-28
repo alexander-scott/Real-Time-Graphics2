@@ -22,14 +22,14 @@ private:
 			float u, float v,
 			float nx, float ny, float nz,
 			float tx, float ty, float tz)
-			: pos(x, y, z), texCoord(u, v), normal(nx, ny, nz),
-			tangent(tx, ty, tz) {}
+			: Pos(x, y, z), TexCoord(u, v), Normal(nx, ny, nz),
+			Tangent(tx, ty, tz) {}
 
-		XMFLOAT3 pos;
-		XMFLOAT2 texCoord;
-		XMFLOAT3 normal;
-		XMFLOAT3 tangent;
-		XMFLOAT3 biTangent;
+		XMFLOAT3 Pos;
+		XMFLOAT2 TexCoord;
+		XMFLOAT3 Normal;
+		XMFLOAT3 Tangent;
+		XMFLOAT3 BiTangent;
 
 		// Will not be sent to shader
 		int StartWeight;
@@ -38,82 +38,83 @@ private:
 
 	struct Joint
 	{
-		std::wstring name;
-		int parentID;
+		std::wstring Name;
+		int ParentID;
 
-		XMFLOAT3 pos;
-		XMFLOAT4 orientation;
+		XMFLOAT3 Postion;
+		XMFLOAT4 Orientation;
 	};
 
 	struct Weight
 	{
-		int jointID;
-		float bias;
-		XMFLOAT3 pos;
-		XMFLOAT3 normal;
+		int JointID;
+		float Bias;
+		XMFLOAT3 Position;
+		XMFLOAT3 Normal;
 	};
 
 	struct ModelSubset
 	{
-		int texArrayIndex;
-		int numTriangles;
+		int TexArrayIndex;
+		int NumTriangles;
 
-		std::vector<Vertex> vertices;
-		std::vector<DWORD> indices;
-		std::vector<Weight> weights;
+		std::vector<Vertex> Vertices;
+		std::vector<DWORD> Indices;
+		std::vector<Weight> Weights;
 
-		std::vector<XMFLOAT3> positions;
+		std::vector<XMFLOAT3> Positions;
 
-		ID3D11Buffer* vertBuff;
-		ID3D11Buffer* indexBuff;
+		ID3D11Buffer* VertBuff;
+		ID3D11Buffer* IndexBuff;
 	};
 
 	struct BoundingBox
 	{
-		XMFLOAT3 min;
-		XMFLOAT3 max;
+		XMFLOAT3 Min;
+		XMFLOAT3 Max;
 	};
 
 	struct FrameData
 	{
-		int frameID;
-		std::vector<float> frameData;
+		int FrameID;
+		std::vector<float> FrameDataVec;
 	};
+
 	struct AnimJointInfo
 	{
-		std::wstring name;
-		int parentID;
+		std::wstring Name;
+		int ParentID;
 
-		int flags;
-		int startIndex;
+		int Flags;
+		int StartIndex;
 	};
 
 	struct ModelAnimation
 	{
-		int numFrames;
-		int numJoints;
-		int frameRate;
-		int numAnimatedComponents;
+		int NumFrames;
+		int NumJoints;
+		int FrameRate;
+		int NumAnimatedComponents;
 
-		float frameTime;
-		float totalAnimTime;
-		float currAnimTime;
+		float FrameTime;
+		float TotalAnimTime;
+		float CurrAnimTime;
 
-		std::vector<AnimJointInfo> jointInfo;
-		std::vector<BoundingBox> frameBounds;
-		std::vector<Joint>    baseFrameJoints;
-		std::vector<FrameData>    frameData;
-		std::vector<std::vector<Joint>> frameSkeleton;
+		std::vector<AnimJointInfo> JointInfo;
+		std::vector<BoundingBox> FrameBounds;
+		std::vector<Joint>    BaseFrameJoints;
+		std::vector<FrameData>    FrameData;
+		std::vector<std::vector<Joint>> FrameSkeleton;
 	};
 
 	struct Model3D
 	{
-		int numSubsets;
-		int numJoints;
+		int NumSubsets;
+		int NumJoints;
 
-		std::vector<Joint> joints;
-		std::vector<ModelSubset> subsets;
-		std::vector<ModelAnimation> animations;
+		std::vector<Joint> Joints;
+		std::vector<ModelSubset> Subsets;
+		std::vector<ModelAnimation> Animations;
 	};
 
 public:
@@ -128,7 +129,7 @@ public:
 	void DrawSubset(ID3D11DeviceContext* deviceContext, int index);
 
 	int GetIndexCount(int index);
-	int GetSubsetCount() { return MD5Model.numSubsets; }
+	int GetSubsetCount() { return _md5Model.NumSubsets; }
 
 	Transform* GetTransform() { return _transform; }
 
@@ -141,7 +142,7 @@ private:
 
 	bool LoadMD5Anim(std::wstring filename, Model3D& MD5Model);
 
-	Model3D			MD5Model;
+	Model3D			_md5Model;
 	Transform*		_transform;
 };
 

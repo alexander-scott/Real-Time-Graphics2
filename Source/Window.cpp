@@ -5,10 +5,6 @@ Window::Window()
 	_application = 0;
 }
 
-Window::Window(const Window& other)
-{
-}
-
 Window::~Window()
 {
 }

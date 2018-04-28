@@ -4,10 +4,6 @@ Timer::Timer()
 {
 }
 
-Timer::Timer(const Timer& other)
-{
-}
-
 Timer::~Timer()
 {
 }

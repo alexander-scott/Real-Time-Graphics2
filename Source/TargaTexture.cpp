@@ -7,10 +7,6 @@ TargaTexture::TargaTexture()
 	_textureView = nullptr;
 }
 
-TargaTexture::TargaTexture(const TargaTexture& other)
-{
-}
-
 TargaTexture::~TargaTexture()
 {
 }

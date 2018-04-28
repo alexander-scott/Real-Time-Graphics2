@@ -9,7 +9,6 @@ class TextureManager
 {
 public:
 	TextureManager(); 
-	TextureManager(const TextureManager&);
 	~TextureManager();
 
 	bool Initialize(int targaCount, int jpgCount);
@@ -21,6 +20,6 @@ public:
 	ID3D11ShaderResourceView* GetTexture(int);
 
 private:
-	std::map<int,ITexture*> _textureArray;
-	int					  _textureCount;
+	std::map<int,ITexture*>		_textureArray;
+	int							_textureCount;
 };

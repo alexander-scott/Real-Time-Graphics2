@@ -8,7 +8,6 @@ class SceneTerrainGeneration : public IScene
 {
 public:
 	SceneTerrainGeneration();
-	SceneTerrainGeneration(const SceneTerrainGeneration&);
 
 	bool Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth) override;
 	void Destroy() override;
