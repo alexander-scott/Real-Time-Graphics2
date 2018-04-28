@@ -43,7 +43,6 @@ bool DX11Instance::Initialize(int screenWidth, int screenHeight, bool vsync, HWN
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	D3D11_RASTERIZER_DESC rasterDesc;
-	D3D11_VIEWPORT viewport;
 	float fieldOfView, screenAspect;
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
 	D3D11_BLEND_DESC blendStateDescription;
@@ -349,15 +348,15 @@ bool DX11Instance::Initialize(int screenWidth, int screenHeight, bool vsync, HWN
 	}
 
 	// Setup the viewport for rendering.
-    viewport.Width = (float)screenWidth;
-    viewport.Height = (float)screenHeight;
-    viewport.MinDepth = 0.0f;
-    viewport.MaxDepth = 1.0f;
-    viewport.TopLeftX = 0.0f;
-    viewport.TopLeftY = 0.0f;
+	_viewport.Width = (float)screenWidth;
+	_viewport.Height = (float)screenHeight;
+	_viewport.MinDepth = 0.0f;
+	_viewport.MaxDepth = 1.0f;
+	_viewport.TopLeftX = 0.0f;
+	_viewport.TopLeftY = 0.0f;
 
 	// Create the viewport.
-    _deviceContext->RSSetViewports(1, &viewport);
+    _deviceContext->RSSetViewports(1, &_viewport);
 
 	// Setup the Projection matrix.
 	fieldOfView = 3.141592654f / 4.0f;
@@ -700,4 +699,18 @@ void DX11Instance::DisableWireframe()
 	_deviceContext->RSSetState(_rasterState);
 
 	return;
+}
+
+void DX11Instance::SetBackBufferRenderTarget()
+{
+	// Bind the render target View and depth stencil buffer to the output render pipeline.
+	_deviceContext->OMSetRenderTargets(1, &_renderTargetView, _depthStencilView);
+
+	return;
+}
+
+void DX11Instance::ResetViewport()
+{
+	// Create the viewport.
+	_deviceContext->RSSetViewports(1, &_viewport);
 }

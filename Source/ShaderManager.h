@@ -9,6 +9,9 @@
 #include "TerrainShader.h"
 #include "CubeShader.h"
 
+#include "DeferredShader.h"
+#include "DeferredLightShader.h"
+
 class ShaderManager
 {
 public:
@@ -28,13 +31,19 @@ public:
 	bool RenderCubeShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
 		SurfaceInfo surface, LightStruct light, XMFLOAT3 eyePosW, float hasTexture, ID3D11ShaderResourceView* texture);
 
+	bool RenderDeferredShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*);
+	bool RenderDeferredLightShader(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, ID3D11ShaderResourceView*, XMFLOAT3);
+
 private:
-	ColourShader*		_colourShader;
-	TextureShader*		_textureShader;
-	LightShader*		_lightShader;
-	SkyDomeShader*		_skydomeShader;
-	TerrainShader*		_terrainShader;
-	CubeShader*			_cubeShader;
+	ColourShader*			_colourShader;
+	TextureShader*			_textureShader;
+	LightShader*			_lightShader;
+	SkyDomeShader*			_skydomeShader;
+	TerrainShader*			_terrainShader;
+	CubeShader*				_cubeShader;
+
+	DeferredShader*			_deferredShader;
+	DeferredLightShader*	_deferredLightShader;
 };
 
 #endif

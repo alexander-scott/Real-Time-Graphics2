@@ -112,6 +112,15 @@
     <ClCompile Include="Source\DeferredLightShader.cpp">
       <Filter>DX11\Deferred</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneDeferredLighting.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NewCube.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OrthoWindow.cpp">
+      <Filter>DX11\Deferred</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -226,6 +235,15 @@
       <Filter>DX11\Deferred</Filter>
     </ClInclude>
     <ClInclude Include="Source\DeferredLightShader.h">
+      <Filter>DX11\Deferred</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneDeferredLighting.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NewCube.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OrthoWindow.h">
       <Filter>DX11\Deferred</Filter>
     </ClInclude>
   </ItemGroup>

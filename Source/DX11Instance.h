@@ -43,6 +43,9 @@ public:
 	void EnableWireframe();
 	void DisableWireframe();
 
+	void SetBackBufferRenderTarget();
+	void ResetViewport();
+
 private:
 	bool						_vsyncEnabled;
 	IDXGISwapChain*				_swapChain;
@@ -62,6 +65,7 @@ private:
 	ID3D11BlendState*			_alphaEnableBlendingState;
 	ID3D11BlendState*			_alphaDisableBlendingState;
 	ID3D11BlendState*			_alphaEnableBlendingState2;
+	D3D11_VIEWPORT				_viewport;
 };
 
 #endif
