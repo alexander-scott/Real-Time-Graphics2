@@ -5,10 +5,6 @@ Light::Light()
 	_transform = new Transform;
 }
 
-Light::Light(const Light &)
-{
-}
-
 Light::~Light()
 {
 }

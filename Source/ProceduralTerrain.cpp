@@ -14,10 +14,6 @@ ProceduralTerrain::ProceduralTerrain()
 	_terrainCells = nullptr;
 }
 
-ProceduralTerrain::ProceduralTerrain(const ProceduralTerrain& other)
-{
-}
-
 ProceduralTerrain::~ProceduralTerrain()
 {
 }
@@ -105,7 +101,7 @@ void ProceduralTerrain::Update()
 	return;
 }
 
-bool ProceduralTerrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* Frustum)
+bool ProceduralTerrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellId, Frustum* frustum)
 {
 	float maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth;
 	bool result;
@@ -114,7 +110,7 @@ bool ProceduralTerrain::RenderCell(ID3D11DeviceContext* deviceContext, int cellI
 	_terrainCells[cellId].GetCellDimensions(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
 
 	// Check if the cell is visible.  If it is not visible then just return and don't render it.
-	result = Frustum->CheckRectangle2(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
+	result = frustum->CheckRectangle2(maxWidth, maxHeight, maxDepth, minWidth, minHeight, minDepth);
 	if (!result)
 	{
 		// Increment the number of cells that were culled.
@@ -204,19 +200,19 @@ bool ProceduralTerrain::GetHeightAtPosition(float inputX, float inputZ, float& h
 	{
 		index = i * 3;
 
-		vertex1[0] = _terrainCells[cellId]._vertexList[index].X;
-		vertex1[1] = _terrainCells[cellId]._vertexList[index].Y;
-		vertex1[2] = _terrainCells[cellId]._vertexList[index].Z;
+		vertex1[0] = _terrainCells[cellId].VertexList[index].X;
+		vertex1[1] = _terrainCells[cellId].VertexList[index].Y;
+		vertex1[2] = _terrainCells[cellId].VertexList[index].Z;
 		index++;
 
-		vertex2[0] = _terrainCells[cellId]._vertexList[index].X;
-		vertex2[1] = _terrainCells[cellId]._vertexList[index].Y;
-		vertex2[2] = _terrainCells[cellId]._vertexList[index].Z;
+		vertex2[0] = _terrainCells[cellId].VertexList[index].X;
+		vertex2[1] = _terrainCells[cellId].VertexList[index].Y;
+		vertex2[2] = _terrainCells[cellId].VertexList[index].Z;
 		index++;
 
-		vertex3[0] = _terrainCells[cellId]._vertexList[index].X;
-		vertex3[1] = _terrainCells[cellId]._vertexList[index].Y;
-		vertex3[2] = _terrainCells[cellId]._vertexList[index].Z;
+		vertex3[0] = _terrainCells[cellId].VertexList[index].X;
+		vertex3[1] = _terrainCells[cellId].VertexList[index].Y;
+		vertex3[2] = _terrainCells[cellId].VertexList[index].Z;
 
 		// Check to see if this is the polygon we are looking for.
 		foundHeight = CheckHeightOfTriangle(inputX, inputZ, height, vertex1, vertex2, vertex3);
@@ -321,10 +317,8 @@ bool ProceduralTerrain::ProcGenHeightMap()
 		return false;
 	}
 
-	int index;
-
 	/* initialize random seed: */
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	//DiamondSquareAlgorithm(1000.0f, 300.0f, 5.0f);
 	FaultLineAlgorithm();
@@ -477,12 +471,12 @@ void ProceduralTerrain::FaultLineAlgorithm()
 
 		for (int j = 0; j < _terrainHeight; j++)
 		{
-			for (int i = 0; i < _terrainWidth; i++)
+			for (int k = 0; k < _terrainWidth; k++)
 			{
 				// Get current index
-				index = (_terrainHeight * j) + i;
+				index = (_terrainHeight * j) + k;
 
-				if (a*j + b*i - c > 0)
+				if (a*j + b*k - c > 0)
 					_heightMap[index].Y += displacement;
 				else
 					_heightMap[index].Y -= displacement;

@@ -2,15 +2,11 @@
 
 TerrainCell::TerrainCell()
 {
-	_vertexList = nullptr;
+	VertexList = nullptr;
 	_vertexBuffer = nullptr;
 	_indexBuffer = nullptr;
 	_lineVertexBuffer = nullptr;
 	_lineIndexBuffer = nullptr;
-}
-
-TerrainCell::TerrainCell(const TerrainCell &)
-{
 }
 
 TerrainCell::~TerrainCell()
@@ -210,8 +206,8 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 	}
 
 	// Create a public vertex array that will be used for accessing vertex information about this cell.
-	_vertexList = new VectorType[_vertexCount];
-	if (!_vertexList)
+	VertexList = new VectorType[_vertexCount];
+	if (!VertexList)
 	{
 		return false;
 	}
@@ -219,9 +215,9 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 	// Keep a local copy of the vertex Position data for this cell.
 	for (i = 0; i<_vertexCount; i++)
 	{
-		_vertexList[i].X = vertices[i].Position.x;
-		_vertexList[i].Y = vertices[i].Position.y;
-		_vertexList[i].Z = vertices[i].Position.z;
+		VertexList[i].X = vertices[i].Position.x;
+		VertexList[i].Y = vertices[i].Position.y;
+		VertexList[i].Z = vertices[i].Position.z;
 	}
 
 	// Release the arrays now that the buffers have been created and loaded.
@@ -237,10 +233,10 @@ bool TerrainCell::InitializeBuffers(ID3D11Device* device, int nodeIndexX, int no
 void TerrainCell::DestroyBuffers()
 {
 	// Release the public vertex list.
-	if (_vertexList)
+	if (VertexList)
 	{
-		delete[] _vertexList;
-		_vertexList = 0;
+		delete[] VertexList;
+		VertexList = 0;
 	}
 
 	// Release the index buffer.
@@ -297,9 +293,9 @@ void TerrainCell::CalculateCellDimensions()
 
 	for (i = 0; i<_vertexCount; i++)
 	{
-		width = _vertexList[i].X;
-		height = _vertexList[i].Y;
-		depth = _vertexList[i].Z;
+		width = VertexList[i].X;
+		height = VertexList[i].Y;
+		depth = VertexList[i].Z;
 
 		// Check if the width exceeds the minimum or maximum.
 		if (width > _maxWidth)

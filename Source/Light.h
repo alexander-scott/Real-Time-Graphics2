@@ -10,13 +10,12 @@ class Light
 {
 public:
 	Light();
-	Light(const Light&);
 	~Light();
 
-	void SetAmbientColor(float, float, float, float);
-	void SetDiffuseColor(float, float, float, float);
-	void SetDirection(float, float, float);
-	void SetPosition(float, float, float);
+	void SetAmbientColor(float red, float green, float blue, float alpha);
+	void SetDiffuseColor(float red, float green, float blue, float alpha);
+	void SetDirection(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
 
 	XMFLOAT4 GetAmbientColor();
 	XMFLOAT4 GetDiffuseColor();

@@ -8,16 +8,15 @@ class Camera
 {
 public:
 	Camera();
-	Camera(const Camera&);
 	~Camera();
 
 	Transform* GetTransform() { return _transform; }
 
 	void Render();
-	void GetViewMatrix(XMMATRIX&);
+	void GetViewMatrix(XMMATRIX& viewMatrix);
 
 	void RenderBaseViewMatrix();
-	void GetBaseViewMatrix(XMMATRIX&);
+	void GetBaseViewMatrix(XMMATRIX& viewMatrix);
 
 private:
 	XMMATRIX		_viewMatrix, _baseViewMatrix;

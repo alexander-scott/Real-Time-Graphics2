@@ -4,7 +4,6 @@ enum Scene
 	eSceneTerrainLOD,
 	eSceneTerrainGeneration,
 	eSceneSkeleton,
-	eSceneGraphics,
 	eSceneDeferred,
 };
 
@@ -25,14 +24,12 @@ const float SCREEN_NEAR = 0.1f;
 #include "SceneTerrainLOD.h"
 #include "SceneTerrainGeneration.h"
 #include "SceneSkeleton.h"
-#include "SceneGraphics.h"
 #include "SceneDeferredLighting.h"
 
 class Application
 {
 public:
 	Application();
-	Application(const Application&);
 	~Application();
 
 	bool Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight);
@@ -44,7 +41,6 @@ private:
 	bool BuildSceneTerrainLOD(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneTerrainGeneration(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeight);
-	bool BuildSceneGraphics(HWND hwnd, int screenWidth, int screenHeight);
 	bool BuildSceneDeferred(HWND hwnd, int screenWidth, int screenHeight);
 
 	Input*			_input;

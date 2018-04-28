@@ -202,19 +202,19 @@ bool Terrain::GetHeightAtPosition(float inputX, float inputZ, float& height)
 	{
 		index = i * 3;
 
-		vertex1[0] = _terrainCells[cellId]._vertexList[index].X;
-		vertex1[1] = _terrainCells[cellId]._vertexList[index].Y;
-		vertex1[2] = _terrainCells[cellId]._vertexList[index].Z;
+		vertex1[0] = _terrainCells[cellId].VertexList[index].X;
+		vertex1[1] = _terrainCells[cellId].VertexList[index].Y;
+		vertex1[2] = _terrainCells[cellId].VertexList[index].Z;
 		index++;
 
-		vertex2[0] = _terrainCells[cellId]._vertexList[index].X;
-		vertex2[1] = _terrainCells[cellId]._vertexList[index].Y;
-		vertex2[2] = _terrainCells[cellId]._vertexList[index].Z;
+		vertex2[0] = _terrainCells[cellId].VertexList[index].X;
+		vertex2[1] = _terrainCells[cellId].VertexList[index].Y;
+		vertex2[2] = _terrainCells[cellId].VertexList[index].Z;
 		index++;
 
-		vertex3[0] = _terrainCells[cellId]._vertexList[index].X;
-		vertex3[1] = _terrainCells[cellId]._vertexList[index].Y;
-		vertex3[2] = _terrainCells[cellId]._vertexList[index].Z;
+		vertex3[0] = _terrainCells[cellId].VertexList[index].X;
+		vertex3[1] = _terrainCells[cellId].VertexList[index].Y;
+		vertex3[2] = _terrainCells[cellId].VertexList[index].Z;
 
 		// Check to see if this is the polygon we are looking for.
 		foundHeight = CheckHeightOfTriangle(inputX, inputZ, height, vertex1, vertex2, vertex3);

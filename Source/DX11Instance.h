@@ -1,5 +1,4 @@
-#ifndef _D3DCLASS_H_
-#define _D3DCLASS_H_
+#pragma once
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -67,5 +66,3 @@ private:
 	ID3D11BlendState*			_alphaEnableBlendingState2;
 	D3D11_VIEWPORT				_viewport;
 };
-
-#endif

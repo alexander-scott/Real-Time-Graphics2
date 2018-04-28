@@ -43,29 +43,28 @@ private:
 
 public:
 	TerrainCell();
-	TerrainCell(const TerrainCell&);
 	~TerrainCell();
 
-	bool Initialize(ID3D11Device*, void*, int, int, int, int, int);
+	bool Initialize(ID3D11Device* device, void* terrainModelPtr, int nodeIndexX, int nodeIndexY, int cellHeight, int cellWidth, int terrainWidth);
 	void Destroy();
-	void Draw(ID3D11DeviceContext*);
-	void DrawLineBuffers(ID3D11DeviceContext*);
+	void Draw(ID3D11DeviceContext* deviceContext);
+	void DrawLineBuffers(ID3D11DeviceContext* deviceContext);
 
 	int GetVertexCount();
 	int GetIndexCount();
 	int GetLineBuffersIndexCount();
-	void GetCellDimensions(float&, float&, float&, float&, float&, float&);
+	void GetCellDimensions(float& maxWidth, float& maxHeight, float& maxDepth, float& minWidth, float& minHeight, float& minDepth);
 
 private:
-	bool InitializeBuffers(ID3D11Device*, int, int, int, int, int, ModelType*);
+	bool InitializeBuffers(ID3D11Device* device, int nodeIndexX, int nodeIndexY, int cellHeight, int cellWidth,	int terrainWidth, ModelType* terrainModel);
 	void DestroyBuffers();
-	void DrawBuffers(ID3D11DeviceContext*);
+	void DrawBuffers(ID3D11DeviceContext* deviceContext);
 	void CalculateCellDimensions();
-	bool BuildLineBuffers(ID3D11Device*);
+	bool BuildLineBuffers(ID3D11Device* deviceContext);
 	void DestroyLineBuffers();
 
 public:
-	VectorType * _vertexList;
+	VectorType *		VertexList;
 
 private:
 	int					_vertexCount, _indexCount, _lineIndexCount;

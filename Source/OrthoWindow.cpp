@@ -3,8 +3,8 @@
 
 OrthoWindow::OrthoWindow()
 {
-	m_vertexBuffer = 0;
-	m_indexBuffer = 0;
+	_vertexBuffer = 0;
+	_indexBuffer = 0;
 }
 
 
@@ -54,7 +54,7 @@ void OrthoWindow::Render(ID3D11DeviceContext* deviceContext)
 
 int OrthoWindow::GetIndexCount()
 {
-	return m_indexCount;
+	return _indexCount;
 }
 
 
@@ -82,20 +82,20 @@ bool OrthoWindow::InitializeBuffers(ID3D11Device* device, int windowWidth, int w
 	bottom = top - (float)windowHeight;
 
 	// Set the number of vertices in the vertex array.
-	m_vertexCount = 6;
+	_vertexCount = 6;
 
 	// Set the number of indices in the index array.
-	m_indexCount = m_vertexCount;
+	_indexCount = _vertexCount;
 
 	// Create the vertex array.
-	vertices = new VertexType[m_vertexCount];
+	vertices = new VertexType[_vertexCount];
 	if (!vertices)
 	{
 		return false;
 	}
 
 	// Create the index array.
-	indices = new unsigned long[m_indexCount];
+	indices = new unsigned long[_indexCount];
 	if (!indices)
 	{
 		return false;
@@ -123,14 +123,14 @@ bool OrthoWindow::InitializeBuffers(ID3D11Device* device, int windowWidth, int w
 	vertices[5].texture = XMFLOAT2(1.0f, 1.0f);
 
 	// Load the index array with data.
-	for (i = 0; i<m_indexCount; i++)
+	for (i = 0; i<_indexCount; i++)
 	{
 		indices[i] = i;
 	}
 
 	// Set up the description of the vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * _vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -142,7 +142,7 @@ bool OrthoWindow::InitializeBuffers(ID3D11Device* device, int windowWidth, int w
 	vertexData.SysMemSlicePitch = 0;
 
 	// Now finally create the vertex buffer.
-	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
+	result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &_vertexBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -150,7 +150,7 @@ bool OrthoWindow::InitializeBuffers(ID3D11Device* device, int windowWidth, int w
 
 	// Set up the description of the index buffer.
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * _indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -162,7 +162,7 @@ bool OrthoWindow::InitializeBuffers(ID3D11Device* device, int windowWidth, int w
 	indexData.SysMemSlicePitch = 0;
 
 	// Create the index buffer.
-	result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
+	result = device->CreateBuffer(&indexBufferDesc, &indexData, &_indexBuffer);
 	if (FAILED(result))
 	{
 		return false;
@@ -182,17 +182,17 @@ bool OrthoWindow::InitializeBuffers(ID3D11Device* device, int windowWidth, int w
 void OrthoWindow::ShutdownBuffers()
 {
 	// Release the index buffer.
-	if (m_indexBuffer)
+	if (_indexBuffer)
 	{
-		m_indexBuffer->Release();
-		m_indexBuffer = 0;
+		_indexBuffer->Release();
+		_indexBuffer = 0;
 	}
 
 	// Release the vertex buffer.
-	if (m_vertexBuffer)
+	if (_vertexBuffer)
 	{
-		m_vertexBuffer->Release();
-		m_vertexBuffer = 0;
+		_vertexBuffer->Release();
+		_vertexBuffer = 0;
 	}
 
 	return;
@@ -210,10 +210,10 @@ void OrthoWindow::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
 
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

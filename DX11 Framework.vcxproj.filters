@@ -79,17 +79,11 @@
     <ClCompile Include="Source\ProceduralTerrain.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneGraphics.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneCombined.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\CubeShader.cpp">
       <Filter>DX11\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Cube.cpp">
-      <Filter>Application\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\DeferredBuffers.cpp">
       <Filter>DX11\Deferred</Filter>
@@ -115,11 +109,11 @@
     <ClCompile Include="Source\SceneDeferredLighting.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\NewCube.cpp">
-      <Filter>Application\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\OrthoWindow.cpp">
       <Filter>DX11\Deferred</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cube.cpp">
+      <Filter>Application\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,17 +195,11 @@
     <ClInclude Include="Source\ProceduralTerrain.h">
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneGraphics.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneCombined.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\CubeShader.h">
       <Filter>DX11\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Cube.h">
-      <Filter>Application\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\DeferredBuffers.h">
       <Filter>DX11\Deferred</Filter>
@@ -240,11 +228,11 @@
     <ClInclude Include="Source\SceneDeferredLighting.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\NewCube.h">
-      <Filter>Application\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\OrthoWindow.h">
       <Filter>DX11\Deferred</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Cube.h">
+      <Filter>Application\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

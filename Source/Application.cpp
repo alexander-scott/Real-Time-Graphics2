@@ -9,10 +9,6 @@ Application::Application()
 	_scene = nullptr;
 }
 
-Application::Application(const Application& other)
-{
-}
-
 Application::~Application()
 {
 }
@@ -94,9 +90,6 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 
 		case Scene::eSceneSkeleton:
 			return BuildSceneSkeleton(hwnd, screenWidth, screenHeight);
-
-		case Scene::eSceneGraphics:
-			return BuildSceneGraphics(hwnd, screenWidth, screenHeight);
 
 		case Scene::eSceneDeferred:
 			return BuildSceneDeferred(hwnd, screenWidth, screenHeight);
@@ -253,30 +246,8 @@ bool Application::BuildSceneSkeleton(HWND hwnd, int screenWidth, int screenHeigh
 {
 	bool result;
 
-	 // Create the scene object.
-	_scene = new SceneSkeleton;
-	if (!_scene)
-	{
-		return false;
-	}
-
-	// Initialize the scene object.
-	result = _scene->Initialize(_dx11Instance, hwnd, screenWidth, screenHeight, SCREEN_DEPTH);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the scene object.", L"Error", MB_OK);
-		return false;
-	}
-
-	return result;
-}
-
-bool Application::BuildSceneGraphics(HWND hwnd, int screenWidth, int screenHeight)
-{
-	bool result;
-
 	// Create the scene object.
-	_scene = new SceneGraphics;
+	_scene = new SceneSkeleton;
 	if (!_scene)
 	{
 		return false;

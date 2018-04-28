@@ -8,10 +8,6 @@ Camera::Camera()
 	_transform->SetRotation(0, 0, 0);
 }
 
-Camera::Camera(const Camera& other)
-{
-}
-
 Camera::~Camera()
 {
 	delete _transform;

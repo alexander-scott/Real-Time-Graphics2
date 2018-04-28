@@ -21,11 +21,11 @@ public:
 	ID3D11ShaderResourceView* GetShaderResourceView(int);
 
 private:
-	int m_textureWidth, m_textureHeight;
-	ID3D11Texture2D* m_renderTargetTextureArray[BUFFER_COUNT];
-	ID3D11RenderTargetView* m_renderTargetViewArray[BUFFER_COUNT];
-	ID3D11ShaderResourceView* m_shaderResourceViewArray[BUFFER_COUNT];
-	ID3D11Texture2D* m_depthStencilBuffer;
-	ID3D11DepthStencilView* m_depthStencilView;
-	D3D11_VIEWPORT m_viewport;
+	int							_textureWidth, _textureHeight;
+	ID3D11Texture2D*			_renderTargetTextureArray[BUFFER_COUNT];
+	ID3D11RenderTargetView*		_renderTargetViewArray[BUFFER_COUNT];
+	ID3D11ShaderResourceView*	_shaderResourceViewArray[BUFFER_COUNT];
+	ID3D11Texture2D*			_depthStencilBuffer;
+	ID3D11DepthStencilView*		_depthStencilView;
+	D3D11_VIEWPORT				_viewport;
 };

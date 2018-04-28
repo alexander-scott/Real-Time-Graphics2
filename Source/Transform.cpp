@@ -17,10 +17,6 @@ Transform::Transform()
 	_lookDownSpeed  = 0.0f;
 }
 
-Transform::Transform(const Transform& other)
-{
-}
-
 Transform::~Transform()
 {
 }

@@ -1,5 +1,4 @@
-#ifndef _POSITIONCLASS_H_
-#define _POSITIONCLASS_H_
+#pragma once
 
 #include <math.h>
 #include <directxmath.h>
@@ -10,39 +9,38 @@ class Transform
 {
 public:
 	Transform();
-	Transform(const Transform&);
 	~Transform();
 
-	void SetPosition(float, float, float);
-	void SetRotation(float, float, float);
-	void SetScale(float, float, float);
+	void SetPosition(float x, float y, float z);
+	void SetRotation(float x, float y, float z);
+	void SetScale(float x, float y, float z);
 
-	void SetPosition(XMFLOAT3);
-	void SetRotation(XMFLOAT3);
-	void SetScale(XMFLOAT3);
+	void SetPosition(XMFLOAT3 pos);
+	void SetRotation(XMFLOAT3 rot);
+	void SetScale(XMFLOAT3 scale);
 
-	void GetPosition(float&, float&, float&);
-	void GetRotation(float&, float&, float&);
-	void GetScale(float&, float&, float&);
+	void GetPosition(float& x, float& y, float& z);
+	void GetRotation(float& x, float& y, float& z);
+	void GetScale(float& x, float& y, float& z);
 
-	void GetPosition(XMFLOAT3&);
-	void GetRotation(XMFLOAT3&);
-	void GetScale(XMFLOAT3&);
+	void GetPosition(XMFLOAT3& pos);
+	void GetRotation(XMFLOAT3& rot);
+	void GetScale(XMFLOAT3& scale);
 
 	XMFLOAT3& GetPositionValue() { return _position; }
 	XMFLOAT3& GetRotationValue() { return _rotation; }
 	XMFLOAT3& GetScaleValue() { return _scale; }
 
-	void SetFrameTime(float);
+	void SetFrameTime(float deltaTime);
 
-	void MoveForward(bool);
-	void MoveBackward(bool);
-	void MoveUpward(bool);
-	void MoveDownward(bool);
-	void TurnLeft(bool);
-	void TurnRight(bool);
-	void LookUpward(bool);
-	void LookDownward(bool);
+	void MoveForward(bool keydown);
+	void MoveBackward(bool keydown);
+	void MoveUpward(bool keydown);
+	void MoveDownward(bool keydown);
+	void TurnLeft(bool keydown);
+	void TurnRight(bool keydown);
+	void LookUpward(bool keydown);
+	void LookDownward(bool keydown);
 
 private:
 	XMFLOAT3 _position;
@@ -56,5 +54,3 @@ private:
 	float _leftTurnSpeed, _rightTurnSpeed;
 	float _lookUpSpeed, _lookDownSpeed;
 };
-
-#endif

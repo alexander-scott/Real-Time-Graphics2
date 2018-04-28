@@ -2,7 +2,7 @@
 
 #include "IScene.h"
 
-#include "NewCube.h"
+#include "Cube.h"
 #include "OrthoWindow.h"
 #include "DeferredBuffers.h"
 
@@ -21,9 +21,9 @@ private:
 	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
 	bool RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager);
 
-	Light* _light;
-	NewCube* _cube;
-	OrthoWindow* _window;
-	DeferredBuffers* _deferredBuffers;
+	Light*				_light;
+	Cube*				_cube;
+	OrthoWindow*		_window;
+	DeferredBuffers*	_deferredBuffers;
 };
 

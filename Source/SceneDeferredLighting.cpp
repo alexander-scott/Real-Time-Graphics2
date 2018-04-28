@@ -74,7 +74,7 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 	_light->SetDirection(0.0f, 0.0f, 1.0f);
 
 	// Create the model object.
-	_cube = new NewCube;
+	_cube = new Cube;
 	if (!_cube)
 	{
 		return false;
@@ -259,7 +259,7 @@ bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderMa
 	// Render the full screen ortho window using the deferred light shader and the render buffers.
 	shaderManager->RenderDeferredLightShader(direct3D->GetDeviceContext(), _window->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
 		_deferredBuffers->GetShaderResourceView(0), _deferredBuffers->GetShaderResourceView(1),
-		XMFLOAT3(0.0f, 0.0f, 1.0f));
+		_light->GetTransform()->GetRotationValue());
 
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	direct3D->TurnZBufferOn();

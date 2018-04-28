@@ -8,20 +8,19 @@ class Frustum
 {
 public:
 	Frustum();
-	Frustum(const Frustum&);
 	~Frustum();
 
 	void Initialize(float);
 
-	void ConstructFrustum(XMMATRIX, XMMATRIX);
+	void ConstructFrustum(XMMATRIX projectionMatrix, XMMATRIX viewMatrix);
 
-	bool CheckPoint(float, float, float);
-	bool CheckCube(float, float, float, float);
-	bool CheckSphere(float, float, float, float);
-	bool CheckRectangle(float, float, float, float, float, float);
-	bool CheckRectangle2(float, float, float, float, float, float);
+	bool CheckPoint(float x, float y, float z);
+	bool CheckCube(float xCenter, float yCenter, float zCenter, float radius);
+	bool CheckSphere(float xCenter, float yCenter, float zCenter, float radius);
+	bool CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize);
+	bool CheckRectangle2(float maxWidth, float maxHeight, float maxDepth, float minWidth, float minHeight, float minDepth);
 
 private:
-	float m_screenDepth;
-	float m_planes[6][4];
+	float	_screenDepth;
+	float	_planes[6][4];
 };
