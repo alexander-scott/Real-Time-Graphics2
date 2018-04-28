@@ -64,7 +64,9 @@ bool SceneShadows::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth
 
 	// Initialize the light object.
 	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	_light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	_light->SetDirection(0.0f, 0.0f, 1.0f);
+	_light->GenerateProjectionMatrix(screenDepth, 0.1f);
 
 	// Create the model object.
 	_cube = new Cube;
@@ -258,7 +260,8 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 	direct3D->TurnZBufferOff();
 
 	// Put the full screen ortho window vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_window->Render(direct3D->GetDeviceContext());
+	//_window->Render(direct3D->GetDeviceContext());
+	_cube->Render(direct3D->GetDeviceContext());
 
 	// Render the full screen ortho window using the deferred light shader and the render buffers.
 	/*shaderManager->RenderDeferredLightShader(direct3D->GetDeviceContext(), _window->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
