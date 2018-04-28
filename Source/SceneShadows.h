@@ -24,4 +24,3 @@ private:
 	Object*					_cube, *_plane, *_sphere;
 	RenderTextureBuffer*	_renderTextureBuffer;
 };
-
