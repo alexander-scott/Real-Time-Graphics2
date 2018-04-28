@@ -7,11 +7,6 @@ ShaderManager::ShaderManager()
 	_lightShader = nullptr;
 	_skydomeShader = nullptr;
 	_terrainShader = nullptr;
-	_cubeShader = nullptr;
-}
-
-ShaderManager::ShaderManager(const ShaderManager& other)
-{
 }
 
 ShaderManager::~ShaderManager()
@@ -92,20 +87,6 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
-	// Create the cube shader object.
-	_cubeShader = new CubeShader;
-	if (!_cubeShader)
-	{
-		return false;
-	}
-
-	// Initialize the cube shader object.
-	result = _cubeShader->Initialize(device, hwnd, L"Source/Shaders/CubeShader.fx", L"Source/Shaders/CubeShader.fx");
-	if (!result)
-	{
-		return false;
-	}
-
 	// Create the deferred shader object.
 	_deferredShader = new DeferredShader;
 	if (!_deferredShader)
@@ -114,7 +95,7 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the deferred shader object.
-	result = _deferredShader->Initialize(device, hwnd, L"Source/Shaders/deferred.ps", L"Source/Shaders/deferred.vs");
+	result = _deferredShader->Initialize(device, hwnd, L"Source/Shaders/DeferredPixelShader.hlsl", L"Source/Shaders/DeferredVertexShader.hlsl");
 	if (!result)
 	{
 		return false;
@@ -128,7 +109,7 @@ bool ShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 	}
 
 	// Initialize the deferred light shader object.
-	result = _deferredLightShader->Initialize(device, hwnd, L"Source/Shaders/deferredlight.ps", L"Source/Shaders/deferredlight.vs");
+	result = _deferredLightShader->Initialize(device, hwnd, L"Source/Shaders/DeferredLightPixelShader.hlsl", L"Source/Shaders/DeferredLightVertexShader.hlsl");
 	if (!result)
 	{
 		return false;
@@ -214,13 +195,6 @@ bool ShaderManager::RenderTerrainShader(ID3D11DeviceContext* deviceContext, int 
 {
 	return _terrainShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, texture, normalMap, normalMap2, normalMap3,
 		lightDirection, diffuseColor);
-}
-
-bool ShaderManager::RenderCubeShader(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
-	SurfaceInfo surface, LightStruct light, XMFLOAT3 eyePosW, float hasTexture, ID3D11ShaderResourceView * texture)
-{
-	return _cubeShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, 
-		surface, light, eyePosW, hasTexture, texture);
 }
 
 bool ShaderManager::RenderDeferredShader(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,

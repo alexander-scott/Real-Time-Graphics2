@@ -7,7 +7,7 @@ enum Scene
 	eSceneDeferred,
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneDeferred;
+const Scene CURRENT_SCENE = Scene::eSceneCombined;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

@@ -371,7 +371,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\CubeShader.cpp" />
     <ClCompile Include="Source\DeferredBuffers.cpp" />
     <ClCompile Include="Source\DeferredLightShader.cpp" />
     <ClCompile Include="Source\DeferredShader.cpp" />
@@ -411,7 +410,6 @@
     <ClCompile Include="Source\SceneTerrainLOD.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\CubeShader.h" />
     <ClInclude Include="Source\DeferredBuffers.h" />
     <ClInclude Include="Source\DeferredLightShader.h" />
     <ClInclude Include="Source\DeferredShader.h" />

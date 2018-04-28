@@ -82,9 +82,6 @@
     <ClCompile Include="Source\SceneCombined.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CubeShader.cpp">
-      <Filter>DX11\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DeferredBuffers.cpp">
       <Filter>DX11\Deferred</Filter>
     </ClCompile>
@@ -197,9 +194,6 @@
     </ClInclude>
     <ClInclude Include="Source\SceneCombined.h">
       <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CubeShader.h">
-      <Filter>DX11\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\DeferredBuffers.h">
       <Filter>DX11\Deferred</Filter>
