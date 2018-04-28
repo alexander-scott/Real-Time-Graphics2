@@ -373,6 +373,9 @@
   <ItemGroup>
     <ClCompile Include="Source\CubeShader.cpp" />
     <ClCompile Include="Source\Cube.cpp" />
+    <ClCompile Include="Source\DeferredBuffers.cpp" />
+    <ClCompile Include="Source\DeferredLightShader.cpp" />
+    <ClCompile Include="Source\DeferredShader.cpp" />
     <ClCompile Include="Source\SceneCombined.cpp" />
     <ClCompile Include="Source\SceneGraphics.cpp" />
     <ClCompile Include="Source\ProceduralTerrain.cpp" />
@@ -409,6 +412,9 @@
   <ItemGroup>
     <ClInclude Include="Source\CubeShader.h" />
     <ClInclude Include="Source\Cube.h" />
+    <ClInclude Include="Source\DeferredBuffers.h" />
+    <ClInclude Include="Source\DeferredLightShader.h" />
+    <ClInclude Include="Source\DeferredShader.h" />
     <ClInclude Include="Source\SceneCombined.h" />
     <ClInclude Include="Source\SceneGraphics.h" />
     <ClInclude Include="Source\ProceduralTerrain.h" />

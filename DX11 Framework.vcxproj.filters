@@ -25,9 +25,6 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TextureManager.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TextureShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
@@ -73,12 +70,6 @@
     <ClCompile Include="Source\Skeleton.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DDSTextureLoader.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TargaTexture.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneSkeleton.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -94,14 +85,32 @@
     <ClCompile Include="Source\SceneCombined.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DDSTexture.cpp">
-      <Filter>DX11</Filter>
-    </ClCompile>
     <ClCompile Include="Source\CubeShader.cpp">
       <Filter>DX11\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Source\Cube.cpp">
       <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DeferredBuffers.cpp">
+      <Filter>DX11\Deferred</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TargaTexture.cpp">
+      <Filter>DX11\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureManager.cpp">
+      <Filter>DX11\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DDSTextureLoader.cpp">
+      <Filter>DX11\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DDSTexture.cpp">
+      <Filter>DX11\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DeferredShader.cpp">
+      <Filter>DX11\Deferred</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DeferredLightShader.cpp">
+      <Filter>DX11\Deferred</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TextureManager.h">
-      <Filter>DX11</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureShader.h">
       <Filter>DX11\Shaders</Filter>
@@ -177,15 +183,6 @@
     <ClInclude Include="Source\Skeleton.h">
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DDSTextureLoader.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ITexture.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TargaTexture.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneSkeleton.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -201,14 +198,35 @@
     <ClInclude Include="Source\SceneCombined.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DDSTexture.h">
-      <Filter>DX11</Filter>
-    </ClInclude>
     <ClInclude Include="Source\CubeShader.h">
       <Filter>DX11\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\Cube.h">
       <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DeferredBuffers.h">
+      <Filter>DX11\Deferred</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextureManager.h">
+      <Filter>DX11\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ITexture.h">
+      <Filter>DX11\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TargaTexture.h">
+      <Filter>DX11\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DDSTextureLoader.h">
+      <Filter>DX11\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DDSTexture.h">
+      <Filter>DX11\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DeferredShader.h">
+      <Filter>DX11\Deferred</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DeferredLightShader.h">
+      <Filter>DX11\Deferred</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +250,12 @@
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{4885cf96-44a3-46f3-9885-fb95ad102c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Deferred">
+      <UniqueIdentifier>{8d9b8568-7862-429c-8a02-47af385d9c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11\Textures">
+      <UniqueIdentifier>{15d0e73d-8eec-4e2e-973c-cac6bdc28da1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

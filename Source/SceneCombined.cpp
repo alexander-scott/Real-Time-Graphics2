@@ -409,7 +409,6 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	{
 		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
 		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
-
 		if (!result)
 		{
 			return false;
