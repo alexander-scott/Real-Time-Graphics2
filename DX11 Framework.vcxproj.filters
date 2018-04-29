@@ -124,6 +124,9 @@
     <ClCompile Include="Source\SceneVoxelTerrain.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FastNoise.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -251,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="Source\SceneVoxelTerrain.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FastNoise.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

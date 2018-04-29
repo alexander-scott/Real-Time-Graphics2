@@ -6,7 +6,7 @@
 
 #include <vector>
 
-const int TERRAIN_SIZE = 16;
+const int TERRAIN_SIZE = 64;
 
 class SceneVoxelTerrain : public IScene
 {

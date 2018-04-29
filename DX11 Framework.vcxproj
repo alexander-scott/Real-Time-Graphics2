@@ -372,6 +372,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\DepthShader.cpp" />
+    <ClCompile Include="Source\FastNoise.cpp" />
     <ClCompile Include="Source\RenderTextureBuffer.cpp" />
     <ClCompile Include="Source\DeferredLightShader.cpp" />
     <ClCompile Include="Source\DeferredShader.cpp" />
@@ -415,6 +416,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DepthShader.h" />
+    <ClInclude Include="Source\FastNoise.h" />
     <ClInclude Include="Source\RenderTextureBuffer.h" />
     <ClInclude Include="Source\DeferredLightShader.h" />
     <ClInclude Include="Source\DeferredShader.h" />

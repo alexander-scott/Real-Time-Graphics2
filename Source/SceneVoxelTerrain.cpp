@@ -1,5 +1,7 @@
 #include "SceneVoxelTerrain.h"
 
+#include "FastNoise.h"
+
 SceneVoxelTerrain::SceneVoxelTerrain()
 {
 	_light = 0;
@@ -115,14 +117,23 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 		return false;
 	}
 
+	FastNoise myNoise; // Create a FastNoise object
+	myNoise.SetNoiseType(FastNoise::PerlinFractal); // Set the desired noise type
+
 	// Create terrain
 	for (int x = 0; x < TERRAIN_SIZE; x++)
 	{
-		for (int y = 0; y < TERRAIN_SIZE; y++)
+		for (int z = 0; z < TERRAIN_SIZE; z++)
 		{
-			for (int z = 0; z < TERRAIN_SIZE; z++)
+			int height = (myNoise.GetNoise(x, z) + 1)  * TERRAIN_SIZE;
+
+			for (int y = 0; y < height; y++)
 			{
 				_terrain[x][y][z] = 1;
+			}
+			for (int y = height; y < TERRAIN_SIZE; y++)
+			{
+				_terrain[x][y][z] = 0;
 			}
 		}
 	}
@@ -236,11 +247,11 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 	XMFLOAT3 objectPosition, objectRotation, cameraPosition;
 
 	// Render the scene to the render buffers.
-	result = RenderSceneToTexture(direct3D, shaderManager);
+	/*result = RenderSceneToTexture(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
-	}
+	}*/
 
 	// Clear the buffers to begin the scene.
 	direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -330,9 +341,10 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 					worldMatrix *= XMMatrixTranslation(x, y, z);
 
 					// Render the model using the shadow shader.
-					shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
+					/*shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
 						lightProjectionMatrix, _textureManager->GetTexture(_voxel->GetTextureIndex()), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
-						_light->GetAmbientColor(), _light->GetDiffuseColor());
+						_light->GetAmbientColor(), _light->GetDiffuseColor());*/
+					shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(_voxel->GetTextureIndex()));
 				}
 			}
 		}
