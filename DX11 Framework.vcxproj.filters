@@ -121,6 +121,9 @@
     <ClCompile Include="Source\Object.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneVoxelTerrain.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="Source\Object.h">
       <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneVoxelTerrain.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

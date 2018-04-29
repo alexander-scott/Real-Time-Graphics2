@@ -385,6 +385,7 @@
     <ClCompile Include="Source\SceneSkeleton.cpp" />
     <ClCompile Include="Source\DDSTexture.cpp" />
     <ClCompile Include="Source\DDSTextureLoader.cpp" />
+    <ClCompile Include="Source\SceneVoxelTerrain.cpp" />
     <ClCompile Include="Source\ShadowShader.cpp" />
     <ClCompile Include="Source\SkeletonShader.cpp" />
     <ClCompile Include="Source\Skeleton.cpp" />
@@ -428,6 +429,7 @@
     <ClInclude Include="Source\DDSTexture.h" />
     <ClInclude Include="Source\DDSTextureLoader.h" />
     <ClInclude Include="Source\ITexture.h" />
+    <ClInclude Include="Source\SceneVoxelTerrain.h" />
     <ClInclude Include="Source\ShadowShader.h" />
     <ClInclude Include="Source\SkeletonShader.h" />
     <ClInclude Include="Source\Skeleton.h" />
