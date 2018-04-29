@@ -6,6 +6,8 @@
 
 #include <vector>
 
+const int TERRAIN_SIZE = 16;
+
 class SceneVoxelTerrain : public IScene
 {
 public:
@@ -21,8 +23,9 @@ private:
 	bool RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager);
 
 	Light*					_light;
+	SkyDome*				_skyDome;
 	RenderTextureBuffer*	_renderTextureBuffer;
 
-	std::vector<Object*>	_objects;
-	Object*					_cube;
+	Object*					_voxel;
+	int						_terrain[TERRAIN_SIZE][TERRAIN_SIZE][TERRAIN_SIZE];
 };

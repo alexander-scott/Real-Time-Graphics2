@@ -30,18 +30,6 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 		return false;
 	}
 
-	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/shadows/ice.dds", 48);
-	if (!result)
-	{
-		return false;
-	}
-
-	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/shadows/metal001.dds", 49);
-	if (!result)
-	{
-		return false;
-	}
-
 	// Create the camera object.
 	_camera = new Camera;
 	if (!_camera)
@@ -67,6 +55,21 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 	// Initialize the frustum object.
 	_frustum->Initialize(screenDepth);
 
+	// Create the sky dome object.
+	_skyDome = new SkyDome;
+	if (!_skyDome)
+	{
+		return false;
+	}
+
+	// Initialize the sky dome object.
+	result = _skyDome->Initialize(Direct3D->GetDevice());
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the sky dome object.", L"Error", MB_OK);
+		return false;
+	}
+
 	// Create the light object.
 	_light = new Light;
 	if (!_light)
@@ -81,57 +84,6 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 	_light->SetLookAt(0.0f, 0.0f, 0.0f);
 	_light->GetTransform()->SetPosition(0.0f, 20.0f, -20.0f);
 	_light->GenerateProjectionMatrix(screenDepth, 1.0f);
-
-	// Create the model object.
-	_cube = new Object;
-	if (!_cube)
-	{
-		return false;
-	}
-
-	// Initialize the model object.
-	result = _cube->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
-		return false;
-	}
-	_cube->GetTransform()->SetPosition(-2.0f, 2.0f, 0.0f);
-	_objects.push_back(_cube);
-
-	// Create the model object.
-	Object* _plane = new Object;
-	if (!_plane)
-	{
-		return false;
-	}
-
-	// Initialize the model object.
-	result = _plane->Initialize(Direct3D->GetDevice(), "Source/shadows/plane01.txt", 48);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
-		return false;
-	}
-	_plane->GetTransform()->SetPosition(0.0f, -1.0f, 5.0f);
-	_objects.push_back(_plane);
-
-	// Create the model object.
-	Object* _sphere = new Object;
-	if (!_sphere)
-	{
-		return false;
-	}
-
-	// Initialize the model object.
-	result = _sphere->Initialize(Direct3D->GetDevice(), "Source/shadows/sphere.txt", 49);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
-		return false;
-	}
-	_sphere->GetTransform()->SetPosition(2.0f, 2.0f, -3.0f);
-	_objects.push_back(_sphere);
 
 	// Create the deferred buffers object.
 	_renderTextureBuffer = new RenderTextureBuffer;
@@ -148,6 +100,33 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 		return false;
 	}
 
+	// Create the model object.
+	_voxel = new Object;
+	if (!_voxel)
+	{
+		return false;
+	}
+
+	// Initialize the model object.
+	result = _voxel->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create terrain
+	for (int x = 0; x < TERRAIN_SIZE; x++)
+	{
+		for (int y = 0; y < TERRAIN_SIZE; y++)
+		{
+			for (int z = 0; z < TERRAIN_SIZE; z++)
+			{
+				_terrain[x][y][z] = 1;
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -160,15 +139,6 @@ void SceneVoxelTerrain::Destroy()
 		delete _renderTextureBuffer;
 		_renderTextureBuffer = 0;
 	}
-
-	// Release the models object.
-	for (auto object : _objects)
-	{
-		object->Shutdown();
-		delete object;
-		object = 0;
-	}
-	_objects.clear();
 
 	// Release the light object.
 	if (_light)
@@ -192,6 +162,14 @@ void SceneVoxelTerrain::Destroy()
 		_frustum = nullptr;
 	}
 
+	// Release the sky dome object.
+	if (_skyDome)
+	{
+		_skyDome->Destroy();
+		delete _skyDome;
+		_skyDome = 0;
+	}
+
 	// Release the camera object.
 	if (_camera)
 	{
@@ -204,15 +182,6 @@ bool SceneVoxelTerrain::Update(DX11Instance * direct3D, Input * input, ShaderMan
 {
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
-
-	static float rotation = 0.0f;
-	rotation += (float)XM_PI * 0.01f;
-	if (rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
-
-	_cube->GetTransform()->SetRotation(0, rotation, 0);
 
 	// Render the graphics.
 	bool result = Draw(direct3D, shaderManager);
@@ -264,7 +233,7 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	XMMATRIX lightViewMatrix, lightProjectionMatrix;
 	bool result;
-	XMFLOAT3 objectPosition, objectRotation;
+	XMFLOAT3 objectPosition, objectRotation, cameraPosition;
 
 	// Render the scene to the render buffers.
 	result = RenderSceneToTexture(direct3D, shaderManager);
@@ -289,35 +258,53 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 	_camera->GetBaseViewMatrix(baseViewMatrix);
 	direct3D->GetOrthoMatrix(orthoMatrix);
 
+	// Get the Position of the camera.
+	_camera->GetTransform()->GetPosition(cameraPosition);
+
 	// Get the light's view and projection matrices from the light object.
 	_light->GetViewMatrix(lightViewMatrix);
 	_light->GetProjectionMatrix(lightProjectionMatrix);
 
 	// Turn off the Z buffer to begin all 2D rendering.
 	direct3D->TurnZBufferOff();
+	direct3D->TurnOffCulling();
+
+	// Translate the sky dome to be centered around the camera Position.
+	worldMatrix = XMMatrixTranslation(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+	// Render the sky dome using the sky dome shader.
+	_skyDome->Draw(direct3D->GetDeviceContext());
+	result = shaderManager->RenderSkyDomeShader(direct3D->GetDeviceContext(), _skyDome->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, _skyDome->GetApexColor(), _skyDome->GetCenterColor());
+	if (!result)
+	{
+		return false;
+	}
 
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	direct3D->TurnZBufferOn();
+	direct3D->TurnOnCulling();
 
-	// Render all objects
-	for (auto object : _objects)
+	_voxel->Render(direct3D->GetDeviceContext());
+
+	for (int x = 0; x < TERRAIN_SIZE; x++)
 	{
-		direct3D->GetWorldMatrix(worldMatrix);
+		for (int y = 0; y < TERRAIN_SIZE; y++)
+		{
+			for (int z = 0; z < TERRAIN_SIZE; z++)
+			{
+				if (_terrain[x][y][z] == 1)
+				{
+					direct3D->GetWorldMatrix(worldMatrix);
+					worldMatrix *= XMMatrixTranslation(x, y, z);
 
-		objectPosition = object->GetTransform()->GetPositionValue();
-		objectRotation = object->GetTransform()->GetRotationValue();
-
-		// Rotate the world matrix by the rotation value so that the cube will spin.
-		worldMatrix = XMMatrixTranslation(objectPosition.x, objectPosition.y, objectPosition.z) *
-			XMMatrixRotationX(objectRotation.x) *  XMMatrixRotationY(objectRotation.y) * XMMatrixRotationZ(objectRotation.z);
-
-		// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-		object->Render(direct3D->GetDeviceContext());
-
-		// Render the model using the shadow shader.
-		shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), object->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
-			lightProjectionMatrix, _textureManager->GetTexture(object->GetTextureIndex()), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
-			_light->GetAmbientColor(), _light->GetDiffuseColor());
+					// Render the model using the shadow shader.
+					shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
+						lightProjectionMatrix, _textureManager->GetTexture(_voxel->GetTextureIndex()), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
+						_light->GetAmbientColor(), _light->GetDiffuseColor());
+				}
+			}
+		}
 	}
 
 	// Present the rendered scene to the screen.
@@ -351,23 +338,23 @@ bool SceneVoxelTerrain::RenderSceneToTexture(DX11Instance* direct3D, ShaderManag
 	_light->GetViewMatrix(lightViewMatrix);
 	_light->GetProjectionMatrix(lightProjectionMatrix);
 
-	// Render all objects
-	for (auto object : _objects)
+	_voxel->Render(direct3D->GetDeviceContext());
+
+	for (int x = 0; x < TERRAIN_SIZE; x++)
 	{
-		direct3D->GetWorldMatrix(worldMatrix);
+		for (int y = 0; y < TERRAIN_SIZE; y++)
+		{
+			for (int z = 0; z < TERRAIN_SIZE; z++)
+			{
+				if (_terrain[x][y][z] == 1)
+				{
+					direct3D->GetWorldMatrix(worldMatrix);
+					worldMatrix *= XMMatrixTranslation(x, y, z);
 
-		objectPostion = object->GetTransform()->GetPositionValue();
-		objectRotation = object->GetTransform()->GetRotationValue();
-
-		// Rotate the world matrix by the rotation value so that the cube will spin.
-		worldMatrix = XMMatrixTranslation(objectPostion.x, objectPostion.y, objectPostion.z) *
-			XMMatrixRotationX(objectRotation.x) *  XMMatrixRotationY(objectRotation.y) * XMMatrixRotationZ(objectRotation.z);
-
-		// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-		object->Render(direct3D->GetDeviceContext());
-
-		// Render the model using the deferred shader.
-		shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), object->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
+					shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
+				}
+			}
+		}
 	}
 
 	// Reset the render target back to the original back buffer and not the render buffers anymore.
