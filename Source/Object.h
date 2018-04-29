@@ -30,11 +30,12 @@ public:
 	Object();
 	~Object();
 
-	bool Initialize(ID3D11Device* device, char* modelFilename);
+	bool Initialize(ID3D11Device* device, char* modelFilename, int textureIndex);
 	void Shutdown();
 	void Render(ID3D11DeviceContext* deviceContext);
 
 	int GetIndexCount();
+	int GetTextureIndex();
 
 	Transform* GetTransform() { return _transform; }
 
@@ -48,7 +49,7 @@ private:
 
 private:
 	ID3D11Buffer *		_vertexBuffer, *_indexBuffer;
-	int					_vertexCount, _indexCount;
+	int					_vertexCount, _indexCount, _textureIndex;
 	ModelType*			_model;
 
 	Transform*			_transform;

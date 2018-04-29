@@ -90,45 +90,48 @@ bool SceneShadows::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth
 	}
 
 	// Initialize the model object.
-	result = _cube->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt");
+	result = _cube->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 	_cube->GetTransform()->SetPosition(-2.0f, 2.0f, 0.0f);
+	_objects.push_back(_cube);
 
 	// Create the model object.
-	_plane = new Object;
+	Object* _plane = new Object;
 	if (!_plane)
 	{
 		return false;
 	}
 
 	// Initialize the model object.
-	result = _plane->Initialize(Direct3D->GetDevice(), "Source/shadows/plane01.txt");
+	result = _plane->Initialize(Direct3D->GetDevice(), "Source/shadows/plane01.txt", 48);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 	_plane->GetTransform()->SetPosition(0.0f, -1.0f, 5.0f);
+	_objects.push_back(_plane);
 
 	// Create the model object.
-	_sphere = new Object;
+	Object* _sphere = new Object;
 	if (!_sphere)
 	{
 		return false;
 	}
 
 	// Initialize the model object.
-	result = _sphere->Initialize(Direct3D->GetDevice(), "Source/shadows/sphere.txt");
+	result = _sphere->Initialize(Direct3D->GetDevice(), "Source/shadows/sphere.txt", 49);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
 	_sphere->GetTransform()->SetPosition(2.0f, 2.0f, -3.0f);
+	_objects.push_back(_sphere);
 
 	// Create the deferred buffers object.
 	_renderTextureBuffer = new RenderTextureBuffer;
@@ -158,13 +161,14 @@ void SceneShadows::Destroy()
 		_renderTextureBuffer = 0;
 	}
 
-	// Release the model object.
-	if (_cube)
+	// Release the models object.
+	for (auto object : _objects)
 	{
-		_cube->Shutdown();
-		delete _cube;
-		_cube = 0;
+		object->Shutdown();
+		delete object;
+		object = 0;
 	}
+	_objects.clear();
 
 	// Release the light object.
 	if (_light)
@@ -200,6 +204,15 @@ bool SceneShadows::Update(DX11Instance * direct3D, Input * input, ShaderManager 
 {
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
+
+	static float rotation = 0.0f;
+	rotation += (float)XM_PI * 0.01f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+
+	_cube->GetTransform()->SetRotation(0, rotation, 0);
 
 	// Render the graphics.
 	bool result = Draw(direct3D, shaderManager);
@@ -251,7 +264,7 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	XMMATRIX lightViewMatrix, lightProjectionMatrix;
 	bool result;
-	XMFLOAT3 objectPosition;
+	XMFLOAT3 objectPosition, objectRotation;
 
 	// Render the scene to the render buffers.
 	result = RenderSceneToTexture(direct3D, shaderManager);
@@ -286,68 +299,26 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	direct3D->TurnZBufferOn();
 
-	///////// CUBE /////////
-
-	direct3D->GetWorldMatrix(worldMatrix);
-
-	// Update the rotation variable each frame.
-	static float rotation = 0.0f;
-	rotation += (float)XM_PI * 0.01f;
-	if (rotation > 360.0f)
+	// Render all objects
+	for (auto object : _objects)
 	{
-		rotation -= 360.0f;
+		direct3D->GetWorldMatrix(worldMatrix);
+
+		objectPosition = object->GetTransform()->GetPositionValue();
+		objectRotation = object->GetTransform()->GetRotationValue();
+
+		// Rotate the world matrix by the rotation value so that the cube will spin.
+		worldMatrix = XMMatrixTranslation(objectPosition.x, objectPosition.y, objectPosition.z) * 
+			XMMatrixRotationX(objectRotation.x) *  XMMatrixRotationY(objectRotation.y) * XMMatrixRotationZ(objectRotation.z);
+
+		// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+		object->Render(direct3D->GetDeviceContext());
+
+		// Render the model using the shadow shader.
+		shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), object->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
+			lightProjectionMatrix, _textureManager->GetTexture(object->GetTextureIndex()), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
+			_light->GetAmbientColor(), _light->GetDiffuseColor());
 	}
-
-	objectPosition = _cube->GetTransform()->GetPositionValue();
-
-	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix = XMMatrixTranslation(objectPosition.x, objectPosition.y, objectPosition.z) * XMMatrixRotationY(rotation);
-
-	// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_cube->Render(direct3D->GetDeviceContext());
-
-	// Render the model using the shadow shader.
-	shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
-		lightProjectionMatrix, _textureManager->GetTexture(47), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
-		_light->GetAmbientColor(), _light->GetDiffuseColor());
-
-	///////// END CUBE /////////
-	///////// SPHERE /////////
-
-	direct3D->GetWorldMatrix(worldMatrix);
-
-	objectPosition = _sphere->GetTransform()->GetPositionValue();
-
-	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix = XMMatrixTranslation(objectPosition.x, objectPosition.y, objectPosition.z);
-
-	// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_sphere->Render(direct3D->GetDeviceContext());
-
-	// Render the model using the shadow shader.
-	shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _sphere->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
-		lightProjectionMatrix, _textureManager->GetTexture(48), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
-		_light->GetAmbientColor(), _light->GetDiffuseColor());
-
-	///////// END SPHERE /////////
-	///////// PLANE /////////
-
-	direct3D->GetWorldMatrix(worldMatrix);
-
-	objectPosition = _plane->GetTransform()->GetPositionValue();
-
-	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix = XMMatrixTranslation(objectPosition.x, objectPosition.y, objectPosition.z);
-
-	// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_plane->Render(direct3D->GetDeviceContext());
-
-	// Render the model using the shadow shader.
-	shaderManager->RenderShadowShader(direct3D->GetDeviceContext(), _plane->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
-		lightProjectionMatrix, _textureManager->GetTexture(49), _renderTextureBuffer->GetShaderResourceView(0), _light->GetTransform()->GetPositionValue(),
-		_light->GetAmbientColor(), _light->GetDiffuseColor());
-
-	///////// END PLANE /////////
 
 	// Present the rendered scene to the screen.
 	direct3D->EndScene();
@@ -358,7 +329,7 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix, lightViewMatrix, lightProjectionMatrix;
-	XMFLOAT3 objectPostion;
+	XMFLOAT3 objectPostion, objectRotation;
 
 	// Set the render buffers to be the render target.
 	_renderTextureBuffer->SetRenderTargets(direct3D->GetDeviceContext());
@@ -380,62 +351,24 @@ bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* s
 	_light->GetViewMatrix(lightViewMatrix);
 	_light->GetProjectionMatrix(lightProjectionMatrix);
 
-	///////// CUBE /////////
-
-	direct3D->GetWorldMatrix(worldMatrix);
-
-	// Update the rotation variable each frame.
-	static float rotation = 0.0f;
-	rotation += (float)XM_PI * 0.01f;
-	if (rotation > 360.0f)
+	// Render all objects
+	for (auto object : _objects)
 	{
-		rotation -= 360.0f;
+		direct3D->GetWorldMatrix(worldMatrix);
+
+		objectPostion = object->GetTransform()->GetPositionValue();
+		objectRotation = object->GetTransform()->GetRotationValue();
+
+		// Rotate the world matrix by the rotation value so that the cube will spin.
+		worldMatrix = XMMatrixTranslation(objectPostion.x, objectPostion.y, objectPostion.z) *
+			XMMatrixRotationX(objectRotation.x) *  XMMatrixRotationY(objectRotation.y) * XMMatrixRotationZ(objectRotation.z);
+
+		// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+		object->Render(direct3D->GetDeviceContext());
+
+		// Render the model using the deferred shader.
+		shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), object->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
 	}
-
-	objectPostion = _cube->GetTransform()->GetPositionValue();
-
-	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix = XMMatrixTranslation(objectPostion.x, objectPostion.y, objectPostion.z) * XMMatrixRotationY(rotation);
-
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_cube->Render(direct3D->GetDeviceContext());
-
-	// Render the model using the deferred shader.
-	shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
-
-	///////// END CUBE /////////
-	///////// SPHERE /////////
-
-	direct3D->GetWorldMatrix(worldMatrix);
-
-	objectPostion = _sphere->GetTransform()->GetPositionValue();
-
-	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix = XMMatrixTranslation(objectPostion.x, objectPostion.y, objectPostion.z);
-
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_sphere->Render(direct3D->GetDeviceContext());
-
-	// Render the model using the deferred shader.
-	shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), _sphere->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
-
-	///////// END SPHERE /////////
-	///////// PLANE /////////
-
-	direct3D->GetWorldMatrix(worldMatrix);
-
-	objectPostion = _plane->GetTransform()->GetPositionValue();
-
-	// Rotate the world matrix by the rotation value so that the cube will spin.
-	worldMatrix = XMMatrixTranslation(objectPostion.x, objectPostion.y, objectPostion.z);
-
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	_plane->Render(direct3D->GetDeviceContext());
-
-	// Render the model using the deferred shader.
-	shaderManager->RenderDepthShader(direct3D->GetDeviceContext(), _plane->GetIndexCount(), worldMatrix, lightViewMatrix, lightProjectionMatrix);
-
-	///////// END PLANE /////////
 
 	// Reset the render target back to the original back buffer and not the render buffers anymore.
 	direct3D->SetBackBufferRenderTarget();

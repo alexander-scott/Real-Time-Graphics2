@@ -10,7 +10,7 @@ enum Scene
 	eSceneShadows
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneCombined;
+const Scene CURRENT_SCENE = Scene::eSceneShadows;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

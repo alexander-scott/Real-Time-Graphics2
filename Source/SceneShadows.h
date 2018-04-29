@@ -4,6 +4,8 @@
 
 #include "RenderTextureBuffer.h"
 
+#include <vector>
+
 class SceneShadows : public IScene
 {
 public:
@@ -19,6 +21,8 @@ private:
 	bool RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager);
 
 	Light*					_light;
-	Object*					_cube, *_plane, *_sphere;
 	RenderTextureBuffer*	_renderTextureBuffer;
+
+	std::vector<Object*>	_objects;
+	Object*					_cube;
 };

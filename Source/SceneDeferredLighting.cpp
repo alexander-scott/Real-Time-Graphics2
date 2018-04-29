@@ -77,7 +77,7 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 	}
 
 	// Initialize the model object.
-	result = _cube->Initialize(Direct3D->GetDevice(), "Source/skydome/cube.txt");
+	result = _cube->Initialize(Direct3D->GetDevice(), "Source/skydome/cube.txt", 47);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -300,7 +300,7 @@ bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderM
 	_cube->Render(direct3D->GetDeviceContext());
 
 	// Render the model using the deferred shader.
-	shaderManager->RenderDeferredShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(47));
+	shaderManager->RenderDeferredShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(_cube->GetTextureIndex()));
 
 	// Reset the render target back to the original back buffer and not the render buffers anymore.
 	direct3D->SetBackBufferRenderTarget();

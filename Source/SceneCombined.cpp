@@ -144,7 +144,7 @@ bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	}
 
 	// Initialize the model object.
-	result = _cube->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt");
+	result = _cube->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
@@ -452,7 +452,7 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 	// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	_cube->Render(direct3D->GetDeviceContext());
 
-	shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(47));
+	shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(_cube->GetTextureIndex()));
 
 	// Present the rendered scene to the screen.
 	direct3D->EndScene();

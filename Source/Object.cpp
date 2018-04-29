@@ -11,7 +11,7 @@ Object::~Object()
 {
 }
 
-bool Object::Initialize(ID3D11Device* device, char* modelFilename)
+bool Object::Initialize(ID3D11Device* device, char* modelFilename, int textureIndex)
 {
 	bool result;
 
@@ -30,6 +30,7 @@ bool Object::Initialize(ID3D11Device* device, char* modelFilename)
 	}
 
 	_transform = new Transform;
+	_textureIndex = textureIndex;
 
 	return true;
 }
@@ -56,6 +57,11 @@ void Object::Render(ID3D11DeviceContext* deviceContext)
 int Object::GetIndexCount()
 {
 	return _indexCount;
+}
+
+int Object::GetTextureIndex()
+{
+	return _textureIndex;
 }
 
 bool Object::InitializeBuffers(ID3D11Device* device)
