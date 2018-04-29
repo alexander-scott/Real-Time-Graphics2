@@ -22,9 +22,6 @@
     <ClCompile Include="Source\Terrain.cpp">
       <Filter>Application\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Application\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Application\Components</Filter>
     </ClCompile>
@@ -36,9 +33,6 @@
     </ClCompile>
     <ClCompile Include="Source\Frustum.cpp">
       <Filter>Application\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Light.cpp">
-      <Filter>Application\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneTerrainLOD.cpp">
       <Filter>Scenes</Filter>
@@ -127,6 +121,12 @@
     <ClCompile Include="Source\FastNoise.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Application\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>Application\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -147,9 +147,6 @@
     <ClInclude Include="Source\Terrain.h">
       <Filter>Application\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Application\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Transform.h">
       <Filter>Application\Components</Filter>
     </ClInclude>
@@ -161,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="Source\Frustum.h">
       <Filter>Application\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Application\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\IScene.h">
       <Filter>Application</Filter>
@@ -257,6 +251,12 @@
     </ClInclude>
     <ClInclude Include="Source\FastNoise.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Application\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Application\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

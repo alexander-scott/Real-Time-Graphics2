@@ -107,9 +107,9 @@ private:
 	float GetSquareAverage(std::vector< float > &vector, int i, int j, int step, float randomRange, float smoothingValue);
 	float Fit(float x);
 
-	void OffsetCell(int x, int y, float value);
-	void SetCell(int x, int y, float value);
-	float GetCell(int x, int y);
+	void OffsetCell(int x, int z, float value);
+	void SetCell(int x, int z, float value);
+	float GetCell(int x, int z);
 
 private:
 	int					_vertexCount, _indexCount;

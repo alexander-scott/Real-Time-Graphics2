@@ -512,82 +512,69 @@ void ProceduralTerrain::CircleHillAlgorithm()
 		AddHill();
 	}
 
-	// now clean it up
 	NormalizeHillMap();
 	FlattenHillMap();
 }
 
 void ProceduralTerrain::AddHill()
 {
-	// pick a size for the hill
-	float fRadius = RandomRange(HILL_MIN, HILL_MAX);
+	float radius = RandomRange(HILL_MIN, HILL_MAX);
 
-	// pick a centerpoint for the hill
-	float x, y;
+	float xPos, zPos;
 	if (ISLAND)
 	{
-		// island code:
+		float direction = RandomRange(0, XM_2PI);
 
-		float fTheta = RandomRange(0, 6.28);
-		// this determines in which direction from the center of the map the
-		// hill will be placed.
+		// This is the hill's distance from the centre of the map
+		float distance = RandomRange(radius / 2, _terrainWidth / 2 - radius);
 
-		float fDistance = RandomRange(fRadius / 2, _terrainWidth / 2 - fRadius);
-		// this is how far from the center of the map the hill be placed. note
-		// that the radius of the hill is subtracted from the range to prevent
-		// any part of a hill from reaching the very edge of the map.
-
-		x = _terrainWidth / 2.0 + cos(fTheta) * fDistance;
-		y = _terrainHeight / 2.0 + sin(fTheta) * fDistance;
-		// converts theta and a distance into x and y coordinates.
+		xPos = _terrainWidth / 2.0 + cos(direction) * distance;
+		zPos = _terrainHeight / 2.0 + sin(direction) * distance;
 	}
 	else
 	{
-		// non-island code:
-
-		x = RandomRange(-fRadius, _terrainWidth + fRadius);
-		y = RandomRange(-fRadius, _terrainHeight + fRadius);
-		// note that the range of the hill is used to determine the
-		// centerpoint. this allows hills to have their centerpoint off the
-		// edge of the terrain as long as part of the hill is in bounds. this
-		// makes the terrains appear continuous all the way to the edge of the
-		// map.
+		// Get a random position for the hill
+		xPos = RandomRange(-radius, _terrainWidth + radius);
+		zPos = RandomRange(-radius, _terrainHeight + radius);
 	}
 
-	// square the hill radius so we don't have to square root the distance 
-	float fRadiusSq = fRadius * fRadius;
-	float fDistSq;
-	float fHeight;
+	// Square the hill radius so we don't have to square root the distance 
+	float radiusSquared = radius * radius;
+	float distSquared;
+	float height;
 
-	// find the range of cells affected by this hill
-	int xMin = x - fRadius - 1;
-	int xMax = x + fRadius + 1;
-	// don't affect cell outside of bounds
-	if (xMin < 0) xMin = 0;
-	if (xMax >= _terrainWidth) xMax = _terrainWidth - 1;
+	// Find the range of cells affected by this hill
+	int xMin = xPos - radius - 1;
+	int xMax = xPos + radius + 1;
+	int zMin = zPos - radius - 1;
+	int zMax = zPos + radius + 1;
 
-	int yMin = y - fRadius - 1;
-	int yMax = y + fRadius + 1;
-	// don't affect cell outside of bounds
-	if (yMin < 0) yMin = 0;
-	if (yMax >= _terrainHeight) yMax = _terrainHeight - 1;
+	// Don't affect cell outside of bounds
+	if (xMin < 0) 
+		xMin = 0;
+	if (xMax >= _terrainWidth) 
+		xMax = _terrainWidth - 1;
+	if (zMin < 0) 
+		zMin = 0;
+	if (zMax >= _terrainHeight) 
+		zMax = _terrainHeight - 1;
 
 	// for each affected cell, determine the height of the hill at that point
 	// and add it to that cell
-	for (int h = xMin; h <= xMax; ++h)
+	for (int x = xMin; x <= xMax; ++x)
 	{
-		for (int v = yMin; v <= yMax; ++v)
+		for (int z = zMin; z <= zMax; ++z)
 		{
 			// determine how far from the center of the hill this point is
-			fDistSq = (x - h) * (x - h) + (y - v) * (y - v);
+			distSquared = (xPos - x) * (xPos - x) + (zPos - z) * (zPos - z);
 			// determine the height of the hill at this point
-			fHeight = fRadiusSq - fDistSq;
+			height = radiusSquared - distSquared;
 
 			// don't add negative hill values (i.e. outside the hill's radius)
-			if (fHeight > 0)
+			if (height > 0)
 			{
 				// add the height of this hill to the cell
-				OffsetCell(h, v, fHeight);
+				OffsetCell(x, z, height);
 			}
 		}
 	}
@@ -595,29 +582,29 @@ void ProceduralTerrain::AddHill()
 
 void ProceduralTerrain::NormalizeHillMap()
 {
-	float fMin = GetCell(0, 0);
-	float fMax = GetCell(0, 0);
+	float min = GetCell(0, 0);
+	float max = GetCell(0, 0);
 
 	// find the min and max
 	for (int x = 0; x < _terrainWidth; ++x)
 	{
-		for (int y = 0; y < _terrainHeight; ++y)
+		for (int z = 0; z < _terrainHeight; ++z)
 		{
-			float z = GetCell(x, y);
-			if (z < fMin) fMin = z;
-			if (z > fMax) fMax = z;
+			float h = GetCell(x, z);
+			if (h < min) min = h;
+			if (h > max) max = h;
 		}
 	}
 
 	// avoiding divide by zero (unlikely with floats, but just in case)
-	if (fMax != fMin)
+	if (max != min)
 	{
 		// divide every height by the maximum to normalize to ( 0.0, 1.0 )
-		for (int x = 0; x < _terrainHeight; ++x)
+		for (int x = 0; x < _terrainWidth; ++x)
 		{
-			for (int y = 0; y < _terrainWidth; ++y)
+			for (int z = 0; z < _terrainHeight; ++z)
 			{
-				SetCell(x, y, (GetCell(x, y) - fMin) / (fMax - fMin));
+				SetCell(x, z, (GetCell(x, z) - min) / (max - min));
 			}
 		}
 	}
@@ -625,31 +612,29 @@ void ProceduralTerrain::NormalizeHillMap()
 	{
 		// if the min and max are the same, then the terrain has no height, so just clear it
 		// to 0.0.
-		float f = 0;
+		throw std::exception("MIN AND MAX ARE THE SAME!?!?!?");
 	}
 }
 
 void ProceduralTerrain::FlattenHillMap()
 {
-	// if flattening is one, then nothing would be changed, so just skip the
-	// process altogether.
 	if (FLATTENING > 1)
 	{
 		for (int x = 0; x < _terrainWidth; ++x)
 		{
-			for (int y = 0; y < _terrainHeight; ++y)
+			for (int z = 0; z < _terrainHeight; ++z)
 			{
-				float fFlat = 1.0;
-				float fOriginal = GetCell(x, y);
+				float flat = 1.0;
+				float original = GetCell(x, z);
 
 				// flatten as many times as desired
 				for (int i = 0; i < 1; ++i)
 				{
-					fFlat *= fOriginal;
+					flat *= original;
 				}
 
 				// put it back into the cell
-				SetCell(x, y, fFlat * 50000);
+				SetCell(x, z, flat * 50000);
 			}
 		}
 	}
@@ -1472,17 +1457,17 @@ float ProceduralTerrain::Fit(float x)
 	return x;
 }
 
-void ProceduralTerrain::OffsetCell(int x, int y, float value)
+void ProceduralTerrain::OffsetCell(int x, int z, float value)
 {
-	_heightMap[x + (y * _terrainHeight)].Y += value;
+	_heightMap[x + (z * _terrainHeight)].Y += value;
 }
 
-void ProceduralTerrain::SetCell(int x, int y, float value)
+void ProceduralTerrain::SetCell(int x, int z, float value)
 {
-	_heightMap[x + (y * _terrainHeight)].Y = value;
+	_heightMap[x + (z * _terrainHeight)].Y = value;
 }
 
-float ProceduralTerrain::GetCell(int x, int y)
+float ProceduralTerrain::GetCell(int x, int z)
 {
-	return(_heightMap[x + (y * _terrainHeight)].Y);
+	return(_heightMap[x + (z * _terrainHeight)].Y);
 }

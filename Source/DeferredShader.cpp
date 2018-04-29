@@ -6,10 +6,6 @@ DeferredShader::DeferredShader()
 	_lightBuffer = nullptr;
 }
 
-DeferredShader::DeferredShader(const DeferredShader & other)
-{
-}
-
 DeferredShader::~DeferredShader()
 {
 }

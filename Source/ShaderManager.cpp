@@ -237,9 +237,9 @@ bool ShaderManager::RenderDeferredLightShader(ID3D11DeviceContext* deviceContext
 	return _deferredLightShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix, colourTexture, normalTexture, lightDirection);
 }
 
-bool ShaderManager::RenderDepthShader(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+bool ShaderManager::RenderDepthShader(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX lightViewMatrix, XMMATRIX lightProjectionMatrix)
 {
-	return _depthShader->Render(deviceContext, indexCount, worldMatrix, viewMatrix, projectionMatrix);
+	return _depthShader->Render(deviceContext, indexCount, worldMatrix, lightViewMatrix, lightProjectionMatrix);
 }
 
 bool ShaderManager::RenderShadowShader(ID3D11DeviceContext * deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 

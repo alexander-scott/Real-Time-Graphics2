@@ -21,7 +21,6 @@ private:
 
 public:
 	DeferredLightShader();
-	DeferredLightShader(const DeferredLightShader&);
 	~DeferredLightShader();
 
 	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, ID3D11ShaderResourceView*, XMFLOAT3);
