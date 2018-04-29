@@ -22,7 +22,6 @@ private:
 
 public:
 	LightShader();
-	LightShader(const LightShader&);
 	~LightShader();
 
 	bool Render(ID3D11DeviceContext*, int, XMMATRIX, XMMATRIX, XMMATRIX, ID3D11ShaderResourceView*, XMFLOAT3, XMFLOAT4);

@@ -77,10 +77,16 @@ public:
 
 private:
 	bool LoadSetupFile(char* filename);
-
 	bool ProcGenHeightMap();
+
 	void DiamondSquareAlgorithm(float cornerHeight, float randomRange, float heightScalar);
+
 	void FaultLineAlgorithm();
+
+	void CircleHillAlgorithm();
+	void AddHill();
+	void NormalizeHillMap();
+	void FlattenHillMap();
 
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();
@@ -100,6 +106,10 @@ private:
 	float RandomRange(float min, float max);
 	float GetSquareAverage(std::vector< float > &vector, int i, int j, int step, float randomRange, float smoothingValue);
 	float Fit(float x);
+
+	void OffsetCell(int x, int y, float value);
+	void SetCell(int x, int y, float value);
+	float GetCell(int x, int y);
 
 private:
 	int					_vertexCount, _indexCount;

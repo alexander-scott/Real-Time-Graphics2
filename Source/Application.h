@@ -11,7 +11,7 @@ enum Scene
 	eSceneShadows
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneVoxelTerrain;
+const Scene CURRENT_SCENE = Scene::eSceneTerrainGeneration;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

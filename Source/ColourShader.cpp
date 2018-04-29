@@ -5,10 +5,6 @@ ColourShader::ColourShader() : IShader()
 
 }
 
-ColourShader::ColourShader(const ColourShader& other)
-{
-}
-
 ColourShader::~ColourShader()
 {
 }

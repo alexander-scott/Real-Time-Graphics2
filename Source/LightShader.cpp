@@ -6,10 +6,6 @@ LightShader::LightShader()
 	_lightBuffer = nullptr;
 }
 
-LightShader::LightShader(const LightShader & other)
-{
-}
-
 LightShader::~LightShader()
 {
 }

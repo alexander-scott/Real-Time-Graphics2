@@ -5,6 +5,15 @@
 
 #include <random>
 
+const unsigned int SEED = 12345;
+
+const int HILL_COUNT = 2000;
+const float HILL_MIN = 5.0F;
+const float HILL_MAX = 100.0f;
+const float HILL_HEIGHT_SCALE = 50000.0f;
+const int FLATTENING = 5;
+const bool ISLAND = false;
+
 ProceduralTerrain::ProceduralTerrain()
 {
 	_terrainFilename = nullptr;
@@ -318,12 +327,11 @@ bool ProceduralTerrain::ProcGenHeightMap()
 	}
 
 	/* initialize random seed: */
-	srand((unsigned int)time(NULL));
+	srand(SEED);
 
 	//DiamondSquareAlgorithm(1000.0f, 300.0f, 5.0f);
-	FaultLineAlgorithm();
-	
-	//DiamondSquareAlgorithm(0, 0, _terrainWidth, _terrainHeight, 100.0f, (_terrainWidth * _terrainHeight) - 1);
+	//FaultLineAlgorithm();
+	CircleHillAlgorithm();
 
 	return true;
 }
@@ -480,6 +488,168 @@ void ProceduralTerrain::FaultLineAlgorithm()
 					_heightMap[index].Y += displacement;
 				else
 					_heightMap[index].Y -= displacement;
+			}
+		}
+	}
+}
+
+void ProceduralTerrain::CircleHillAlgorithm()
+{
+	int index = 0;
+	for (int j = 0; j < _terrainHeight; j++)
+	{
+		for (int i = 0; i < _terrainWidth; i++)
+		{
+			// Get current index
+			index = (_terrainHeight * j) + i;
+			_heightMap[index].Y = 0;
+		}
+	}
+
+	// add as many hills as needed
+	for (int i = 0; i < HILL_COUNT; ++i)
+	{
+		AddHill();
+	}
+
+	// now clean it up
+	NormalizeHillMap();
+	FlattenHillMap();
+}
+
+void ProceduralTerrain::AddHill()
+{
+	// pick a size for the hill
+	float fRadius = RandomRange(HILL_MIN, HILL_MAX);
+
+	// pick a centerpoint for the hill
+	float x, y;
+	if (ISLAND)
+	{
+		// island code:
+
+		float fTheta = RandomRange(0, 6.28);
+		// this determines in which direction from the center of the map the
+		// hill will be placed.
+
+		float fDistance = RandomRange(fRadius / 2, _terrainWidth / 2 - fRadius);
+		// this is how far from the center of the map the hill be placed. note
+		// that the radius of the hill is subtracted from the range to prevent
+		// any part of a hill from reaching the very edge of the map.
+
+		x = _terrainWidth / 2.0 + cos(fTheta) * fDistance;
+		y = _terrainHeight / 2.0 + sin(fTheta) * fDistance;
+		// converts theta and a distance into x and y coordinates.
+	}
+	else
+	{
+		// non-island code:
+
+		x = RandomRange(-fRadius, _terrainWidth + fRadius);
+		y = RandomRange(-fRadius, _terrainHeight + fRadius);
+		// note that the range of the hill is used to determine the
+		// centerpoint. this allows hills to have their centerpoint off the
+		// edge of the terrain as long as part of the hill is in bounds. this
+		// makes the terrains appear continuous all the way to the edge of the
+		// map.
+	}
+
+	// square the hill radius so we don't have to square root the distance 
+	float fRadiusSq = fRadius * fRadius;
+	float fDistSq;
+	float fHeight;
+
+	// find the range of cells affected by this hill
+	int xMin = x - fRadius - 1;
+	int xMax = x + fRadius + 1;
+	// don't affect cell outside of bounds
+	if (xMin < 0) xMin = 0;
+	if (xMax >= _terrainWidth) xMax = _terrainWidth - 1;
+
+	int yMin = y - fRadius - 1;
+	int yMax = y + fRadius + 1;
+	// don't affect cell outside of bounds
+	if (yMin < 0) yMin = 0;
+	if (yMax >= _terrainHeight) yMax = _terrainHeight - 1;
+
+	// for each affected cell, determine the height of the hill at that point
+	// and add it to that cell
+	for (int h = xMin; h <= xMax; ++h)
+	{
+		for (int v = yMin; v <= yMax; ++v)
+		{
+			// determine how far from the center of the hill this point is
+			fDistSq = (x - h) * (x - h) + (y - v) * (y - v);
+			// determine the height of the hill at this point
+			fHeight = fRadiusSq - fDistSq;
+
+			// don't add negative hill values (i.e. outside the hill's radius)
+			if (fHeight > 0)
+			{
+				// add the height of this hill to the cell
+				OffsetCell(h, v, fHeight);
+			}
+		}
+	}
+}
+
+void ProceduralTerrain::NormalizeHillMap()
+{
+	float fMin = GetCell(0, 0);
+	float fMax = GetCell(0, 0);
+
+	// find the min and max
+	for (int x = 0; x < _terrainWidth; ++x)
+	{
+		for (int y = 0; y < _terrainHeight; ++y)
+		{
+			float z = GetCell(x, y);
+			if (z < fMin) fMin = z;
+			if (z > fMax) fMax = z;
+		}
+	}
+
+	// avoiding divide by zero (unlikely with floats, but just in case)
+	if (fMax != fMin)
+	{
+		// divide every height by the maximum to normalize to ( 0.0, 1.0 )
+		for (int x = 0; x < _terrainHeight; ++x)
+		{
+			for (int y = 0; y < _terrainWidth; ++y)
+			{
+				SetCell(x, y, (GetCell(x, y) - fMin) / (fMax - fMin));
+			}
+		}
+	}
+	else
+	{
+		// if the min and max are the same, then the terrain has no height, so just clear it
+		// to 0.0.
+		float f = 0;
+	}
+}
+
+void ProceduralTerrain::FlattenHillMap()
+{
+	// if flattening is one, then nothing would be changed, so just skip the
+	// process altogether.
+	if (FLATTENING > 1)
+	{
+		for (int x = 0; x < _terrainWidth; ++x)
+		{
+			for (int y = 0; y < _terrainHeight; ++y)
+			{
+				float fFlat = 1.0;
+				float fOriginal = GetCell(x, y);
+
+				// flatten as many times as desired
+				for (int i = 0; i < 1; ++i)
+				{
+					fFlat *= fOriginal;
+				}
+
+				// put it back into the cell
+				SetCell(x, y, fFlat * 50000);
 			}
 		}
 	}
@@ -1300,4 +1470,19 @@ float ProceduralTerrain::Fit(float x)
 		x = 0;
 
 	return x;
+}
+
+void ProceduralTerrain::OffsetCell(int x, int y, float value)
+{
+	_heightMap[x + (y * _terrainHeight)].Y += value;
+}
+
+void ProceduralTerrain::SetCell(int x, int y, float value)
+{
+	_heightMap[x + (y * _terrainHeight)].Y = value;
+}
+
+float ProceduralTerrain::GetCell(int x, int y)
+{
+	return(_heightMap[x + (y * _terrainHeight)].Y);
 }
