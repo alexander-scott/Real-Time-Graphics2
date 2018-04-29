@@ -202,7 +202,7 @@ bool SceneShadows::Update(DX11Instance * direct3D, Input * input, ShaderManager 
 	ProcessInput(input, frameTime);
 
 	// Render the graphics.
-	bool result = Draw(direct3D, shaderManager, _textureManager);
+	bool result = Draw(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -246,7 +246,7 @@ void SceneShadows::ProcessInput(Input * input, float frameTime)
 	return;
 }
 
-bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	XMMATRIX lightViewMatrix, lightProjectionMatrix;
@@ -254,7 +254,7 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 	XMFLOAT3 objectPosition;
 
 	// Render the scene to the render buffers.
-	result = RenderSceneToTexture(direct3D, shaderManager, textureManager);
+	result = RenderSceneToTexture(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -355,7 +355,7 @@ bool SceneShadows::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, Te
 	return true;
 }
 
-bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneShadows::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix, lightViewMatrix, lightProjectionMatrix;
 	XMFLOAT3 objectPostion;

@@ -17,8 +17,8 @@ public:
 
 private:
 	void ProcessInput(Input*, float) override;
-	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
-	bool RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager);
+	bool Draw(DX11Instance*, ShaderManager*) override;
+	bool RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager);
 
 	Light*					_light;
 	Object*					_cube, *_plane, *_sphere;

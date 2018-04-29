@@ -14,7 +14,7 @@ public:
 
 private:
 	void ProcessInput(Input*, float) override;
-	bool Draw(DX11Instance*, ShaderManager*, TextureManager*) override;
+	bool Draw(DX11Instance*, ShaderManager*) override;
 
 	Skeleton* _skeleton;
 };

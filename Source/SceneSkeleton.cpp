@@ -108,7 +108,7 @@ bool SceneSkeleton::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 	_skeleton->Update(direct3D->GetDeviceContext(), frameTime);
 
 	// Render the graphics.
-	bool result = Draw(direct3D, shaderManager, _textureManager);
+	bool result = Draw(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -152,7 +152,7 @@ void SceneSkeleton::ProcessInput(Input* input, float frameTime)
 	return;
 }
 
-bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -198,7 +198,7 @@ bool SceneSkeleton::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	{
 		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
 		//result = shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix);
-		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
+		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(10 + i));
 
 		if (!result)
 		{

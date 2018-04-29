@@ -1,4 +1,6 @@
-enum Scene 
+#pragma once
+
+enum Scene
 {
 	eSceneCombined,
 	eSceneTerrainLOD,
@@ -8,7 +10,7 @@ enum Scene
 	eSceneShadows
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneShadows;
+const Scene CURRENT_SCENE = Scene::eSceneCombined;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

@@ -203,7 +203,7 @@ bool SceneTerrainGeneration::Update(DX11Instance* direct3D, Input* input, Shader
 	}
 
 	// Render the graphics.
-	result = Draw(direct3D, shaderManager, _textureManager);
+	result = Draw(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -265,7 +265,7 @@ void SceneTerrainGeneration::ProcessInput(Input* Input, float frameTime)
 	return;
 }
 
-bool SceneTerrainGeneration::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneTerrainGeneration::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -328,7 +328,7 @@ bool SceneTerrainGeneration::Draw(DX11Instance* direct3D, ShaderManager* shaderM
 		{
 			// Render the cell buffers using the terrain shader.
 			result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetCellIndexCount(i), worldMatrix, viewMatrix,
-				projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1), textureManager->GetTexture(2), textureManager->GetTexture(3),
+				projectionMatrix, _textureManager->GetTexture(0), _textureManager->GetTexture(1), _textureManager->GetTexture(2), _textureManager->GetTexture(3),
 				_light->GetTransform()->GetRotationValue(), _light->GetDiffuseColor());
 			if (!result)
 			{

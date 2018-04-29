@@ -29,7 +29,7 @@ public:
 
 protected:
 	virtual void ProcessInput(Input* Input, float frameTime) = 0;
-	virtual bool Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager) = 0;
+	virtual bool Draw(DX11Instance* direct3D, ShaderManager* shaderManager) = 0;
 
 protected:
 	TextureManager* _textureManager;

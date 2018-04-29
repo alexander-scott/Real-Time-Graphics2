@@ -27,7 +27,7 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 		return false;
 	}
 
-	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/skydome/seafloor.dds", 47);
+	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/shadows/metal001.dds", 47);
 	if (!result)
 	{
 		return false;
@@ -179,7 +179,7 @@ bool SceneDeferredLighting::Update(DX11Instance * direct3D, Input * input, Shade
 	ProcessInput(input, frameTime);
 
 	// Render the graphics.
-	bool result = Draw(direct3D, shaderManager, _textureManager);
+	bool result = Draw(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -223,14 +223,13 @@ void SceneDeferredLighting::ProcessInput(Input * input, float frameTime)
 	return;
 }
 
-bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
-	XMFLOAT3 cameraPosition, cubePosition;
 
 	// Render the scene to the render buffers.
-	result = RenderSceneToTexture(direct3D, shaderManager, textureManager);
+	result = RenderSceneToTexture(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -266,7 +265,7 @@ bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderMa
 	return true;
 }
 
-bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 
@@ -301,7 +300,7 @@ bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderM
 	_cube->Render(direct3D->GetDeviceContext());
 
 	// Render the model using the deferred shader.
-	shaderManager->RenderDeferredShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(47));
+	shaderManager->RenderDeferredShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(47));
 
 	// Reset the render target back to the original back buffer and not the render buffers anymore.
 	direct3D->SetBackBufferRenderTarget();

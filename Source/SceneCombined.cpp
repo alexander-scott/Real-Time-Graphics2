@@ -237,7 +237,7 @@ bool SceneCombined::Update(DX11Instance* direct3D, Input* input, ShaderManager* 
 	}
 
 	// Render the graphics.
-	result = Draw(direct3D, shaderManager, _textureManager);
+	result = Draw(direct3D, shaderManager);
 	if (!result)
 	{
 		return false;
@@ -299,7 +299,7 @@ void SceneCombined::ProcessInput(Input* Input, float frameTime)
 	return;
 }
 
-bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, TextureManager* textureManager)
+bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -368,7 +368,7 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 		{
 			// Render the cell buffers using the terrain shader.
 			result = shaderManager->RenderTerrainShader(direct3D->GetDeviceContext(), _terrain->GetCellIndexCount(i), worldMatrix, viewMatrix,
-				projectionMatrix, textureManager->GetTexture(0), textureManager->GetTexture(1), textureManager->GetTexture(2), textureManager->GetTexture(3),
+				projectionMatrix, _textureManager->GetTexture(0), _textureManager->GetTexture(1), _textureManager->GetTexture(2), _textureManager->GetTexture(3),
 				_light->GetTransform()->GetRotationValue(), _light->GetDiffuseColor());
 			if (!result)
 			{
@@ -403,7 +403,7 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager, T
 	for (int i = 0; i < _skeleton->GetSubsetCount(); i++)
 	{
 		_skeleton->DrawSubset(direct3D->GetDeviceContext(), i);
-		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, textureManager->GetTexture(10 + i));
+		result = shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _skeleton->GetIndexCount(i), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(10 + i));
 		if (!result)
 		{
 			return false;

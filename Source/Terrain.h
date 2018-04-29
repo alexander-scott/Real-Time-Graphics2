@@ -77,7 +77,6 @@ public:
 
 private:
 	bool LoadSetupFile(char* filename);
-	bool LoadBitmapHeightMap();
 	bool LoadRawHeightMap();
 
 	void DestroyHeightMap();
