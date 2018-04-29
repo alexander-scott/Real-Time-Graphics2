@@ -47,6 +47,12 @@ bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 		return false;
 	}
 
+	result = _textureManager->LoadJPEGTexture(Direct3D->GetDevice(), Direct3D->GetDeviceContext(), L"Source/shadows/wall01.dds", 47);
+	if (!result)
+	{
+		return false;
+	}
+
 	// Create the camera object.
 	_camera = new Camera;
 	if (!_camera)
@@ -71,7 +77,11 @@ bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 
 	// Initialize the light object.
 	_light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	_light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 	_light->SetDirection(-0.5f, -1.0f, -0.5f);
+	_light->SetLookAt(0.0f, 0.0f, 0.0f);
+	_light->GetTransform()->SetPosition(0.0f, 100.0f, 0.0f);
+	_light->GenerateProjectionMatrix(screenDepth, 1.0f);
 
 	// Create the frustum object.
 	_frustum = new Frustum;
@@ -126,6 +136,22 @@ bool SceneCombined::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidt
 	_skeleton->GetTransform()->SetRotation(XMFLOAT3(0, 0, 0));
 	_skeleton->GetTransform()->SetScale(XMFLOAT3(0.1f, 0.1f, 0.1f));
 
+	// Create the model object.
+	_cube = new Object;
+	if (!_cube)
+	{
+		return false;
+	}
+
+	// Initialize the model object.
+	result = _cube->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+		return false;
+	}
+	_cube->GetTransform()->SetPosition(XMFLOAT3(128.0f, 20.0f, 500.0f));
+
 	// Set wire frame rendering initially to disabled.
 	_wireFrame = false;
 
@@ -176,6 +202,14 @@ void SceneCombined::Destroy()
 	{
 		delete _skeleton;
 		_skeleton = 0;
+	}
+
+	// Release the model object.
+	if (_cube)
+	{
+		_cube->Shutdown();
+		delete _cube;
+		_cube = 0;
 	}
 
 	// Release the light object.
@@ -305,6 +339,7 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 	bool result;
 	XMFLOAT3 cameraPosition;
 	XMFLOAT3 skeletonPosition, skeletonRotation, skeletonScale;
+	XMFLOAT3 cubePosition;
 
 	// Generate the View matrix based on the camera's Position.
 	_camera->Render();
@@ -409,6 +444,15 @@ bool SceneCombined::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 			return false;
 		}
 	}
+
+	cubePosition = _cube->GetTransform()->GetPositionValue();
+
+	worldMatrix = XMMatrixTranslation(cubePosition.x, cubePosition.y, cubePosition.z);
+
+	// Put the cube model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	_cube->Render(direct3D->GetDeviceContext());
+
+	shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _cube->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(47));
 
 	// Present the rendered scene to the screen.
 	direct3D->EndScene();

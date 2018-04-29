@@ -11,6 +11,7 @@
 #include "SkyDome.h"
 #include "Terrain.h"
 #include "Skeleton.h"
+#include "Object.h"
 
 class IScene
 {

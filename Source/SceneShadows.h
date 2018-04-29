@@ -2,8 +2,6 @@
 
 #include "IScene.h"
 
-#include "Object.h"
-#include "OrthoWindow.h"
 #include "RenderTextureBuffer.h"
 
 class SceneShadows : public IScene
