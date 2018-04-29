@@ -287,13 +287,44 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 
 	_voxel->Render(direct3D->GetDeviceContext());
 
+	bool lDefault = false;
+
 	for (int x = 0; x < TERRAIN_SIZE; x++)
 	{
 		for (int y = 0; y < TERRAIN_SIZE; y++)
 		{
 			for (int z = 0; z < TERRAIN_SIZE; z++)
 			{
-				if (_terrain[x][y][z] == 1)
+				if (_terrain[x][y][z] == 0)
+				{
+					continue;
+				}
+
+				bool lXNegative = lDefault;
+				if (x > 0)
+					lXNegative = _terrain[x - 1][y][z] == 1;
+
+				bool lXPositive = lDefault;
+				if (x < TERRAIN_SIZE - 1)
+					lXPositive = _terrain[x + 1][y][z] == 1;
+
+				bool lYNegative = lDefault;
+				if (y > 0)
+					lYNegative = _terrain[x][y - 1][z] == 1;
+
+				bool lYPositive = lDefault;
+				if (y < TERRAIN_SIZE - 1)
+					lYPositive = _terrain[x][y + 1][z] == 1;
+
+				bool lZNegative = lDefault;
+				if (z > 0)
+					lZNegative = _terrain[x][y][z - 1] == 1;
+
+				bool lZPositive = lDefault;
+				if (z < TERRAIN_SIZE - 1)
+					lZPositive = _terrain[x][y][z + 1] == 1;
+
+				if (!lZPositive || !lZNegative || !lYPositive || !lYNegative || !lXPositive || !lXNegative)
 				{
 					direct3D->GetWorldMatrix(worldMatrix);
 					worldMatrix *= XMMatrixTranslation(x, y, z);
@@ -340,13 +371,44 @@ bool SceneVoxelTerrain::RenderSceneToTexture(DX11Instance* direct3D, ShaderManag
 
 	_voxel->Render(direct3D->GetDeviceContext());
 
+	bool lDefault = false;
+
 	for (int x = 0; x < TERRAIN_SIZE; x++)
 	{
 		for (int y = 0; y < TERRAIN_SIZE; y++)
 		{
 			for (int z = 0; z < TERRAIN_SIZE; z++)
 			{
-				if (_terrain[x][y][z] == 1)
+				if (_terrain[x][y][z] == 0)
+				{
+					continue;
+				}
+
+				bool lXNegative = lDefault;
+				if (x > 0)
+					lXNegative = _terrain[x - 1][y][z] == 1;
+
+				bool lXPositive = lDefault;
+				if (x < TERRAIN_SIZE - 1)
+					lXPositive = _terrain[x + 1][y][z] == 1;
+
+				bool lYNegative = lDefault;
+				if (y > 0)
+					lYNegative = _terrain[x][y - 1][z] == 1;
+
+				bool lYPositive = lDefault;
+				if (y < TERRAIN_SIZE - 1)
+					lYPositive = _terrain[x][y + 1][z] == 1;
+
+				bool lZNegative = lDefault;
+				if (z > 0)
+					lZNegative = _terrain[x][y][z - 1] == 1;
+
+				bool lZPositive = lDefault;
+				if (z < TERRAIN_SIZE - 1)
+					lZPositive = _terrain[x][y][z + 1] == 1;
+
+				if (!lZPositive || !lZNegative || !lYPositive || !lYNegative || !lXPositive || !lXNegative)
 				{
 					direct3D->GetWorldMatrix(worldMatrix);
 					worldMatrix *= XMMatrixTranslation(x, y, z);
