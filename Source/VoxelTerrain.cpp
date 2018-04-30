@@ -25,7 +25,7 @@ bool VoxelTerrain::Initialize(ID3D11Device * device, char * modelFilename, int t
 			_chunk[i][j] = new VoxelChunk[CHUNK_COUNT];
 			for (int k = 0; k < CHUNK_COUNT; k++)
 			{
-				result = _chunk[i][j][k].Initialize(device, modelFilename, textureIndex, _model, _vertexCount, _indexCount, i, j, k);
+				result = _chunk[i][j][k].Initialize(device, modelFilename, textureIndex, _model, _vertexCount, _indexCount, i + 1, j + 1, k + 1);
 				if (!result)
 				{
 					return false;

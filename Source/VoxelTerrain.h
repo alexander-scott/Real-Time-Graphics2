@@ -3,7 +3,7 @@
 #include "VoxelChunk.h"
 #include <fstream>
 
-const int CHUNK_COUNT = 2;
+const int CHUNK_COUNT = 1;
 
 class VoxelTerrain
 {
