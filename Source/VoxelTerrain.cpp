@@ -15,6 +15,7 @@ bool VoxelTerrain::Initialize(ID3D11Device * device, char * modelFilename, int t
 		return false;
 	}
 
+	// Initalize the chunks
 	_chunk = new VoxelChunk**[CHUNK_COUNT];
 	for (int i = 0; i < CHUNK_COUNT; i++)
 	{
@@ -33,8 +34,6 @@ bool VoxelTerrain::Initialize(ID3D11Device * device, char * modelFilename, int t
 			}
 		}
 	}
-
-	_chunkCount = 1;
 
 	return true;
 }

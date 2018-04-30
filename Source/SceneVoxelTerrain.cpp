@@ -87,29 +87,15 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 		return false;
 	}
 
-	FastNoise myNoise; // Create a FastNoise object
-	myNoise.SetNoiseType(FastNoise::PerlinFractal); // Set the desired noise type
-
-	// Create terrain
-	for (int x = 0; x < TERRAIN_SIZE; x++)
-	{
-		for (int z = 0; z < TERRAIN_SIZE; z++)
-		{
-			int height = ((myNoise.GetNoise(x, z) + 1)  * TERRAIN_SIZE) - (TERRAIN_SIZE - (TERRAIN_SIZE / 3));
-
-			for (int y = 0; y < height; y++)
-			{
-				_terrain[x][y][z] = 1;
-			}
-			for (int y = height; y < TERRAIN_SIZE; y++)
-			{
-				_terrain[x][y][z] = 0;
-			}
-		}
-	}
-
+	// Initalize the terrain object.
 	_voxelTerrain = new VoxelTerrain;
-	_voxelTerrain->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
+
+	result = _voxelTerrain->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
+		return false;
+	}
 
 	return true;
 }

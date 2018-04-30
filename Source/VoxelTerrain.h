@@ -21,7 +21,6 @@ private:
 	bool LoadModel(char* filename);
 
 	int						_vertexCount, _indexCount;
-	int						_chunkCount;
 	VoxelChunk***			_chunk;
 	VoxelChunk::ModelType*	_model;
 };

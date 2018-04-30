@@ -2,24 +2,31 @@
 
 VoxelChunk::VoxelChunk()
 {
-	// Create the blocks
-	m_pBlocks = new Voxel**[CHUNK_SIZE];
+	// Create the blocks as a cube with rounded corners
+	_voxels = new Voxel**[CHUNK_SIZE];
 	for (int i = 0; i < CHUNK_SIZE; i++)
 	{
-		m_pBlocks[i] = new Voxel*[CHUNK_SIZE];
+		_voxels[i] = new Voxel*[CHUNK_SIZE];
 
 		for (int j = 0; j < CHUNK_SIZE; j++)
 		{
-			m_pBlocks[i][j] = new Voxel[CHUNK_SIZE];
+			_voxels[i][j] = new Voxel[CHUNK_SIZE];
 			for (int k = 0; k < CHUNK_SIZE; k++)
 			{
 				if (sqrt((float)(i - CHUNK_SIZE / 2)*(i - CHUNK_SIZE / 2) + (j - CHUNK_SIZE / 2)*(j - CHUNK_SIZE / 2) + (k - CHUNK_SIZE / 2)*(k - CHUNK_SIZE / 2)) <= CHUNK_SIZE / 2)
 				{
-					m_pBlocks[i][j][k].SetActive(true);
+					if (j % 2 != 0)
+					{
+						_voxels[i][j][k].SetActive(true);
+					}
+					else
+					{
+						_voxels[i][j][k].SetActive(false);
+					}
 				}
 				else
 				{
-					m_pBlocks[i][j][k].SetActive(false);
+					_voxels[i][j][k].SetActive(false);
 				}
 			}
 		}
@@ -33,12 +40,12 @@ VoxelChunk::~VoxelChunk()
 	{
 		for (int j = 0; j < CHUNK_SIZE; ++j)
 		{
-			delete[] m_pBlocks[i][j];
+			delete[] _voxels[i][j];
 		}
 
-		delete[] m_pBlocks[i];
+		delete[] _voxels[i];
 	}
-	delete[] m_pBlocks;
+	delete[] _voxels;
 }
 
 bool VoxelChunk::Initialize(ID3D11Device * device, char * modelFilename, int textureIndex, ModelType* model, int vertexCount, int indexCount, int xPos, int yPos, int zPos)
@@ -52,6 +59,17 @@ bool VoxelChunk::Initialize(ID3D11Device * device, char * modelFilename, int tex
 	_zPos = zPos;
 
 	CreateMesh();
+
+
+	if (_newVoxels.size() == 0)
+	{
+		_hasBlocks = false;
+		return true;
+	}
+	else
+	{
+		_hasBlocks = true;
+	}
 
 	// Initialize the vertex and index buffers.
 	result = InitializeBuffers(device, vertexCount, indexCount);
@@ -104,7 +122,7 @@ void VoxelChunk::CreateMesh()
 		{
 			for (int z = 0; z < CHUNK_SIZE; z++)
 			{
-				if (m_pBlocks[x][y][z].IsActive() == false)
+				if (_voxels[x][y][z].IsActive() == false)
 				{
 					// Don't create triangle data for inactive blocks
 					continue;
@@ -112,51 +130,40 @@ void VoxelChunk::CreateMesh()
 
 				bool lXNegative = lDefault;
 				if (x > 0)
-					lXNegative = m_pBlocks[x - 1][y][z].IsActive();
+					lXNegative = _voxels[x - 1][y][z].IsActive();
 
 				bool lXPositive = lDefault;
 				if (x < CHUNK_SIZE - 1)
-					lXPositive = m_pBlocks[x + 1][y][z].IsActive();
+					lXPositive = _voxels[x + 1][y][z].IsActive();
 
 				bool lYNegative = lDefault;
 				if (y > 0)
-					lYNegative = m_pBlocks[x][y - 1][z].IsActive();
+					lYNegative = _voxels[x][y - 1][z].IsActive();
 
 				bool lYPositive = lDefault;
 				if (y < CHUNK_SIZE - 1)
-					lYPositive = m_pBlocks[x][y + 1][z].IsActive();
+					lYPositive = _voxels[x][y + 1][z].IsActive();
 
 				bool lZNegative = lDefault;
 				if (z > 0)
-					lZNegative = m_pBlocks[x][y][z - 1].IsActive();
+					lZNegative = _voxels[x][y][z - 1].IsActive();
 
 				bool lZPositive = lDefault;
 				if (z < CHUNK_SIZE - 1)
-					lZPositive = m_pBlocks[x][y][z + 1].IsActive();
+					lZPositive = _voxels[x][y][z + 1].IsActive();
 
 				if (!lXNegative || !lXPositive || !lYNegative || !lYPositive || !lZNegative || !lZPositive)
 				{
-					continue;
+					NewVoxel newVox;
+					newVox.X = x;
+					newVox.Y = y;
+					newVox.Z = z;
+					newVox.Index = (x * CHUNK_SIZE) + (y * CHUNK_SIZE) + z;
+
+					_newVoxels.push_back(newVox);
 				}
-
-				NewVoxel newVox;
-				newVox.X = x;
-				newVox.Y = y;
-				newVox.Z = z;
-				newVox.Index = (x * CHUNK_SIZE) + (y * CHUNK_SIZE) + z;
-
-				_newVoxels.push_back(newVox);
 			}
 		}
-	}
-
-	if (_newVoxels.size() == 0)
-	{
-		_hasBlocks = false;
-	}
-	else
-	{
-		_hasBlocks = true;
 	}
 }
 
