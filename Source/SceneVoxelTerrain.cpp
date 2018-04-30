@@ -208,16 +208,18 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 	direct3D->TurnZBufferOn();
 	direct3D->TurnOnCulling();
 
-	for (int z = 0; z < CHUNK_COUNT; z++)
+	for (int z = 0; z < VoxelTerrain::CHUNK_COUNT; z++)
 	{
-		for (int y = 0; y < CHUNK_COUNT; y++)
+		for (int y = 0; y < VoxelTerrain::CHUNK_COUNT; y++)
 		{
-			for (int x = 0; x < CHUNK_COUNT; x++)
+			for (int x = 0; x < VoxelTerrain::CHUNK_COUNT; x++)
 			{
 				if (_voxelTerrain->HasBlocks(x, y, z))
 				{
 					_voxelTerrain->Render(direct3D->GetDeviceContext(), x, y, z);
-					shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _voxelTerrain->GetIndexCount(x, y, z), worldMatrix, viewMatrix, projectionMatrix);
+
+					//shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _voxelTerrain->GetIndexCount(x, y, z), worldMatrix, viewMatrix, projectionMatrix);
+					shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _voxelTerrain->GetIndexCount(x, y, z), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(47));
 				}
 			}
 		}

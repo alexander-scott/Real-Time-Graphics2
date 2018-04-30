@@ -3,8 +3,6 @@
 #include "VoxelChunk.h"
 #include <fstream>
 
-const int CHUNK_COUNT = 1;
-
 class VoxelTerrain
 {
 public:
@@ -16,6 +14,8 @@ public:
 
 	int GetIndexCount(int x, int y, int z);
 	bool HasBlocks(int x, int y, int z);
+
+	static const int CHUNK_COUNT = 1;
 
 private:
 	bool LoadModel(char* filename);

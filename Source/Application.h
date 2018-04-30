@@ -2,13 +2,13 @@
 
 enum Scene
 {
-	eSceneCombined,
-	eSceneTerrainLOD,
-	eSceneTerrainGeneration,
-	eSceneVoxelTerrain,
-	eSceneSkeleton,
-	eSceneDeferredShading,
-	eSceneShadows
+	eSceneCombined, // Contains terrain read in from file, controllable animated skeleton which can walk on terrain
+	eSceneTerrainLOD, // Contains terrain read in from file and rendered with various LOD features
+	eSceneTerrainGeneration, // Contains terrain generated using the circle hill algorithm
+	eSceneVoxelTerrain, // Contains a voxel planet
+	eSceneSkeleton, // Contains an animated skeleton
+	eSceneDeferredShading, // Contains a single cube and light rendered using deferred shading
+	eSceneShadows // Contains multiple objects which are lit and project shadows onto each other
 };
 
 const Scene CURRENT_SCENE = Scene::eSceneVoxelTerrain;
