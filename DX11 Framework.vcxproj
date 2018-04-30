@@ -423,7 +423,7 @@
     <ClInclude Include="Source\Object.h" />
     <ClInclude Include="Source\OrthoWindow.h" />
     <ClInclude Include="Source\SceneCombined.h" />
-    <ClInclude Include="Source\SceneDeferredLighting.h" />
+    <ClInclude Include="Source\SceneDeferredShading.h" />
     <ClInclude Include="Source\ProceduralTerrain.h" />
     <ClInclude Include="Source\SceneShadows.h" />
     <ClInclude Include="Source\SceneTerrainGeneration.h" />

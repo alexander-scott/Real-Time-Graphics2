@@ -7,11 +7,11 @@ enum Scene
 	eSceneTerrainGeneration,
 	eSceneVoxelTerrain,
 	eSceneSkeleton,
-	eSceneDeferred,
+	eSceneDeferredShading,
 	eSceneShadows
 };
 
-const Scene CURRENT_SCENE = Scene::eSceneTerrainGeneration;
+const Scene CURRENT_SCENE = Scene::eSceneVoxelTerrain;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -29,7 +29,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "SceneTerrainGeneration.h"
 #include "SceneVoxelTerrain.h"
 #include "SceneSkeleton.h"
-#include "SceneDeferredLighting.h"
+#include "SceneDeferredShading.h"
 #include "SceneShadows.h"
 
 class Application

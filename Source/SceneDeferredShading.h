@@ -5,10 +5,10 @@
 #include "OrthoWindow.h"
 #include "RenderTextureBuffer.h"
 
-class SceneDeferredLighting : public IScene
+class SceneDeferredShading : public IScene
 {
 public:
-	SceneDeferredLighting();
+	SceneDeferredShading();
 
 	bool Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth) override;
 	void Destroy() override;

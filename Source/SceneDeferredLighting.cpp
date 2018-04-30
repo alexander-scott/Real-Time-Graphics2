@@ -1,6 +1,6 @@
-#include "SceneDeferredLighting.h"
+#include "SceneDeferredShading.h"
 
-SceneDeferredLighting::SceneDeferredLighting()
+SceneDeferredShading::SceneDeferredShading()
 {
 	_light = 0;
 	_cube = 0;
@@ -8,7 +8,7 @@ SceneDeferredLighting::SceneDeferredLighting()
 	_renderTextureBuffer = 0;
 }
 
-bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
+bool SceneDeferredShading::Initialize(DX11Instance* Direct3D, HWND hwnd, int screenWidth, int screenHeight, float screenDepth)
 {
 	bool result;
 
@@ -117,7 +117,7 @@ bool SceneDeferredLighting::Initialize(DX11Instance* Direct3D, HWND hwnd, int sc
 	return true;
 }
 
-void SceneDeferredLighting::Destroy()
+void SceneDeferredShading::Destroy()
 {
 	// Release the deferred buffers object.
 	if (_renderTextureBuffer)
@@ -173,7 +173,7 @@ void SceneDeferredLighting::Destroy()
 	}
 }
 
-bool SceneDeferredLighting::Update(DX11Instance * direct3D, Input * input, ShaderManager * shaderManager, float frameTime)
+bool SceneDeferredShading::Update(DX11Instance * direct3D, Input * input, ShaderManager * shaderManager, float frameTime)
 {
 	// Do the frame input processing.
 	ProcessInput(input, frameTime);
@@ -188,7 +188,7 @@ bool SceneDeferredLighting::Update(DX11Instance * direct3D, Input * input, Shade
 	return true;
 }
 
-void SceneDeferredLighting::ProcessInput(Input * input, float frameTime)
+void SceneDeferredShading::ProcessInput(Input * input, float frameTime)
 {
 	bool keyDown;
 
@@ -223,7 +223,7 @@ void SceneDeferredLighting::ProcessInput(Input * input, float frameTime)
 	return;
 }
 
-bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
+bool SceneDeferredShading::Draw(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 	bool result;
@@ -265,7 +265,7 @@ bool SceneDeferredLighting::Draw(DX11Instance* direct3D, ShaderManager* shaderMa
 	return true;
 }
 
-bool SceneDeferredLighting::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager)
+bool SceneDeferredShading::RenderSceneToTexture(DX11Instance* direct3D, ShaderManager* shaderManager)
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix, baseViewMatrix, orthoMatrix;
 

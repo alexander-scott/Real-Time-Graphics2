@@ -94,7 +94,7 @@ bool Application::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, in
 		case Scene::eSceneSkeleton:
 			return BuildSceneSkeleton(hwnd, screenWidth, screenHeight);
 
-		case Scene::eSceneDeferred:
+		case Scene::eSceneDeferredShading:
 			return BuildSceneDeferred(hwnd, screenWidth, screenHeight);
 
 		case Scene::eSceneShadows:
@@ -295,7 +295,7 @@ bool Application::BuildSceneDeferred(HWND hwnd, int screenWidth, int screenHeigh
 	bool result;
 
 	// Create the scene object.
-	_scene = new SceneDeferredLighting;
+	_scene = new SceneDeferredShading;
 	if (!_scene)
 	{
 		return false;

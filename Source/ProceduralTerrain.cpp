@@ -8,10 +8,9 @@
 const unsigned int SEED = 12345;
 
 const int HILL_COUNT = 2000;
-const float HILL_MIN = 5.0F;
+const float HILL_MIN = 5.0f;
 const float HILL_MAX = 100.0f;
 const float HILL_HEIGHT_SCALE = 50000.0f;
-const int FLATTENING = 5;
 const bool ISLAND = false;
 
 ProceduralTerrain::ProceduralTerrain()
@@ -513,7 +512,7 @@ void ProceduralTerrain::CircleHillAlgorithm()
 	}
 
 	NormalizeHillMap();
-	FlattenHillMap();
+	RaiseHillMap();
 }
 
 void ProceduralTerrain::AddHill()
@@ -610,32 +609,18 @@ void ProceduralTerrain::NormalizeHillMap()
 	}
 	else
 	{
-		// if the min and max are the same, then the terrain has no height, so just clear it
-		// to 0.0.
 		throw std::exception("MIN AND MAX ARE THE SAME!?!?!?");
 	}
 }
 
-void ProceduralTerrain::FlattenHillMap()
+void ProceduralTerrain::RaiseHillMap()
 {
-	if (FLATTENING > 1)
+	for (int x = 0; x < _terrainWidth; ++x)
 	{
-		for (int x = 0; x < _terrainWidth; ++x)
+		for (int z = 0; z < _terrainHeight; ++z)
 		{
-			for (int z = 0; z < _terrainHeight; ++z)
-			{
-				float flat = 1.0;
-				float original = GetCell(x, z);
-
-				// flatten as many times as desired
-				for (int i = 0; i < 1; ++i)
-				{
-					flat *= original;
-				}
-
-				// put it back into the cell
-				SetCell(x, z, flat * 50000);
-			}
+			// put it back into the cell
+			SetCell(x, z, GetCell(x, z) * 50000);
 		}
 	}
 }

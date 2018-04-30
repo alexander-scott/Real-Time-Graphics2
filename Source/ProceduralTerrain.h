@@ -86,7 +86,7 @@ private:
 	void CircleHillAlgorithm();
 	void AddHill();
 	void NormalizeHillMap();
-	void FlattenHillMap();
+	void RaiseHillMap();
 
 	void DestroyHeightMap();
 	void SetTerrainCoordinates();

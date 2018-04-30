@@ -204,9 +204,6 @@
     <ClInclude Include="Source\DeferredLightShader.h">
       <Filter>DXGraphics\DeferredShaders</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneDeferredLighting.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Source\OrthoWindow.h">
       <Filter>DXGraphics\DeferredShaders</Filter>
     </ClInclude>
@@ -257,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="Source\Camera.h">
       <Filter>Application\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneDeferredShading.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
