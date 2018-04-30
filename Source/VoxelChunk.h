@@ -37,7 +37,7 @@ public:
 	VoxelChunk();
 	~VoxelChunk();
 
-	bool Initialize(ID3D11Device* device, char* modelFilename, int textureIndex, ModelType* model, int vertexCount, int indexCount);
+	bool Initialize(ID3D11Device* device, char* modelFilename, int textureIndex, ModelType* model, int vertexCount, int indexCount, int xPos, int yPos, int zPos);
 
 	int GetIndexCount();
 
@@ -47,7 +47,9 @@ public:
 
 	void CreateMesh();
 
-	static const int CHUNK_SIZE = 16;
+	bool HasBlocks() { return _hasBlocks; }
+
+	static const int CHUNK_SIZE = 32;
 
 private:
 	bool InitializeBuffers(ID3D11Device* device, int vertexCount, int indexCount);
@@ -60,5 +62,7 @@ private:
 	ID3D11Buffer		*_vertexBuffer, *_indexBuffer;
 	int					_vertexCount, _indexCount;
 
+	bool				_hasBlocks;
 	std::vector<NewVoxel> _newVoxels;
+	int						_xPos, _yPos, _zPos;
 };

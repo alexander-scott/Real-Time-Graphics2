@@ -15,11 +15,23 @@ bool VoxelTerrain::Initialize(ID3D11Device * device, char * modelFilename, int t
 		return false;
 	}
 
-	_chunk = new VoxelChunk;
-	result = _chunk->Initialize(device, modelFilename, textureIndex, _model, _vertexCount, _indexCount);
-	if (!result)
+	_chunk = new VoxelChunk**[CHUNK_COUNT];
+	for (int i = 0; i < CHUNK_COUNT; i++)
 	{
-		return false;
+		_chunk[i] = new VoxelChunk*[CHUNK_COUNT];
+
+		for (int j = 0; j < CHUNK_COUNT; j++)
+		{
+			_chunk[i][j] = new VoxelChunk[CHUNK_COUNT];
+			for (int k = 0; k < CHUNK_COUNT; k++)
+			{
+				result = _chunk[i][j][k].Initialize(device, modelFilename, textureIndex, _model, _vertexCount, _indexCount, i, j, k);
+				if (!result)
+				{
+					return false;
+				}
+			}
+		}
 	}
 
 	_chunkCount = 1;
@@ -27,14 +39,19 @@ bool VoxelTerrain::Initialize(ID3D11Device * device, char * modelFilename, int t
 	return true;
 }
 
-void VoxelTerrain::Render(ID3D11DeviceContext * deviceContext)
+void VoxelTerrain::Render(ID3D11DeviceContext * deviceContext, int x, int y, int z)
 {
-	_chunk->Render(deviceContext);
+	_chunk[x][y][z].Render(deviceContext);
 }
 
-int VoxelTerrain::GetIndexCount()
+int VoxelTerrain::GetIndexCount(int x, int y, int z)
 {
-	return _chunk->GetIndexCount();
+	return _chunk[x][y][z].GetIndexCount();
+}
+
+bool VoxelTerrain::HasBlocks(int x, int y, int z)
+{
+	return _chunk[x][y][z].HasBlocks();
 }
 
 bool VoxelTerrain::LoadModel(char * filename)

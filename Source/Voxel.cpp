@@ -2,7 +2,7 @@
 
 Voxel::Voxel()
 {
-	m_active = true;
+	m_active = false;
 }
 
 Voxel::~Voxel()
