@@ -379,7 +379,7 @@
     <ClCompile Include="Source\Object.cpp" />
     <ClCompile Include="Source\OrthoWindow.cpp" />
     <ClCompile Include="Source\SceneCombined.cpp" />
-    <ClCompile Include="Source\SceneDeferredLighting.cpp" />
+    <ClCompile Include="Source\SceneDeferredShading.cpp" />
     <ClCompile Include="Source\ProceduralTerrain.cpp" />
     <ClCompile Include="Source\SceneShadows.cpp" />
     <ClCompile Include="Source\SceneTerrainGeneration.cpp" />

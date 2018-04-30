@@ -73,9 +73,6 @@
     <ClCompile Include="Source\DeferredLightShader.cpp">
       <Filter>DXGraphics\DeferredShaders</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneDeferredLighting.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\OrthoWindow.cpp">
       <Filter>DXGraphics\DeferredShaders</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="Source\Light.cpp">
       <Filter>Application\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneDeferredShading.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
