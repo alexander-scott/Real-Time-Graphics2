@@ -108,6 +108,9 @@ bool SceneVoxelTerrain::Initialize(DX11Instance* Direct3D, HWND hwnd, int screen
 		}
 	}
 
+	_voxelTerrain = new VoxelTerrain;
+	_voxelTerrain->Initialize(Direct3D->GetDevice(), "Source/shadows/cube.txt", 47);
+
 	return true;
 }
 
@@ -219,57 +222,59 @@ bool SceneVoxelTerrain::Draw(DX11Instance* direct3D, ShaderManager* shaderManage
 	direct3D->TurnZBufferOn();
 	direct3D->TurnOnCulling();
 
-	_voxel->Render(direct3D->GetDeviceContext());
+	//_voxel->Render(direct3D->GetDeviceContext());
+	_voxelTerrain->Render(direct3D->GetDeviceContext());
+	shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _voxelTerrain->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
 
-	bool lDefault = false;
+	//bool lDefault = false;
 
-	for (int z = 0; z < TERRAIN_SIZE; z++)
-	{
-		for (int y = 0; y < TERRAIN_SIZE; y++)
-		{
-			for (int x = 0; x < TERRAIN_SIZE; x++)
-			{
-				if (_terrain[x][y][z] == 0)
-				{
-					continue;
-				}
+	//for (int z = 0; z < TERRAIN_SIZE; z++)
+	//{
+	//	for (int y = 0; y < TERRAIN_SIZE; y++)
+	//	{
+	//		for (int x = 0; x < TERRAIN_SIZE; x++)
+	//		{
+	//			if (_terrain[x][y][z] == 0)
+	//			{
+	//				continue;
+	//			}
 
-				bool lXNegative = lDefault;
-				if (x > 0)
-					lXNegative = _terrain[x - 1][y][z] == 1;
+	//			bool lXNegative = lDefault;
+	//			if (x > 0)
+	//				lXNegative = _terrain[x - 1][y][z] == 1;
 
-				bool lXPositive = lDefault;
-				if (x < TERRAIN_SIZE - 1)
-					lXPositive = _terrain[x + 1][y][z] == 1;
+	//			bool lXPositive = lDefault;
+	//			if (x < TERRAIN_SIZE - 1)
+	//				lXPositive = _terrain[x + 1][y][z] == 1;
 
-				bool lYNegative = lDefault;
-				if (y > 0)
-					lYNegative = _terrain[x][y - 1][z] == 1;
+	//			bool lYNegative = lDefault;
+	//			if (y > 0)
+	//				lYNegative = _terrain[x][y - 1][z] == 1;
 
-				bool lYPositive = lDefault;
-				if (y < TERRAIN_SIZE - 1)
-					lYPositive = _terrain[x][y + 1][z] == 1;
+	//			bool lYPositive = lDefault;
+	//			if (y < TERRAIN_SIZE - 1)
+	//				lYPositive = _terrain[x][y + 1][z] == 1;
 
-				bool lZNegative = lDefault;
-				if (z > 0)
-					lZNegative = _terrain[x][y][z - 1] == 1;
+	//			bool lZNegative = lDefault;
+	//			if (z > 0)
+	//				lZNegative = _terrain[x][y][z - 1] == 1;
 
-				bool lZPositive = lDefault;
-				if (z < TERRAIN_SIZE - 1)
-					lZPositive = _terrain[x][y][z + 1] == 1;
+	//			bool lZPositive = lDefault;
+	//			if (z < TERRAIN_SIZE - 1)
+	//				lZPositive = _terrain[x][y][z + 1] == 1;
 
-				if (!lZPositive || !lZNegative || !lYPositive || !lYNegative || !lXPositive || !lXNegative)
-				{
-					direct3D->GetWorldMatrix(worldMatrix);
-					worldMatrix *= XMMatrixTranslation(x, y, z);
+	//			if (!lZPositive || !lZNegative || !lYPositive || !lYNegative || !lXPositive || !lXNegative)
+	//			{
+	//				direct3D->GetWorldMatrix(worldMatrix);
+	//				worldMatrix *= XMMatrixTranslation(x, y, z);
 
-					// Render the model using the texture shader.
-					//shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(_voxel->GetTextureIndex()));
-					shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
-				}
-			}
-		}
-	}
+	//				// Render the model using the texture shader.
+	//				//shaderManager->RenderTextureShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, _textureManager->GetTexture(_voxel->GetTextureIndex()));
+	//				shaderManager->RenderColourShader(direct3D->GetDeviceContext(), _voxel->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+	//			}
+	//		}
+	//	}
+	//}
 
 	// Present the rendered scene to the screen.
 	direct3D->EndScene();

@@ -127,6 +127,15 @@
     <ClCompile Include="Source\SceneDeferredShading.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\VoxelTerrain.cpp">
+      <Filter>Application\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VoxelChunk.cpp">
+      <Filter>Application\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Voxel.cpp">
+      <Filter>Application\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h">
@@ -257,6 +266,15 @@
     </ClInclude>
     <ClInclude Include="Source\SceneDeferredShading.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VoxelTerrain.h">
+      <Filter>Application\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VoxelChunk.h">
+      <Filter>Application\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Voxel.h">
+      <Filter>Application\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

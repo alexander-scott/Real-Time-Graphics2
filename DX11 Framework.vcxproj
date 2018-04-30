@@ -408,6 +408,9 @@
     <ClCompile Include="Source\TextureShader.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\ShaderManager.cpp" />
+    <ClCompile Include="Source\Voxel.cpp" />
+    <ClCompile Include="Source\VoxelChunk.cpp" />
+    <ClCompile Include="Source\VoxelTerrain.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\Terrain.cpp" />
     <ClCompile Include="Source\TargaTexture.cpp" />
@@ -453,6 +456,9 @@
     <ClInclude Include="Source\TextureShader.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\ShaderManager.h" />
+    <ClInclude Include="Source\Voxel.h" />
+    <ClInclude Include="Source\VoxelChunk.h" />
+    <ClInclude Include="Source\VoxelTerrain.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Terrain.h" />
     <ClInclude Include="Source\TargaTexture.h" />
